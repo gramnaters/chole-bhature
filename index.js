@@ -7,10 +7,7 @@ const { setDohEnabled, setDohProvider, getDohConfig } = require('./dohResolver')
 const axios = require('axios');
 const fs = require('fs');
 const crypto = require('crypto');
-const telebot = require('./telebot');
 const torrentEngine = require('./torrentEngine');
-
-telebot.init();
 
 const app = express();
 app.use(express.json());
@@ -24,7 +21,24 @@ app.use(express.json());
 const CONFIGS_FILE = path.join(__dirname, 'user_configs.json');
 const userConfigs = new Map();
 
-// Real-Debrid API key source: Vercel env var first, then realdebrid.json (managed via Telegram bot / self-hosted)
+// In-Memory Stream Cache — prevents Stremio UI glitches / duplicate re-scrapes on auto-refresh.
+// 30 min TTL, bounded size. Keyed per-config so different users/configs never share entries.
+const streamCache = new Map();
+const STREAM_CACHE_TTL_MS = 30 * 60 * 1000;
+const STREAM_CACHE_MAX_ENTRIES = 500;
+
+function getConfigCacheKey(config) {
+    if (config.configId) return 'cfg:' + config.configId;
+    // The /:configJSON route has no configId — derive a stable identity from the config payload
+    // so distinct configs don't collide on a shared 'default' cache entry.
+    try {
+        return 'cfg:' + crypto.createHash('sha1').update(JSON.stringify(config)).digest('hex').slice(0, 16);
+    } catch (e) {
+        return 'cfg:default';
+    }
+}
+
+// Real-Debrid API key source: Vercel env var first, then realdebrid.json (managed by the owner / self-hosted)
 const RD_KEY_FILE = path.join(__dirname, 'realdebrid.json');
 function getRealDebridKey() {
     if (process.env.REALDEBRID_API_KEY) return process.env.REALDEBRID_API_KEY;
@@ -416,6 +430,13 @@ function createAddon(config) {
             return { streams: [] };
         }
 
+        const cacheKey = `${type}_${id}_${getConfigCacheKey(config)}`;
+        const cached = streamCache.get(cacheKey);
+        if (cached && (Date.now() - cached.timestamp < STREAM_CACHE_TTL_MS)) {
+            console.log(`[Stremio] Serving ${cached.streams.length} streams from cache for ${cacheKey}`);
+            return { streams: cached.streams };
+        }
+
         let manifestUrls = [];
         if (config.repoUrl) {
             manifestUrls = [config.repoUrl];
@@ -494,6 +515,16 @@ function createAddon(config) {
             deduplicateStreams: config.deduplicateStreams !== false,
             realDebridKey: config.realDebridKey || getRealDebridKey()
         }, providerAnalytics);
+
+        // Only cache non-empty results (an empty array usually means provider hiccup —
+        // we don't want to pin that for 30 min and hide newly-available streams).
+        if (sortedAndTaggedStreams.length > 0) {
+            streamCache.set(cacheKey, { timestamp: Date.now(), streams: sortedAndTaggedStreams });
+            if (streamCache.size > STREAM_CACHE_MAX_ENTRIES) {
+                const oldest = streamCache.keys().next().value;
+                streamCache.delete(oldest);
+            }
+        }
 
         return { streams: sortedAndTaggedStreams };
     });
