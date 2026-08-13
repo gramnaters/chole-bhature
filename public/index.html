@@ -1694,7 +1694,10 @@
                             <span id="tokenStatus" style="position: absolute; right: 14px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; font-weight: 600;"></span>
                         </div>
                         <div style="display: flex; justify-content: flex-end;">
-                            <span style="color: #94a3b8; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px;">Tokens are issued by the addon owner</span>
+                            <a href="https://t.me/TARSAIAgent_bot?start=token" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(96, 165, 250, 0.1)'" onmouseout="this.style.background='transparent'">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg>
+                                Request Token via Telegram
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -2180,6 +2183,10 @@
             if (dohProviderEl) dohProviderEl.value = settings.dohProvider || 'cloudflare';
             const enableTrueProbingEl = document.getElementById('enableTrueProbing');
             if (enableTrueProbingEl) enableTrueProbingEl.checked = settings.enableTrueProbing || false;
+            const restoredAccessTokenEl = document.getElementById('accessToken');
+            if (restoredAccessTokenEl) restoredAccessTokenEl.value = settings.accessToken || '';
+            const restoredRdKeyEl = document.getElementById('realDebridKey');
+            if (restoredRdKeyEl) restoredRdKeyEl.value = settings.realDebridKey || '';
             updateSortModeUI(settings.sortBy || 'speed');
             renderLanguageChips();
             
@@ -2238,6 +2245,11 @@
             if (initAccessTokenEl) {
                 initAccessTokenEl.value = settings.accessToken || '';
                 if (settings.accessToken) verifyToken(settings.accessToken);
+            }
+            const initRdKeyEl = document.getElementById('realDebridKey');
+            if (initRdKeyEl) {
+                initRdKeyEl.value = settings.realDebridKey || '';
+                if (settings.realDebridKey) verifyRdKey(settings.realDebridKey);
             }
             updateSortModeUI(settings.sortBy || 'speed');
             renderLanguageChips();

@@ -9,6 +9,8 @@ const fs = require('fs');
 const crypto = require('crypto');
 const torrentEngine = require('./torrentEngine');
 const realDebrid = require('./realDebrid');
+const telebot = require('./telebot');
+telebot.init();
 
 const app = express();
 app.use(express.json());
