@@ -310,6 +310,17 @@ function deduplicateAndMergeStreams(streams, enabled = true) {
         if (mergedMap.has(fingerprint)) {
             const existing = mergedMap.get(fingerprint);
 
+            // Do NOT merge when the two entries are distinct quality tiers (e.g. same
+            // CDN URL listed as both 720p and 480p). Merging would collapse a valid
+            // resolution and mislabel the surviving URL.
+            const resExisting = parseStreamMetadata(existing).resolution;
+            const resNew = parseStreamMetadata(stream).resolution;
+            if (resExisting && resNew && resExisting !== resNew) {
+                const copy = { ...stream, providers: pName ? [pName] : ['Stream'] };
+                result.push(copy);
+                continue;
+            }
+
             // Merge providers
             if (!existing.providers) {
                 existing.providers = [cleanProviderName(existing.originalProvider || existing.name)];
@@ -684,7 +695,22 @@ async function testStream(stream, config = {}) {
                 });
                 latency = Date.now() - startTime;
             } catch (e2) {
-                // Probe blocked by CDN bot-filter, but video still streamable in player
+                const errCode = (e2 && (e2.code || e2.errno)) || (e2 && e2.response && e2.response.status);
+                const NETWORK_DEATH_CODES = ['ECONNREFUSED', 'EHOSTUNREACH', 'ENETUNREACH', 'ENOTFOUND', 'EAI_AGAIN', 'ETIMEDOUT', 'ESOCKETTIMEDOUT', 'ECONNRESET', 'ENETDOWN', 'EHOSTDOWN'];
+                if (typeof errCode === 'string' && NETWORK_DEATH_CODES.includes(errCode)) {
+                    // Genuinely unreachable host (DNS fail / connection refused / timeout) -> DEAD
+                    const deadLabels = formatStreamLabels(stream, 99999, false, true, showSeeders);
+                    return {
+                        ...stream,
+                        name: deadLabels.name,
+                        title: deadLabels.title,
+                        latency: 99999,
+                        isDead: true,
+                        statusCategory: 'dead',
+                        originalProvider: providerName
+                    };
+                }
+                // Probe blocked by CDN bot-filter (4xx/5xx response), but video still streamable in player
                 latency = 850;
             }
         }
@@ -759,8 +785,11 @@ async function sortAndTagStreams(streams, config = {}, providerAnalytics) {
         });
     }
 
-    // Safety fallback: if strict filters leave 0 streams, retain all tested streams
-    if (filteredStreams.length === 0 && testedStreams.length > 0) {
+    // Safety fallback: only when NO explicit filters are enabled, retain all tested streams.
+    // If the user enabled hideDead/hideSlow/hideCam, respect it and return an empty list
+    // rather than silently re-showing streams the user asked to hide.
+    const hasExplicitFilters = Boolean(config && (config.hideDead || config.hideSlow || config.hideCam || config.blockCam));
+    if (filteredStreams.length === 0 && testedStreams.length > 0 && !hasExplicitFilters) {
         filteredStreams = testedStreams;
     }
 

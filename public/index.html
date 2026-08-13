@@ -2264,11 +2264,22 @@
                 return;
             }
 
+            // Deduplicate the same addon appearing across repos under different
+            // emoji/case variants (e.g. "🏰 Castle" vs "Castle") so it renders ONE toggle.
+            const seen = new Set();
+            const uniqueProviders = [];
+            for (const p of allProvidersData) {
+                const k = normalizeProviderName(p.name);
+                if (seen.has(k)) continue;
+                seen.add(k);
+                uniqueProviders.push(p);
+            }
+
             let html = '';
-            allProvidersData.forEach((p) => {
+            uniqueProviders.forEach((p) => {
                 const iconHtml = p.logo ? `<img src="${p.logo}" alt="logo" onerror="this.outerHTML='🧩'">` : '🧩';
                 const typesStr = p.supportedTypes.join(' • ');
-                const isDisabled = settings.disabledProviders && settings.disabledProviders.includes(p.name);
+                const isDisabled = isProviderDisabled(p.name);
                 
                 html += `
                     <div class="provider-item-card" style="opacity: ${isDisabled ? '0.45' : '1'};">
@@ -2300,14 +2311,32 @@
             providersContainer.innerHTML = html;
         }
 
+        function normalizeProviderName(name) {
+            return String(name || '')
+                .replace(/[\u{1F000}-\u{1FAFF}\u{2B00}-\u{2BFF}\u{25A0}-\u{25FF}\u{2600}-\u{26FF}\u{FE0F}]/gu, '')
+                .replace(/[\s._\-/\\]+/g, ' ')
+                .trim()
+                .toLowerCase();
+        }
+
+        function isProviderDisabled(name) {
+            const nk = normalizeProviderName(name);
+            return (settings.disabledProviders || []).some(d => d && (d === name || normalizeProviderName(d) === nk));
+        }
+
         function toggleProvider(name, isEnabled) {
             settings.disabledProviders = settings.disabledProviders || [];
+            const nk = normalizeProviderName(name);
+            const variants = allProvidersData.filter(p => normalizeProviderName(p.name) === nk).map(p => p.name);
+            const targetNames = variants.length > 0 ? variants : [name];
             if (isEnabled) {
-                settings.disabledProviders = settings.disabledProviders.filter(p => p !== name);
+                targetNames.forEach(n => {
+                    settings.disabledProviders = settings.disabledProviders.filter(p => p !== n);
+                });
             } else {
-                if (!settings.disabledProviders.includes(name)) {
-                    settings.disabledProviders.push(name);
-                }
+                targetNames.forEach(n => {
+                    if (!settings.disabledProviders.includes(n)) settings.disabledProviders.push(n);
+                });
             }
             saveSettingsLocal();
             saveConfigurationToServer(false);
@@ -2317,9 +2346,12 @@
 
         function removeProvider(name) {
             settings.disabledProviders = settings.disabledProviders || [];
-            if (!settings.disabledProviders.includes(name)) {
-                settings.disabledProviders.push(name);
-            }
+            const nk = normalizeProviderName(name);
+            const variants = allProvidersData.filter(p => normalizeProviderName(p.name) === nk).map(p => p.name);
+            const targetNames = variants.length > 0 ? variants : [name];
+            targetNames.forEach(n => {
+                if (!settings.disabledProviders.includes(n)) settings.disabledProviders.push(n);
+            });
             saveSettingsLocal();
             saveConfigurationToServer(true);
             updateStatsBar();

@@ -16,10 +16,30 @@ const app = express();
 app.use(express.json());
 
 // Persistent User Configuration Store
+// WARNING: on Vercel the function filesystem is EPHEMERAL and per-instance — anything
+// written to user_configs.json is lost on cold start and invisible to other instances.
+// To persist configs durably on Vercel, set UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN
+// (free Upstash Redis tier: 256MB, 500K commands/mo, no credit card). Without them we
+// fall back to the local file (fine for a single long-running server / local dev).
 const CONFIGS_FILE = path.join(__dirname, 'user_configs.json');
 const userConfigs = new Map();
 
-function loadUserConfigs() {
+let redis = null;
+try {
+    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+        const { Redis } = require('@upstash/redis');
+        redis = new Redis({
+            url: process.env.UPSTASH_REDIS_REST_URL,
+            token: process.env.UPSTASH_REDIS_REST_TOKEN
+        });
+        console.log('[Config] Upstash Redis persistence ENABLED.');
+    }
+} catch (e) {
+    console.warn('[Config] Upstash Redis unavailable, using file storage only:', e.message);
+}
+const REDIS_CONFIGS_KEY = 'nuvio:user_configs';
+
+function loadUserConfigsFromFile() {
     try {
         if (fs.existsSync(CONFIGS_FILE)) {
             const raw = fs.readFileSync(CONFIGS_FILE, 'utf8');
@@ -27,15 +47,43 @@ function loadUserConfigs() {
             for (const [k, v] of Object.entries(data)) {
                 userConfigs.set(k, v);
             }
-            console.log(`[Config] Loaded ${userConfigs.size} user configurations.`);
+            console.log(`[Config] Loaded ${userConfigs.size} configurations from file.`);
         }
     } catch (e) {
         console.error('[Config] Failed to load user_configs.json:', e.message);
     }
 }
 
-function saveUserConfig(configId, configData) {
-    userConfigs.set(configId, configData);
+async function loadUserConfigsFromRedis() {
+    if (!redis) return;
+    try {
+        const raw = await redis.get(REDIS_CONFIGS_KEY);
+        if (raw) {
+            const data = JSON.parse(raw);
+            for (const [k, v] of Object.entries(data)) {
+                userConfigs.set(k, v);
+            }
+            console.log(`[Config] Loaded ${userConfigs.size} configurations from Upstash Redis.`);
+        }
+    } catch (e) {
+        console.error('[Config] Failed to load from Upstash Redis:', e.message);
+    }
+}
+
+async function persistUserConfigsToRedis() {
+    if (!redis) return;
+    try {
+        const obj = {};
+        for (const [k, v] of userConfigs.entries()) {
+            obj[k] = v;
+        }
+        await redis.set(REDIS_CONFIGS_KEY, JSON.stringify(obj));
+    } catch (e) {
+        console.error('[Config] Failed to persist to Upstash Redis:', e.message);
+    }
+}
+
+function persistUserConfigsToFile() {
     try {
         const obj = {};
         for (const [k, v] of userConfigs.entries()) {
@@ -46,6 +94,37 @@ function saveUserConfig(configId, configData) {
         console.error('[Config] Failed to persist user_configs.json:', e.message);
     }
 }
+
+async function loadUserConfigs() {
+    loadUserConfigsFromFile();        // local dev / non-Vercel
+    await loadUserConfigsFromRedis(); // durable copy on Vercel (overrides any stale file)
+}
+
+async function saveUserConfig(configId, configData) {
+    userConfigs.set(configId, configData);
+    persistUserConfigsToFile();
+    await persistUserConfigsToRedis();
+}
+
+// Reads a config, falling back to Redis when the in-memory map is empty (e.g. just
+// booted on a fresh Vercel instance before the background load finished).
+async function getConfig(configId) {
+    let config = userConfigs.get(configId) || null;
+    if (!config && redis) {
+        try {
+            const raw = await redis.get(REDIS_CONFIGS_KEY);
+            if (raw) {
+                const data = JSON.parse(raw);
+                config = data[configId] || null;
+                if (config) userConfigs.set(configId, config);
+            }
+        } catch (e) {
+            console.error('[Config] Redis read fallback failed:', e.message);
+        }
+    }
+    return config;
+}
+
 loadUserConfigs();
 
 // PWA Core Endpoints with explicit headers & CORS for WebAPK minting
@@ -97,14 +176,14 @@ app.get('/c/:configId/configure', (req, res) => {
 });
 
 // API to save configuration (Instant Sync)
-app.post('/api/config/save', (req, res) => {
+app.post('/api/config/save', async (req, res) => {
     try {
         let { configId, config } = req.body;
         if (!configId) {
             configId = crypto.randomBytes(4).toString('hex');
         }
         
-        saveUserConfig(configId, config);
+        await saveUserConfig(configId, config);
         
         // Invalidate stream cache for this configuration
         for (const key of streamCache.keys()) {
@@ -122,8 +201,8 @@ app.post('/api/config/save', (req, res) => {
 });
 
 // API to get configuration
-app.get('/api/config/:configId', (req, res) => {
-    const config = userConfigs.get(req.params.configId) || null;
+app.get('/api/config/:configId', async (req, res) => {
+    const config = await getConfig(req.params.configId);
     res.json({ config });
 });
 
@@ -251,6 +330,32 @@ async function getTmdbId(imdbId, type) {
     return null;
 }
 
+// Normalize provider names so emoji-prefixed variants of the same addon match
+// (e.g. "🧲 Torrentio" == "Torrentio" == id "torrentio").
+function normalizeProviderKey(name) {
+    return String(name || '')
+        .replace(/[\u{1F000}-\u{1FAFF}\u{2B00}-\u{2BFF}\u{25A0}-\u{25FF}\u{2600}-\u{26FF}\u{FE0F}]/gu, '')
+        .replace(/[\s._\-\/\\]+/g, ' ')
+        .trim()
+        .toLowerCase();
+}
+
+function isProviderDisabled(provider, disabledList) {
+    if (!Array.isArray(disabledList) || disabledList.length === 0) return false;
+    if (disabledList.includes(provider.name)) return true;
+
+    const nameKey = normalizeProviderKey(provider.name);
+    const idKey = normalizeProviderKey(provider.id);
+    for (const entry of disabledList) {
+        if (!entry) continue;
+        const entryKey = normalizeProviderKey(entry);
+        if (entryKey && (entryKey === nameKey || entryKey === idKey || entryKey === provider.id)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Addon builder factory
 function createAddon(config) {
     if (config && config.enableDoh !== undefined) setDohEnabled(config.enableDoh !== false);
@@ -312,7 +417,12 @@ function createAddon(config) {
 
         if (type === 'series') {
             const parts = id.split(':');
-            imdbId = parts[0];
+            if (parts[0] === 'tmdb' && parts[1]) {
+                // Preserve the tmdb: prefix so getTmdbId can return it directly
+                imdbId = `tmdb:${parts[1]}`;
+            } else {
+                imdbId = parts[0];
+            }
             season = parts[1];
             episode = parts[2];
         }
@@ -352,8 +462,8 @@ function createAddon(config) {
         // Filter providers
         if (config.provider) {
             allProviders = allProviders.filter(p => p.name === config.provider);
-        } else if (config.disabled && Array.isArray(config.disabled)) {
-            allProviders = allProviders.filter(p => !config.disabled.includes(p.name));
+        } else if (config.disabled) {
+            allProviders = allProviders.filter(p => !isProviderDisabled(p, config.disabled));
         }
 
         let allStreams = [];
@@ -502,16 +612,15 @@ app.get('/c/:configId/clear-cache/:type/:id', (req, res) => {
     }
 });
 
-app.use('/c/:configId', (req, res, next) => {
+app.use('/c/:configId', async (req, res, next) => {
     // Only intercept Stremio API routes
     if (req.path === '/manifest.json' || req.path.startsWith('/stream/') || req.path.startsWith('/catalog/')) {
         try {
             const { configId } = req.params;
-            let config = userConfigs.get(configId);
-            if (!config) {
-                config = { repoUrl: 'https://raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio/refs/heads/main/manifest.json' };
-            }
-            config = JSON.parse(JSON.stringify(config)); // clone
+            // Fall back to Redis when this Vercel instance hasn't loaded the config yet,
+            // so a fresh cold start does NOT silently fall back to the all-enabled default
+            // (which is what made disabled addons "come back" on Vercel).
+            const config = await getConfig(configId) || {};
             config.configId = configId;
             config.addonHost = req.headers.host;
             const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
