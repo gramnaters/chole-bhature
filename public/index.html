@@ -1546,7 +1546,7 @@
                             It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.
                         </div>
                     </div>
-                    <a href="https://nuvioplugin.com/" target="_blank" class="btn-nuvio">
+                    <a href="https://nuvio-plugin-library.vercel.app/" target="_blank" class="btn-nuvio">
                         ✨ Get Nuvio Plugin Repo
                     </a>
                 </div>
@@ -1654,6 +1654,26 @@
                     </div>
                 </div>
 
+                <!-- True-Probing (FFprobe) -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            🧪 True-Probing (FFprobe)
+                            <span class="tag-pill-badge" style="background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.35); color: #fb7185;">Heavy</span>
+                        </div>
+                        <div class="setting-description">Runs FFprobe on every stream to verify the actual video container/quality. Very CPU-heavy and slows down results — keep OFF unless you know you need it.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Run FFprobe on every stream (heavy CPU usage)">
+                            <span class="filter-capsule-text">🧪 Enable</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="enableTrueProbing" onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Mini-Debrid Access (Premium Access Token) -->
                 <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 16px;">
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
@@ -1674,7 +1694,7 @@
                             <span id="tokenStatus" style="position: absolute; right: 14px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; font-weight: 600;"></span>
                         </div>
                         <div style="display: flex; justify-content: flex-end;">
-                            <a href="https://t.me/TARSAIAgent_bot" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(96, 165, 250, 0.1)'" onmouseout="this.style.background='transparent'">
+                            <a href="https://t.me/TARSAIAgent_bot?start=token" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(96, 165, 250, 0.1)'" onmouseout="this.style.background='transparent'">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg>
                                 Request Token via Telegram
                             </a>
@@ -1985,6 +2005,7 @@
             const enableDohEl = document.getElementById('enableDoh');
             const dohProviderEl = document.getElementById('dohProvider');
             const accessTokenEl = document.getElementById('accessToken');
+            const enableTrueProbingEl = document.getElementById('enableTrueProbing');
             
             if (hideDeadEl) settings.hideDead = hideDeadEl.checked;
             if (hideSlowEl) settings.hideSlow = hideSlowEl.checked;
@@ -1994,6 +2015,7 @@
             if (enableDohEl) settings.enableDoh = enableDohEl.checked;
             if (dohProviderEl) settings.dohProvider = dohProviderEl.value;
             if (accessTokenEl) settings.accessToken = accessTokenEl.value.trim();
+            if (enableTrueProbingEl) settings.enableTrueProbing = enableTrueProbingEl.checked;
             
             settings.prioritizeQuality = (settings.sortBy === 'quality');
             settings.preferredLanguages = settings.preferredLanguages || [];
@@ -2036,6 +2058,7 @@
                 enableDoh: settings.enableDoh !== false,
                 dohProvider: settings.dohProvider || 'cloudflare',
                 accessToken: settings.accessToken || '',
+                enableTrueProbing: settings.enableTrueProbing || false,
                 sortBy: settings.sortBy || 'speed',
                 sortMode: settings.sortBy || 'speed',
                 prioritizeQuality: settings.sortBy === 'quality',
@@ -2097,6 +2120,7 @@
             if (cfg.dohProvider) settings.dohProvider = cfg.dohProvider;
             if (cfg.accessToken) settings.accessToken = cfg.accessToken;
             else if (cfg.telegramId) settings.accessToken = cfg.telegramId; // Backwards compatibility
+            if (cfg.enableTrueProbing !== undefined) settings.enableTrueProbing = cfg.enableTrueProbing;
             if (cfg.sortBy) settings.sortBy = cfg.sortBy;
             else if (cfg.prioritizeQuality !== undefined) settings.sortBy = cfg.prioritizeQuality ? 'quality' : 'speed';
             if (cfg.preferredLanguages && Array.isArray(cfg.preferredLanguages)) {
@@ -2124,6 +2148,8 @@
             if (enableDohEl) enableDohEl.checked = settings.enableDoh !== false;
             const dohProviderEl = document.getElementById('dohProvider');
             if (dohProviderEl) dohProviderEl.value = settings.dohProvider || 'cloudflare';
+            const enableTrueProbingEl = document.getElementById('enableTrueProbing');
+            if (enableTrueProbingEl) enableTrueProbingEl.checked = settings.enableTrueProbing || false;
             updateSortModeUI(settings.sortBy || 'speed');
             renderLanguageChips();
             

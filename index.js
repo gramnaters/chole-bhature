@@ -185,13 +185,6 @@ app.post('/api/config/save', async (req, res) => {
         
         await saveUserConfig(configId, config);
         
-        // Invalidate stream cache for this configuration
-        for (const key of streamCache.keys()) {
-            if (key.includes(configId)) {
-                streamCache.delete(key);
-            }
-        }
-        
         console.log(`[Config] Configuration saved & synced for configId: ${configId}`);
         res.json({ success: true, configId, config });
     } catch (err) {
@@ -211,9 +204,6 @@ app.get('/:configJSON/configure', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const streamCache = new Map();
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-
 // Analytics tracker
 const providerAnalytics = new Map();
 
@@ -224,7 +214,8 @@ app.get('/api/verify-token/:token', (req, res) => {
     if (fs.existsSync(authPath)) {
         try {
             const tokens = JSON.parse(fs.readFileSync(authPath, 'utf8'));
-            if (tokens.includes(token)) {
+            const isValid = tokens.some(t => typeof t === 'string' ? t === token : t.token === token);
+            if (isValid) {
                 return res.json({ valid: true });
             }
         } catch (e) {
@@ -274,9 +265,7 @@ app.get('/stream/:infoHash/:userId', (req, res) => {
     if (fs.existsSync(authPath)) {
         try {
             const tokens = JSON.parse(fs.readFileSync(authPath, 'utf8'));
-            if (tokens.includes(userId)) {
-                isAuthorized = true;
-            }
+            isAuthorized = tokens.some(t => typeof t === 'string' ? t === userId : t.token === userId);
         } catch (e) {
             console.error('Error reading access_tokens.json', e);
         }
@@ -392,25 +381,6 @@ function createAddon(config) {
     builder.defineStreamHandler(async ({ type, id }) => {
         console.log(`[Stremio] Request for ${type} ${id} (Addon: ${addonName})`);
         
-        const cacheKey = `${type}:${id}:${JSON.stringify(config)}`;
-        const cached = streamCache.get(cacheKey);
-        
-        // Helper to generate the force refresh stream
-        const getForceRefreshStream = () => {
-            if (!config.addonHost) return null;
-            return {
-                name: '🔄 FORCE REFRESH',
-                title: 'Click here to clear the cache, then click Stremio Refresh!',
-                externalUrl: `${config.addonProtocol}://${config.addonHost}/${encodeURIComponent(JSON.stringify(config))}/clear-cache/${type}/${id}`
-            };
-        };
-
-        if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
-            console.log(`[Stremio] Serving cached results for ${type} ${id}`);
-            const frStream = getForceRefreshStream();
-            return { streams: frStream ? [frStream, ...cached.streams] : cached.streams };
-        }
-
         let imdbId = id;
         let season = null;
         let episode = null;
@@ -468,8 +438,9 @@ function createAddon(config) {
 
         let allStreams = [];
 
-        // Execute all providers in parallel with an increased timeout of 26 seconds per provider
-        const PROVIDER_TIMEOUT_MS = 26000;
+        // Execute all providers in parallel with a strict timeout
+        // Stremio allows up to ~15-20s, we give providers 14s to maximize results
+        const PROVIDER_TIMEOUT_MS = 14000;
 
         await Promise.all(allProviders.map(async (provider) => {
             try {
@@ -510,11 +481,7 @@ function createAddon(config) {
             deduplicateStreams: config.deduplicateStreams !== false
         }, providerAnalytics);
 
-        // Save to cache
-        streamCache.set(cacheKey, { timestamp: Date.now(), streams: sortedAndTaggedStreams });
-
-        const frStream = getForceRefreshStream();
-        return { streams: frStream ? [frStream, ...sortedAndTaggedStreams] : sortedAndTaggedStreams };
+        return { streams: sortedAndTaggedStreams };
     });
 
     // No catalogs defined
@@ -523,94 +490,6 @@ function createAddon(config) {
 }
 
 const { getRouter } = require('stremio-addon-sdk');
-
-app.get('/:configJSON/clear-cache/:type/:id', (req, res) => {
-    const { configJSON, type, id } = req.params;
-    try {
-        const config = JSON.parse(decodeURIComponent(configJSON));
-        config.addonHost = req.headers.host;
-        const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
-        config.addonProtocol = protocol.split(',')[0].trim();
-        
-        const cacheKey = `${type}:${id}:${JSON.stringify(config)}`;
-        streamCache.delete(cacheKey);
-        console.log(`[Cache] Cleared via browser link for ${type} ${id}`);
-        
-        const html = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Cache Cleared</title>
-            <style>
-                body { background-color: #09090b; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-                h1 { color: #4ade80; }
-                p { color: #94a3b8; }
-            </style>
-        </head>
-        <body>
-            <h1>✅ Cache Cleared!</h1>
-            <p>Closing automatically...</p>
-            <script>
-                setTimeout(() => {
-                    window.close();
-                }, 1500);
-            </script>
-        </body>
-        </html>
-        `;
-        res.status(200).send(html);
-    } catch (e) {
-        res.status(500).send('Error clearing cache.');
-    }
-});
-
-app.get('/c/:configId/clear-cache/:type/:id', (req, res) => {
-    const { configId, type, id } = req.params;
-    try {
-        const config = userConfigs.get(configId) || {};
-        config.addonHost = req.headers.host;
-        const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
-        config.addonProtocol = protocol.split(',')[0].trim();
-        config.configId = configId;
-        
-        const cacheKey = `${type}:${id}:${JSON.stringify(config)}`;
-        streamCache.delete(cacheKey);
-        for (const k of streamCache.keys()) {
-            if (k.includes(configId)) streamCache.delete(k);
-        }
-        console.log(`[Cache] Cleared via browser link for ${type} ${id} (configId: ${configId})`);
-        
-        const html = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Cache Cleared</title>
-            <style>
-                body { background-color: #09090b; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-                h1 { color: #4ade80; }
-                p { color: #94a3b8; }
-            </style>
-        </head>
-        <body>
-            <h1>✅ Cache Cleared!</h1>
-            <p>Closing automatically...</p>
-            <script>
-                setTimeout(() => {
-                    window.close();
-                }, 1500);
-            </script>
-        </body>
-        </html>
-        `;
-        res.status(200).send(html);
-    } catch (e) {
-        res.status(500).send('Error clearing cache.');
-    }
-});
 
 app.use('/c/:configId', async (req, res, next) => {
     // Only intercept Stremio API routes
