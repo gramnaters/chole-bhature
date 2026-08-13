@@ -22,19 +22,20 @@ const CONFIGS_FILE = path.join(__dirname, 'user_configs.json');
 const userConfigs = new Map();
 
 // In-Memory Stream Cache — prevents Stremio UI glitches / duplicate re-scrapes on auto-refresh.
-// 30 min TTL, bounded size. Keyed per-config so different users/configs never share entries.
+// 1 hour TTL, bounded size. Keyed on the full config payload so distinct configs never share
+// entries AND any settings change instantly busts the cache (no stale streams after edits).
 const streamCache = new Map();
-const STREAM_CACHE_TTL_MS = 30 * 60 * 1000;
+const STREAM_CACHE_TTL_MS = 60 * 60 * 1000;
 const STREAM_CACHE_MAX_ENTRIES = 500;
 
 function getConfigCacheKey(config) {
-    if (config.configId) return 'cfg:' + config.configId;
-    // The /:configJSON route has no configId — derive a stable identity from the config payload
-    // so distinct configs don't collide on a shared 'default' cache entry.
+    // Always hash the entire config: covers both /c/:configId and /:configJSON routes,
+    // and detects config content changes (upstream only keyed by configId on the /c/ route,
+    // which served stale streams after a user edited their settings).
     try {
         return 'cfg:' + crypto.createHash('sha1').update(JSON.stringify(config)).digest('hex').slice(0, 16);
     } catch (e) {
-        return 'cfg:default';
+        return config.configId ? 'cfg:' + config.configId : 'cfg:default';
     }
 }
 
