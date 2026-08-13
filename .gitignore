@@ -4,3 +4,8 @@ user_configs.json
 test_suite.js
 
 authorized_users.json
+access_tokens.json
+realdebrid.json
+cf_tunnel.json
+cf_out.log
+cf_err.log

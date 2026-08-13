@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { exec } = require('child_process');
 const { dohHttpAgent, dohHttpsAgent } = require('./dohResolver');
+const realDebrid = require('./realDebrid');
 
 function probeVideo(url) {
     return new Promise((resolve) => {
@@ -578,7 +579,33 @@ async function testStream(stream, config = {}) {
         }
 
         const hash = stream.infoHash || (stream.url && stream.url.match(/urn:btih:([a-zA-Z0-9]+)/i)?.[1]);
-        
+
+        // 💎 Real-Debrid resolution: magnet -> cached direct CDN link (instant, zero server load)
+        if (hash && config && config.realDebridKey && seeders !== 0) {
+            try {
+                const directUrl = await realDebrid.resolveStream(hash, config.realDebridKey);
+                if (directUrl) {
+                    stream.url = directUrl;
+                    delete stream.infoHash; // Force Stremio to use the direct HTTP link
+                    p2pLatency = 120;
+                    isDead = false;
+                    statusCategory = 'fast';
+                    const rdLabels = formatStreamLabels(stream, p2pLatency, true, false, showSeeders);
+                    return {
+                        ...stream,
+                        name: rdLabels.name.replace('🧲 P2P', '💎 Debrid'),
+                        title: rdLabels.title,
+                        latency: p2pLatency,
+                        isDead: false,
+                        statusCategory: 'fast',
+                        originalProvider: providerName
+                    };
+                }
+            } catch (e) {
+                console.error('[RealDebrid] Resolution failed, falling back to magnet:', e.message);
+            }
+        }
+
         // Mini-Debrid URL Rewriter
         if (hash && config && (config.accessToken || config.telegramId) && config.addonHost) {
             const token = config.accessToken || config.telegramId;

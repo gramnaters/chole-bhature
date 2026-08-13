@@ -24,6 +24,19 @@ app.use(express.json());
 const CONFIGS_FILE = path.join(__dirname, 'user_configs.json');
 const userConfigs = new Map();
 
+// Real-Debrid API key source: Vercel env var first, then realdebrid.json (managed via Telegram bot / self-hosted)
+const RD_KEY_FILE = path.join(__dirname, 'realdebrid.json');
+function getRealDebridKey() {
+    if (process.env.REALDEBRID_API_KEY) return process.env.REALDEBRID_API_KEY;
+    try {
+        if (fs.existsSync(RD_KEY_FILE)) {
+            const d = JSON.parse(fs.readFileSync(RD_KEY_FILE, 'utf8'));
+            if (d.apiKey) return d.apiKey;
+        }
+    } catch (e) {}
+    return null;
+}
+
 let redis = null;
 try {
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
@@ -478,7 +491,8 @@ function createAddon(config) {
             prioritizeHindi: config.prioritizeHindi,
             preferredLanguages: config.preferredLanguages || (config.prioritizeHindi ? ['Hindi', 'Dual-Audio'] : []),
             showSeeders: config.showSeeders !== false,
-            deduplicateStreams: config.deduplicateStreams !== false
+            deduplicateStreams: config.deduplicateStreams !== false,
+            realDebridKey: config.realDebridKey || getRealDebridKey()
         }, providerAnalytics);
 
         return { streams: sortedAndTaggedStreams };

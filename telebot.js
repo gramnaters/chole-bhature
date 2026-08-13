@@ -3,6 +3,7 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const realDebrid = require('./realDebrid');
 require('dotenv').config();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -31,28 +32,21 @@ try {
 
 console.log('[TeleBot] Initialized and polling for commands.');
 
-// Persist CF Tunnel across restarts
-const cfFile = path.join(__dirname, 'cf_tunnel.json');
-const cfErrLog = path.join(__dirname, 'cf_err.log');
+// 💎 Real-Debrid API key persistence (used as fallback for self-hosted installs;
+// on Vercel the REALDEBRID_API_KEY env var takes priority, see index.js)
+const rdKeyFile = path.join(__dirname, 'realdebrid.json');
 
-global.cfUrl = null;
-global.cfPid = null;
-
-if (fs.existsSync(cfFile)) {
-    try {
-        const data = JSON.parse(fs.readFileSync(cfFile, 'utf8'));
-        if (data.pid) {
-            try {
-                process.kill(data.pid, 0); // Check if process is still running
-                global.cfPid = data.pid;
-                global.cfUrl = data.url;
-                console.log('[TeleBot] Restored active CF Tunnel:', data.url);
-            } catch (e) {
-                // Process is dead
-                fs.unlinkSync(cfFile);
-            }
-        }
-    } catch (e) {}
+function getRdKey() {
+    try { return JSON.parse(fs.readFileSync(rdKeyFile, 'utf8')).apiKey || null; }
+    catch (e) { return null; }
+}
+function saveRdKey(apiKey) {
+    fs.writeFileSync(rdKeyFile, JSON.stringify({ apiKey }, null, 2));
+}
+function maskKey(key) {
+    if (!key) return 'Not set';
+    if (key.length <= 8) return key;
+    return key.slice(0, 4) + '••••••••' + key.slice(-4);
 }
 
 // Helpers
@@ -99,7 +93,7 @@ const MAIN_MENU = {
     reply_markup: {
         inline_keyboard: [
             [{ text: '🚀 Deploy & Restart', callback_data: 'cmd_deploy' }],
-            [{ text: '🌐 Manage CF Tunnel', callback_data: 'cmd_manage_cf' }, { text: '🔋 Hardware Status', callback_data: 'cmd_status' }],
+            [{ text: '💎 Manage Real-Debrid', callback_data: 'cmd_manage_rd' }, { text: '🔋 Hardware Status', callback_data: 'cmd_status' }],
             [{ text: '👥 Manage Sudo Users', callback_data: 'cmd_manage' }],
             [{ text: '🔑 Manage Access Tokens', callback_data: 'cmd_manage_tokens' }]
         ]
@@ -178,6 +172,7 @@ function sendDetailedMenu(chatId, messageId = null) {
     const freeMem = (os.freemem() / 1024 / 1024).toFixed(0);
     const usedMem = totalMem - freeMem;
     const reqs = getTokenRequests().length;
+    const rdKey = getRdKey();
     
     let text = `🎛️ **Chole Bhature Control Panel**\n`;
     text += `━━━━━━━━━━━━━━━━━━\n`;
@@ -185,8 +180,7 @@ function sendDetailedMenu(chatId, messageId = null) {
     text += `⏱️ **Uptime:** \`${uptime}\`\n`;
     text += `🧠 **RAM:** \`${usedMem}MB / ${totalMem}MB\`\n`;
     text += `📨 **Pending Tokens:** \`${reqs} Requests\`\n\n`;
-    text += `🌐 **Cloudflare Tunnel Status**\n`;
-    text += `${global.cfUrl ? `✅ Online: \n\`${global.cfUrl}\`` : '❌ Offline'}\n`;
+    text += `💎 **Real-Debrid:** \`${rdKey ? maskKey(rdKey) : 'Not configured'}\`\n`;
     text += `━━━━━━━━━━━━━━━━━━\n`;
     text += `Select a command below:`;
 
@@ -214,19 +208,21 @@ bot.on('callback_query', async (query) => {
         bot.answerCallbackQuery(query.id);
         sendDetailedMenu(chatId, query.message.message_id);
     }
-    else if (data === 'cmd_manage_cf') {
+    else if (data === 'cmd_manage_rd') {
         bot.answerCallbackQuery(query.id);
-        let text = `🌐 **Cloudflare Tunnel Management**\n\n`;
-        let kb = [];
-        if (global.cfUrl) {
-            text += `✅ **Tunnel is ACTIVE**\n🔗 \`${global.cfUrl}/configure\`\n\n_Share this link with your users!_`;
-            kb.push([{ text: '🛑 Stop Tunnel', callback_data: 'cmd_stop_cf_tunnel' }]);
+        const rdKey = getRdKey();
+        let text = `💎 **Real-Debrid Management**\n\n`;
+        if (rdKey) {
+            text += `🔑 **Key:** \`${maskKey(rdKey)}\`\n\n_Use the addon with a **premium** Real-Debrid account for cached, instant direct links._`;
         } else {
-            text += `❌ **Tunnel is OFFLINE**\n\nStart the tunnel to generate a public URL.`;
-            kb.push([{ text: '🌐 Start CF Tunnel', callback_data: 'cmd_cf_tunnel' }]);
+            text += `❌ **No API key configured**\n\nSet one to convert magnets into instant cached CDN links.`;
         }
-        kb.push([{ text: '🔙 Back to Menu', callback_data: 'cmd_menu' }]);
-        
+        const kb = [
+            [{ text: '✅ Check Status', callback_data: 'cmd_rd_status' }],
+            [{ text: '🔑 Set API Key', callback_data: 'cmd_rd_setkey' }],
+            [{ text: '🗑️ Remove Key', callback_data: 'cmd_rd_clearkey' }],
+            [{ text: '🔙 Back to Menu', callback_data: 'cmd_menu' }]
+        ];
         bot.editMessageText(text, {
             chat_id: chatId,
             message_id: query.message.message_id,
@@ -234,81 +230,56 @@ bot.on('callback_query', async (query) => {
             reply_markup: { inline_keyboard: kb }
         }).catch(()=>{});
     }
-    else if (data === 'cmd_cf_tunnel') {
-        if (global.cfPid) {
-            return bot.answerCallbackQuery(query.id, { text: '⚠️ Tunnel is already running!', show_alert: true });
+    else if (data === 'cmd_rd_status') {
+        bot.answerCallbackQuery(query.id, { text: 'Checking Real-Debrid...' });
+        const rdKey = getRdKey();
+        if (!rdKey) {
+            bot.sendMessage(chatId, '❌ No Real-Debrid API key configured. Use 💎 Manage Real-Debrid → Set API Key.');
+            return;
         }
+        realDebrid.checkKey(rdKey).then((res) => {
+            if (res.valid) {
+                const d = res.data;
+                bot.sendMessage(chatId,
+                    `✅ **Real-Debrid Status**\n\n👤 **User:** \`${d.username}\`\n🎖️ **Type:** \`${d.type}\`\n📅 **Expires:** \`${d.expiration || 'Lifetime'}\`\n⭐ **Points:** \`${d.points || 0}\``,
+                    { parse_mode: 'Markdown' }
+                );
+            } else {
+                bot.sendMessage(chatId, '❌ **Invalid Real-Debrid key** or account is not premium.');
+            }
+        }).catch((e) => {
+            bot.sendMessage(chatId, `❌ Real-Debrid check failed: ${e.message}`);
+        });
+    }
+    else if (data === 'cmd_rd_setkey') {
+        bot.answerCallbackQuery(query.id, { text: 'Send your API key...' });
+        bot.sendMessage(chatId, '🔑 **Send your Real-Debrid API key** (a reply to this message)\n\nFind it at: real-debrid.com → **Account** → **API Token**.\n\n_Reply with the key, or send /cancel to abort._').then((sentMsg) => {
+            bot.onReplyToMessage(chatId, sentMsg.message_id, (reply) => {
+                const key = (reply.text || '').trim();
+                if (key === '/cancel') return bot.sendMessage(chatId, '❌ Aborted.');
+                realDebrid.checkKey(key).then((res) => {
+                    if (res.valid) {
+                        saveRdKey(key);
+                        bot.sendMessage(chatId, `✅ **Real-Debrid key saved!**\n👤 **User:** \`${res.data.username}\`\n\nCached torrents will now stream as instant CDN links.`, { parse_mode: 'Markdown' });
+                    } else {
+                        bot.sendMessage(chatId, '❌ **Invalid key.** Please double-check your Real-Debrid API token.');
+                    }
+                }).catch((e) => {
+                    bot.sendMessage(chatId, `❌ Could not validate key: ${e.message}`);
+                });
+            });
+        });
+    }
+    else if (data === 'cmd_rd_clearkey') {
         bot.answerCallbackQuery(query.id);
-        
-        bot.editMessageText('🌐 Starting Cloudflare Tunnel (Detached mode)... Please wait.', {
+        saveRdKey(null);
+        let text = `🗑️ **Real-Debrid key removed.**\n\nThe addon will fall back to its default key (if any).`;
+        bot.editMessageText(text, {
             chat_id: chatId,
             message_id: query.message.message_id,
-            parse_mode: 'Markdown'
+            parse_mode: 'Markdown',
+            reply_markup: { inline_keyboard: [[{ text: '💎 Manage Real-Debrid', callback_data: 'cmd_manage_rd' }], [{ text: '🔙 Back to Menu', callback_data: 'cmd_menu' }]] }
         }).catch(()=>{});
-
-        if (fs.existsSync(cfErrLog)) fs.writeFileSync(cfErrLog, ''); // Clear old log
-
-        const { spawn } = require('child_process');
-        const out = fs.openSync(path.join(__dirname, 'cf_out.log'), 'a');
-        const err = fs.openSync(cfErrLog, 'a');
-        
-        const cfProc = spawn('cloudflared', ['tunnel', '--url', 'http://localhost:7000'], {
-            detached: true,
-            stdio: ['ignore', out, err]
-        });
-        
-        cfProc.unref(); // Detach completely from Node.js
-        global.cfPid = cfProc.pid;
-        
-        let attempts = 0;
-        const interval = setInterval(() => {
-            attempts++;
-            if (attempts > 30) {
-                clearInterval(interval);
-                bot.sendMessage(chatId, '⚠️ Cloudflare Tunnel started, but taking too long to generate URL.');
-                return;
-            }
-            if (fs.existsSync(cfErrLog)) {
-                const logData = fs.readFileSync(cfErrLog, 'utf8');
-                const match = logData.match(/https:\/\/[a-zA-Z0-9-]+\.trycloudflare\.com/);
-                if (match && !global.cfUrl) {
-                    global.cfUrl = match[0];
-                    fs.writeFileSync(cfFile, JSON.stringify({ pid: global.cfPid, url: global.cfUrl }));
-                    
-                    let text = `🌐 **Cloudflare Tunnel Management**\n\n✅ **Tunnel is ACTIVE**\n🔗 \`${global.cfUrl}/configure\`\n\n_Share this link with your users!_`;
-                    bot.editMessageText(text, {
-                        chat_id: chatId,
-                        message_id: query.message.message_id,
-                        parse_mode: 'Markdown',
-                        reply_markup: { inline_keyboard: [[{ text: '🛑 Stop Tunnel', callback_data: 'cmd_stop_cf_tunnel' }], [{ text: '🔙 Back to Menu', callback_data: 'cmd_menu' }]] }
-                    }).catch(()=>{});
-                    clearInterval(interval);
-                }
-            }
-        }, 500);
-    }
-    else if (data === 'cmd_stop_cf_tunnel') {
-        bot.answerCallbackQuery(query.id, { text: 'Stopping tunnel...' });
-        if (global.cfPid) {
-            try { process.kill(global.cfPid, 'SIGTERM'); } catch(e) {}
-            setTimeout(() => {
-                try { process.kill(global.cfPid, 'SIGKILL'); } catch(e) {}
-            }, 500);
-            
-            global.cfPid = null;
-            global.cfUrl = null;
-            if (fs.existsSync(cfFile)) fs.unlinkSync(cfFile);
-            
-            let text = `🌐 **Cloudflare Tunnel Management**\n\n❌ **Tunnel is OFFLINE**\n\nStart the tunnel to generate a public URL.`;
-            bot.editMessageText(text, {
-                chat_id: chatId,
-                message_id: query.message.message_id,
-                parse_mode: 'Markdown',
-                reply_markup: { inline_keyboard: [[{ text: '🌐 Start CF Tunnel', callback_data: 'cmd_cf_tunnel' }], [{ text: '🔙 Back to Menu', callback_data: 'cmd_menu' }]] }
-            }).catch(()=>{});
-        } else {
-            bot.answerCallbackQuery(query.id, { text: '⚠️ Tunnel is not running.', show_alert: true });
-        }
     }
     else if (data === 'cmd_deploy') {
         bot.answerCallbackQuery(query.id, { text: 'Deploying...' });
