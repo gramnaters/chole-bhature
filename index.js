@@ -255,6 +255,20 @@ app.get('/api/verify-token/:token', (req, res) => {
     res.json({ valid: false });
 });
 
+// Real-Debrid API Key Verification — mirrors the token check. Calls RD /user
+// endpoint; only "premium" accounts are accepted (same gate as resolveStream).
+app.get('/api/verify-rdkey', async (req, res) => {
+    const key = (req.query.key || '').trim();
+    if (!key) return res.json({ valid: false });
+    try {
+        const result = await realDebrid.checkKey(key);
+        res.json({ valid: result.valid });
+    } catch (e) {
+        console.error('[RD] Key verification failed:', e.message);
+        res.json({ valid: false });
+    }
+});
+
 app.get('/api/analytics', (req, res) => {
     const stats = {};
     for (const [provider, data] of providerAnalytics.entries()) {
