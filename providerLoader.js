@@ -128,7 +128,9 @@ class ProviderLoader {
             for (const scraper of manifest.scrapers || []) {
                 if (!scraper.enabled) continue;
                 
-                const scriptUrl = `${baseUrl}/${scraper.filename}`;
+                const scriptUrl = /^https?:\/\//i.test(scraper.filename)
+                    ? scraper.filename
+                    : `${baseUrl}/${scraper.filename}`;
                 console.log(`[ProviderLoader] Loading script for ${scraper.name}: ${scriptUrl}`);
                 
                 try {

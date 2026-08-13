@@ -1881,7 +1881,10 @@
     <script>
         let configId = null;
         let storedRepos = localStorage.getItem('nuvio_repos');
-        let repos = storedRepos !== null ? JSON.parse(storedRepos) : [];
+        // Default to the Eclipsia stable repository (full-URL scraper manifests) until the
+        // user adds their own. Existing users keep their saved repo list.
+        const DEFAULT_REPOS = ['https://codeberg.org/eclipsia/nuvio-plugin/raw/branch/main/stable/manifest.json'];
+        let repos = storedRepos !== null ? JSON.parse(storedRepos) : [...DEFAULT_REPOS];
         let settings = JSON.parse(localStorage.getItem('nuvio_settings') || '{"hideDead": false, "hideSlow": false, "sortBy": "speed", "prioritizeHindi": false, "showSeeders": true, "deduplicateStreams": true, "preferredLanguages": [], "disabledProviders": []}');
         let allProvidersData = [];
 
