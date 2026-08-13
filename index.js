@@ -8,6 +8,7 @@ const axios = require('axios');
 const fs = require('fs');
 const crypto = require('crypto');
 const torrentEngine = require('./torrentEngine');
+const realDebrid = require('./realDebrid');
 
 const app = express();
 app.use(express.json());
@@ -61,6 +62,7 @@ try {
             token: process.env.UPSTASH_REDIS_REST_TOKEN
         });
         console.log('[Config] Upstash Redis persistence ENABLED.');
+        realDebrid.setRedis(redis); // shared cache for resolved RD links (L2, cross-instance)
     }
 } catch (e) {
     console.warn('[Config] Upstash Redis unavailable, using file storage only:', e.message);

@@ -1,4 +1,5 @@
 const axios = require('axios');
+const crypto = require('crypto');
 
 const API_BASE = 'https://api.real-debrid.com/rest/1.0';
 
@@ -14,6 +15,23 @@ const POLL_MAX_WAIT = 6000;               // cached torrents resolve in 1-3s; gi
 const MAX_CONCURRENT = 3;                 // semaphore: at most 3 RD flows at once
 const ATTEMPT_WINDOW_MS = 60 * 1000;      // sliding window for attempt rate cap
 const MAX_ATTEMPTS_PER_WINDOW = 8;        // bound unique-hash RD API calls per request burst
+
+// Shared Redis layer (same Upstash instance used for config persistence). In-memory Maps stay
+// the fast L1; Redis is the L2 shared across Vercel instances and survives cold starts. Keyed by
+// (hash, RD key) because unrestrict/link URLs are account-bound — never serve one user's link
+// to another account. Wired in by index.js via setRedis().
+const REDIS_LINK_PREFIX = 'nuvio:rdlink:';
+const REDIS_NEG_PREFIX = 'nuvio:rdneg:';
+let redis = null;
+
+function setRedis(client) {
+    redis = client;
+}
+
+function redisCacheKey(hash, key) {
+    const keyHash = crypto.createHash('sha1').update(key || '').digest('hex').slice(0, 12);
+    return hash + ':' + keyHash;
+}
 
 let active = 0;
 const queue = [];
@@ -113,6 +131,8 @@ async function resolveStream(hash, key) {
     if (!hash || !key) return null;
 
     const now = Date.now();
+
+    // L1: in-memory caches (fast path, no Redis round-trip)
     const hit = linkCache.get(hash);
     if (hit && now - hit.ts < CACHE_TTL) return hit.url;
 
@@ -121,6 +141,25 @@ async function resolveStream(hash, key) {
 
     if (inFlight.has(hash)) return inFlight.get(hash);
 
+    // L2: shared Redis cache (cross-instance, survives cold starts)
+    if (redis) {
+        const redisKey = redisCacheKey(hash, key);
+        try {
+            const redisHit = await redis.get(REDIS_LINK_PREFIX + redisKey);
+            if (redisHit) {
+                linkCache.set(hash, { url: redisHit, ts: Date.now() });
+                return redisHit;
+            }
+            const redisNeg = await redis.get(REDIS_NEG_PREFIX + redisKey);
+            if (redisNeg) {
+                negativeCache.set(hash, { ts: Date.now() });
+                return null;
+            }
+        } catch (e) {
+            console.warn('[RD] Redis cache read failed:', e.message);
+        }
+    }
+
     if (!allowAttempt()) return null;
 
     const p = withSemaphore(async () => {
@@ -128,9 +167,23 @@ async function resolveStream(hash, key) {
             const url = await resolveHash(hash, key);
             if (url) {
                 linkCache.set(hash, { url, ts: Date.now() });
+                if (redis) {
+                    const redisKey = redisCacheKey(hash, key);
+                    try {
+                        await redis.set(REDIS_LINK_PREFIX + redisKey, url, { ex: CACHE_TTL / 1000 });
+                    } catch (e) {
+                        console.warn('[RD] Redis link cache write failed:', e.message);
+                    }
+                }
                 return url;
             }
             negativeCache.set(hash, { ts: Date.now() });
+            if (redis) {
+                const redisKey = redisCacheKey(hash, key);
+                try {
+                    await redis.set(REDIS_NEG_PREFIX + redisKey, '1', { ex: NEGATIVE_TTL / 1000 });
+                } catch (e) {}
+            }
             return null;
         } catch (e) {
             negativeCache.set(hash, { ts: Date.now() });
@@ -148,4 +201,4 @@ function clearCache() {
     negativeCache.clear();
 }
 
-module.exports = { checkKey, resolveStream, clearCache };
+module.exports = { checkKey, resolveStream, clearCache, setRedis };
