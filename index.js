@@ -268,6 +268,24 @@ app.get('/api/doh/status', (req, res) => {
     res.json(getDohConfig());
 });
 
+// Repo manifest proxy — repo hosts like plugin.eclipsia.dpdns.org send no CORS
+// headers, so the browser can't fetch them directly. We proxy server-side (Node
+// fetch ignores CORS) and relay with permissive headers so the settings UI can
+// list repo scrapers.
+app.get('/api/repo-manifest', async (req, res) => {
+    const url = req.query.url;
+    if (!url || !/^https?:\/\//i.test(url)) {
+        return res.status(400).json({ error: 'Invalid url' });
+    }
+    try {
+        const r = await axios.get(url, { timeout: 15000 });
+        res.set('Access-Control-Allow-Origin', '*');
+        res.json(r.data);
+    } catch (e) {
+        res.status(502).json({ error: 'Failed to fetch repo manifest', detail: e.message });
+    }
+});
+
 // Automated Vercel Cron Job to keep providers awake
 app.get('/api/wakeup', async (req, res) => {
     try {

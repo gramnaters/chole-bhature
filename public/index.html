@@ -2262,7 +2262,9 @@
             for (let i = 0; i < repos.length; i++) {
                 const url = repos[i];
                 try {
-                    const res = await fetch(url);
+                    // Proxy through our backend: repo hosts often lack CORS headers,
+                    // which blocks direct browser fetches.
+                    const res = await fetch(`/api/repo-manifest?url=${encodeURIComponent(url)}`);
                     const manifest = await res.json();
                     const name = manifest.name || 'Unknown Repo';
                     const providersArray = manifest.scrapers || manifest.providers || [];
