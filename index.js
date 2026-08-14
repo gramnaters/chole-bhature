@@ -30,6 +30,24 @@ const userConfigs = new Map();
 const streamCache = new Map();
 const STREAM_CACHE_TTL_MS = 30 * 60 * 1000;
 const STREAM_CACHE_MAX_ENTRIES = 500;
+// Thin results (very few streams) are often a flaky/partial scrape where most providers
+// failed transiently. Cache them for a SHORT window so a bad result self-heals fast,
+// instead of being pinned for the full TTL.
+const STREAM_CACHE_THIN_TTL_MS = 5 * 60 * 1000;
+const STREAM_CACHE_THIN_COUNT = 3;
+
+// Builds the language-priority list for sorting. When Hindi priority is on, Dual-Audio
+// streams must count too (desi sources label Hindi rips "Dual-Audio"), even if the user
+// only picked "Hindi" explicitly — otherwise those streams score 0 and never float up.
+function buildPreferredLanguages(config) {
+    let langs = Array.isArray(config.preferredLanguages) ? [...config.preferredLanguages] : [];
+    if (config.prioritizeHindi) {
+        const lower = langs.map(l => l.toLowerCase());
+        if (!lower.includes('hindi')) langs.push('Hindi');
+        if (!lower.includes('dual-audio')) langs.push('Dual-Audio');
+    }
+    return langs;
+}
 
 function getConfigCacheKey(config) {
     // Always hash the entire config: covers both /c/:configId and /:configJSON routes,
@@ -453,7 +471,7 @@ function createAddon(config) {
         let season = null;
         let episode = null;
 
-        if (type === 'series') {
+        if (type === 'series' || type === 'tv') {
             const parts = id.split(':');
             if (parts[0] === 'tmdb' && parts[1]) {
                 // Preserve the tmdb: prefix so getTmdbId can return it directly
@@ -471,11 +489,23 @@ function createAddon(config) {
             return { streams: [] };
         }
 
+        // Force-refresh stream: opens a browser page that clears this content's cache
+        // entry, so a subsequent Stremio Refresh rescrapes instead of serving stale rows.
+        const getForceRefreshStream = () => {
+            if (!config.addonHost) return null;
+            return {
+                name: '🔄 FORCE REFRESH',
+                title: 'Click here to clear the cache, then tap Stremio Refresh!',
+                externalUrl: `${config.addonProtocol}://${config.addonHost}/${encodeURIComponent(JSON.stringify(config))}/clear-cache/${type}/${id}`
+            };
+        };
+
         const cacheKey = `${type}_${id}_${getConfigCacheKey(config)}`;
         const cached = streamCache.get(cacheKey);
-        if (cached && (Date.now() - cached.timestamp < STREAM_CACHE_TTL_MS)) {
+        if (cached && (Date.now() - cached.timestamp < (cached.ttl || STREAM_CACHE_TTL_MS))) {
             console.log(`[Stremio] Serving ${cached.streams.length} streams from cache for ${cacheKey}`);
-            return { streams: cached.streams };
+            const frStream = getForceRefreshStream();
+            return { streams: frStream ? [frStream, ...cached.streams] : cached.streams };
         }
 
         let manifestUrls = [];
@@ -551,7 +581,7 @@ function createAddon(config) {
             sortMode: config.sortMode || config.sortBy,
             prioritizeQuality: config.sortBy === 'quality' || config.prioritizeQuality,
             prioritizeHindi: config.prioritizeHindi,
-            preferredLanguages: config.preferredLanguages || (config.prioritizeHindi ? ['Hindi', 'Dual-Audio'] : []),
+            preferredLanguages: buildPreferredLanguages(config),
             showSeeders: config.showSeeders !== false,
             deduplicateStreams: config.deduplicateStreams !== false,
             realDebridKey: config.realDebridKey || getRealDebridKey()
@@ -559,15 +589,21 @@ function createAddon(config) {
 
         // Only cache non-empty results (an empty array usually means provider hiccup —
         // we don't want to pin that for 30 min and hide newly-available streams).
+        // Thin results get a short TTL (see constants above) so a partial scrape where
+        // most providers failed transiently self-heals instead of pinning a bad list.
         if (sortedAndTaggedStreams.length > 0) {
-            streamCache.set(cacheKey, { timestamp: Date.now(), streams: sortedAndTaggedStreams });
+            const ttl = sortedAndTaggedStreams.length >= STREAM_CACHE_THIN_COUNT
+                ? STREAM_CACHE_TTL_MS
+                : STREAM_CACHE_THIN_TTL_MS;
+            streamCache.set(cacheKey, { timestamp: Date.now(), ttl, streams: sortedAndTaggedStreams });
             if (streamCache.size > STREAM_CACHE_MAX_ENTRIES) {
                 const oldest = streamCache.keys().next().value;
                 streamCache.delete(oldest);
             }
         }
 
-        return { streams: sortedAndTaggedStreams };
+        const frStream = getForceRefreshStream();
+        return { streams: frStream ? [frStream, ...sortedAndTaggedStreams] : sortedAndTaggedStreams };
     });
 
     // No catalogs defined
@@ -622,6 +658,83 @@ app.use('/:configJSON', (req, res, next) => {
         }
     }
     next();
+});
+
+// Clear-cache page for the /:configJSON route (reached from the FORCE REFRESH stream)
+app.get('/:configJSON/clear-cache/:type/:id', async (req, res) => {
+    const { configJSON, type, id } = req.params;
+    try {
+        const config = JSON.parse(decodeURIComponent(configJSON));
+        config.addonHost = req.headers.host;
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+        config.addonProtocol = protocol.split(',')[0].trim();
+
+        const cacheKey = `${type}_${id}_${getConfigCacheKey(config)}`;
+        streamCache.delete(cacheKey);
+        console.log(`[Cache] Cleared via browser link for ${type} ${id}`);
+        res.status(200).send(`<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cache Cleared</title>
+            <style>
+                body { background-color: #09090b; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+                h1 { color: #4ade80; }
+                p { color: #94a3b8; }
+            </style>
+        </head>
+        <body>
+            <h1>✅ Cache Cleared!</h1>
+            <p>Go back to Stremio and tap Refresh.</p>
+            <script>
+                setTimeout(() => { window.close(); }, 1500);
+            </script>
+        </body>
+        </html>`);
+    } catch (e) {
+        res.status(500).send('Error clearing cache.');
+    }
+});
+
+// Clear-cache page for the /c/:configId route
+app.get('/c/:configId/clear-cache/:type/:id', async (req, res) => {
+    const { configId, type, id } = req.params;
+    try {
+        const config = await getConfig(configId) || {};
+        config.configId = configId;
+        config.addonHost = req.headers.host;
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+        config.addonProtocol = protocol.split(',')[0].trim();
+
+        streamCache.delete(`${type}_${id}_${getConfigCacheKey(config)}`);
+        for (const k of streamCache.keys()) {
+            if (k.includes(configId)) streamCache.delete(k);
+        }
+        console.log(`[Cache] Cleared via browser link for ${type} ${id} (configId: ${configId})`);
+        res.status(200).send(`<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cache Cleared</title>
+            <style>
+                body { background-color: #09090b; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+                h1 { color: #4ade80; }
+                p { color: #94a3b8; }
+            </style>
+        </head>
+        <body>
+            <h1>✅ Cache Cleared!</h1>
+            <p>Go back to Stremio and tap Refresh.</p>
+            <script>
+                setTimeout(() => { window.close(); }, 1500);
+            </script>
+        </body>
+        </html>`);
+    } catch (e) {
+        res.status(500).send('Error clearing cache.');
+    }
 });
 
 const PORT = process.env.PORT || 7000;
