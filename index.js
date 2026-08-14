@@ -18,8 +18,8 @@ app.use(express.json());
 // Persistent User Configuration Store
 // WARNING: on Vercel the function filesystem is EPHEMERAL and per-instance — anything
 // written to user_configs.json is lost on cold start and invisible to other instances.
-// To persist configs durably on Vercel, set UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN
-// (free Upstash Redis tier: 256MB, 500K commands/mo, no credit card). Without them we
+// To persist configs durably on Vercel, set TURSO_DATABASE_URL + TURSO_AUTH_TOKEN
+// (free Turso tier: 500 databases, 9GB storage, 1B row reads/mo). Without them we
 // fall back to the local file (fine for a single long-running server / local dev).
 const CONFIGS_FILE = path.join(__dirname, 'user_configs.json');
 const userConfigs = new Map();
@@ -73,6 +73,22 @@ function getRealDebridKey() {
     return null;
 }
 
+// Turso (serverless SQLite) — durable config persistence on Vercel
+let turso = null;
+try {
+    if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
+        const { createClient } = require('@libsql/client');
+        turso = createClient({
+            url: process.env.TURSO_DATABASE_URL,
+            authToken: process.env.TURSO_AUTH_TOKEN
+        });
+        console.log('[Config] Turso persistence ENABLED.');
+    }
+} catch (e) {
+    console.warn('[Config] Turso unavailable, using file storage only:', e.message);
+}
+
+// Optional: Upstash Redis for Real-Debrid L2 cache (ephemeral, fine to lose)
 let redis = null;
 try {
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
@@ -81,19 +97,12 @@ try {
             url: process.env.UPSTASH_REDIS_REST_URL,
             token: process.env.UPSTASH_REDIS_REST_TOKEN
         });
-        console.log('[Config] Upstash Redis persistence ENABLED.');
-        realDebrid.setRedis(redis); // shared cache for resolved RD links (L2, cross-instance)
+        console.log('[Config] Upstash Redis L2 cache ENABLED (for RD).');
+        realDebrid.setRedis(redis);
     }
 } catch (e) {
-    console.warn('[Config] Upstash Redis unavailable, using file storage only:', e.message);
+    console.warn('[Config] Upstash Redis unavailable (RD cache disabled):', e.message);
 }
-// Configs are stored under per-config Redis keys (nuvio:config:<configId>) instead of a
-// single shared blob. On Vercel every serverless instance keeps its own in-memory copy of
-// the map; if a save wrote the whole map back to one blob, a cold instance with a partial
-// map could overwrite Redis and silently wipe every other user's config. Per-key writes
-// make a save atomic — it can only ever affect its own config.
-const REDIS_CONFIGS_KEY = 'nuvio:config:';
-const REDIS_CONFIGS_LEGACY_KEY = 'nuvio:user_configs';
 
 function loadUserConfigsFromFile() {
     try {
@@ -110,77 +119,56 @@ function loadUserConfigsFromFile() {
     }
 }
 
-async function loadUserConfigsFromRedis() {
-    if (!redis) return;
+async function loadAllConfigsFromTurso() {
+    if (!turso) return;
     try {
-        // Migration: read the legacy single-blob key once and fan it out to per-config keys.
-        const legacyRaw = await redis.get(REDIS_CONFIGS_LEGACY_KEY);
-        if (legacyRaw) {
-            const legacy = JSON.parse(legacyRaw);
-            for (const [k, v] of Object.entries(legacy)) {
-                userConfigs.set(k, v);
-                await redis.set(REDIS_CONFIGS_KEY + k, JSON.stringify(v));
-            }
-            console.log(`[Config] Migrated ${Object.keys(legacy).length} configs from legacy blob to per-config keys.`);
-            await redis.del(REDIS_CONFIGS_LEGACY_KEY);
-        }
-
-        // Scan all per-config keys and load them into memory so cold Vercel
-        // instances have the full config map immediately (not just on-demand).
-        let cursor = 0;
+        const result = await turso.execute('SELECT configId, config FROM configs');
         let loaded = 0;
-        do {
-            const result = await redis.scan(cursor, { match: REDIS_CONFIGS_KEY + '*', count: 100 });
-            cursor = result[0];
-            const keys = result[1] || [];
-            for (const key of keys) {
-                try {
-                    const raw = await redis.get(key);
-                    if (raw) {
-                        const cfgId = key.replace(REDIS_CONFIGS_KEY, '');
-                        const cfg = JSON.parse(raw);
-                        if (cfg && cfgId) {
-                            userConfigs.set(cfgId, cfg);
-                            loaded++;
-                        }
-                    }
-                } catch (e) {
-                    console.error(`[Config] Failed to load key ${key}:`, e.message);
+        for (const row of result.rows) {
+            try {
+                const cfg = JSON.parse(row.config);
+                if (cfg && row.configId) {
+                    userConfigs.set(row.configId, cfg);
+                    loaded++;
                 }
+            } catch (e) {
+                console.error(`[Config] Failed to parse config ${row.configId}:`, e.message);
             }
-        } while (cursor !== 0);
-
-        console.log(`[Config] Loaded ${userConfigs.size} configurations from Upstash Redis (${loaded} per-config keys).`);
+        }
+        console.log(`[Config] Loaded ${loaded} configurations from Turso.`);
     } catch (e) {
-        console.error('[Config] Failed to load from Upstash Redis:', e.message);
+        console.error('[Config] Failed to load from Turso:', e.message);
     }
 }
 
 async function saveUserConfig(configId, configData) {
     userConfigs.set(configId, configData);
     persistUserConfigsToFile();
-    if (!redis) {
-        throw new Error('Redis not configured — config cannot be persisted. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.');
+    if (!turso) {
+        throw new Error('Turso not configured — config cannot be persisted. Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN.');
     }
-    // Throw on failure so the API caller knows the save was NOT durable.
-    // On Vercel, in-memory + local file are both ephemeral — if Redis write
-    // fails, the config is silently lost on next cold start.
-    await redis.set(REDIS_CONFIGS_KEY + configId, JSON.stringify(configData));
+    await turso.execute({
+        sql: 'INSERT OR REPLACE INTO configs (configId, config) VALUES (?, ?)',
+        args: [configId, JSON.stringify(configData)]
+    });
 }
 
-// Reads a config, falling back to Redis when the in-memory map is empty (e.g. just
+// Reads a config, falling back to Turso when the in-memory map is empty (e.g. just
 // booted on a fresh Vercel instance before the background load finished).
 async function getConfig(configId) {
     let config = userConfigs.get(configId) || null;
-    if (!config && redis) {
+    if (!config && turso) {
         try {
-            const raw = await redis.get(REDIS_CONFIGS_KEY + configId);
-            if (raw) {
-                config = JSON.parse(raw);
+            const result = await turso.execute({
+                sql: 'SELECT config FROM configs WHERE configId = ?',
+                args: [configId]
+            });
+            if (result.rows.length > 0) {
+                config = JSON.parse(result.rows[0].config);
                 if (config) userConfigs.set(configId, config);
             }
         } catch (e) {
-            console.error('[Config] Redis read fallback failed:', e.message);
+            console.error('[Config] Turso read fallback failed:', e.message);
         }
     }
     return config;
@@ -199,8 +187,8 @@ function persistUserConfigsToFile() {
 }
 
 async function loadUserConfigs() {
-    loadUserConfigsFromFile();        // local dev / non-Vercel
-    await loadUserConfigsFromRedis(); // durable copy on Vercel (overrides any stale file)
+    loadUserConfigsFromFile(); // local dev / non-Vercel
+    await loadAllConfigsFromTurso(); // durable copy on Vercel (overrides any stale file)
 }
 
 loadUserConfigs();
@@ -664,7 +652,7 @@ app.use('/c/:configId', async (req, res, next) => {
     if (req.path === '/manifest.json' || req.path.startsWith('/stream/') || req.path.startsWith('/catalog/')) {
         try {
             const { configId } = req.params;
-            // Fall back to Redis when this Vercel instance hasn't loaded the config yet,
+            // Fall back to Turso when this Vercel instance hasn't loaded the config yet,
             // so a fresh cold start does NOT silently fall back to the all-enabled default
             // (which is what made disabled addons "come back" on Vercel).
             const config = await getConfig(configId) || {};
