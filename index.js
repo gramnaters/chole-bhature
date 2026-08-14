@@ -161,31 +161,6 @@ async function loadUserConfigs() {
     await loadUserConfigsFromRedis(); // durable copy on Vercel (overrides any stale file)
 }
 
-async function saveUserConfig(configId, configData) {
-    userConfigs.set(configId, configData);
-    persistUserConfigsToFile();
-    await persistUserConfigsToRedis();
-}
-
-// Reads a config, falling back to Redis when the in-memory map is empty (e.g. just
-// booted on a fresh Vercel instance before the background load finished).
-async function getConfig(configId) {
-    let config = userConfigs.get(configId) || null;
-    if (!config && redis) {
-        try {
-            const raw = await redis.get(REDIS_CONFIGS_KEY);
-            if (raw) {
-                const data = JSON.parse(raw);
-                config = data[configId] || null;
-                if (config) userConfigs.set(configId, config);
-            }
-        } catch (e) {
-            console.error('[Config] Redis read fallback failed:', e.message);
-        }
-    }
-    return config;
-}
-
 loadUserConfigs();
 
 // PWA Core Endpoints with explicit headers & CORS for WebAPK minting
