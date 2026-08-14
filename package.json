@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test-matrix.js && node test/test-streamTester.js",
+    "test:matrix": "node test/test-matrix.js",
+    "test:unit": "node test/test-streamTester.js",
+    "test:e2e": "node test/test-e2e-disabled.js && node test/test-e2e-fixes.js",
+    "test:deployed": "node test/test-deployed.js && node test/test-vercel-e2e.js"
   },
   "keywords": [],
   "author": "",
