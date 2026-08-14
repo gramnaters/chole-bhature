@@ -124,7 +124,33 @@ async function loadUserConfigsFromRedis() {
             console.log(`[Config] Migrated ${Object.keys(legacy).length} configs from legacy blob to per-config keys.`);
             await redis.del(REDIS_CONFIGS_LEGACY_KEY);
         }
-        console.log(`[Config] Loaded ${userConfigs.size} configurations from Upstash Redis.`);
+
+        // Scan all per-config keys and load them into memory so cold Vercel
+        // instances have the full config map immediately (not just on-demand).
+        let cursor = 0;
+        let loaded = 0;
+        do {
+            const result = await redis.scan(cursor, { match: REDIS_CONFIGS_KEY + '*', count: 100 });
+            cursor = result[0];
+            const keys = result[1] || [];
+            for (const key of keys) {
+                try {
+                    const raw = await redis.get(key);
+                    if (raw) {
+                        const cfgId = key.replace(REDIS_CONFIGS_KEY, '');
+                        const cfg = JSON.parse(raw);
+                        if (cfg && cfgId) {
+                            userConfigs.set(cfgId, cfg);
+                            loaded++;
+                        }
+                    }
+                } catch (e) {
+                    console.error(`[Config] Failed to load key ${key}:`, e.message);
+                }
+            }
+        } while (cursor !== 0);
+
+        console.log(`[Config] Loaded ${userConfigs.size} configurations from Upstash Redis (${loaded} per-config keys).`);
     } catch (e) {
         console.error('[Config] Failed to load from Upstash Redis:', e.message);
     }
@@ -133,15 +159,13 @@ async function loadUserConfigsFromRedis() {
 async function saveUserConfig(configId, configData) {
     userConfigs.set(configId, configData);
     persistUserConfigsToFile();
-    if (redis) {
-        try {
-            // Per-config key: an instance can only ever overwrite its own config, never
-            // wipe another user's config by writing a stale full-map blob.
-            await redis.set(REDIS_CONFIGS_KEY + configId, JSON.stringify(configData));
-        } catch (e) {
-            console.error('[Config] Failed to persist to Upstash Redis:', e.message);
-        }
+    if (!redis) {
+        throw new Error('Redis not configured — config cannot be persisted. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.');
     }
+    // Throw on failure so the API caller knows the save was NOT durable.
+    // On Vercel, in-memory + local file are both ephemeral — if Redis write
+    // fails, the config is silently lost on next cold start.
+    await redis.set(REDIS_CONFIGS_KEY + configId, JSON.stringify(configData));
 }
 
 // Reads a config, falling back to Redis when the in-memory map is empty (e.g. just
@@ -453,21 +477,6 @@ function isProviderDisabled(provider, disabledList) {
     return false;
 }
 
-// Default configuration used when a stored config is missing (e.g. cold Vercel
-// instance with an empty Redis). Falls back to the Eclipsia stable repo so the
-// addon always returns streams.
-const DEFAULT_CONFIG = {
-    urls: ['https://codeberg.org/eclipsia/nuvio-plugin/raw/branch/main/stable/manifest.json'],
-    sortBy: 'speed',
-    deduplicateStreams: true,
-    showSeeders: true,
-    hideDead: false,
-    hideSlow: false,
-    hideCam: false,
-    preferredLanguages: [],
-    disabled: []
-};
-
 // Addon builder factory
 function createAddon(config) {
     if (config && config.enableDoh !== undefined) setDohEnabled(config.enableDoh !== false);
@@ -658,8 +667,7 @@ app.use('/c/:configId', async (req, res, next) => {
             // Fall back to Redis when this Vercel instance hasn't loaded the config yet,
             // so a fresh cold start does NOT silently fall back to the all-enabled default
             // (which is what made disabled addons "come back" on Vercel).
-            const stored = await getConfig(configId);
-            const config = (stored && Object.keys(stored).length > 0) ? stored : { ...DEFAULT_CONFIG };
+            const config = await getConfig(configId) || {};
             config.configId = configId;
             config.addonHost = req.headers.host;
             const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
