@@ -453,6 +453,21 @@ function isProviderDisabled(provider, disabledList) {
     return false;
 }
 
+// Default configuration used when a stored config is missing (e.g. cold Vercel
+// instance with an empty Redis). Falls back to the Eclipsia stable repo so the
+// addon always returns streams.
+const DEFAULT_CONFIG = {
+    urls: ['https://codeberg.org/eclipsia/nuvio-plugin/raw/branch/main/stable/manifest.json'],
+    sortBy: 'speed',
+    deduplicateStreams: true,
+    showSeeders: true,
+    hideDead: false,
+    hideSlow: false,
+    hideCam: false,
+    preferredLanguages: [],
+    disabled: []
+};
+
 // Addon builder factory
 function createAddon(config) {
     if (config && config.enableDoh !== undefined) setDohEnabled(config.enableDoh !== false);
@@ -643,7 +658,8 @@ app.use('/c/:configId', async (req, res, next) => {
             // Fall back to Redis when this Vercel instance hasn't loaded the config yet,
             // so a fresh cold start does NOT silently fall back to the all-enabled default
             // (which is what made disabled addons "come back" on Vercel).
-            const config = await getConfig(configId) || {};
+            const stored = await getConfig(configId);
+            const config = (stored && Object.keys(stored).length > 0) ? stored : { ...DEFAULT_CONFIG };
             config.configId = configId;
             config.addonHost = req.headers.host;
             const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
