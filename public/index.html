@@ -2254,9 +2254,12 @@
                     const data = await res.json();
                     if (data && data.config) {
                         loadConfigIntoUI(data.config);
+                        showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
                         return;
                     }
                 } catch (e) {}
+                showSyncBadge(`⚠️ Config not found on server (ID: ${configId})`);
+                showToast('<b>Config not found on the server.</b> Showing the cached copy from this device. Save settings to re-sync.');
                 return;
             }
 
@@ -2610,21 +2613,25 @@
                 Object.values(data).forEach(d => { fast += d.fast || 0; slow += d.slow || 0; dead += d.dead || 0 });
                 const total = fast + slow + dead;
                 
-                let uptimeNum = 99.8;
-                let resolveNum = 142;
+                const uptimeEl = document.getElementById('metric-uptime');
+                const resolveEl = document.getElementById('metric-resolve');
+                const cacheEl = document.getElementById('metric-cache');
+                const cacheSvg = document.getElementById('metric-cache-svg');
+
+                // Only show numbers derived from REAL analytics data. No fabricated values.
                 if (total > 0) {
-                    uptimeNum = (100 - ((dead / total) * 100)).toFixed(1);
-                    resolveNum = Math.floor(100 + (slow / total) * 150);
+                    const uptimeNum = (100 - ((dead / total) * 100)).toFixed(1);
+                    const resolveNum = Math.floor(100 + (slow / total) * 150);
+                    uptimeEl.innerText = uptimeNum + '%';
+                    resolveEl.innerHTML = resolveNum + '<span style="font-size: 14px; color: var(--text-muted);">ms</span>';
+                    cacheEl.innerText = '—'; // cache-hit ratio is not tracked server-side
+                    cacheSvg.setAttribute('stroke-dasharray', `0, 100`);
                 } else {
-                    uptimeNum = (99.5 + Math.random() * 0.49).toFixed(1);
-                    resolveNum = Math.floor(110 + Math.random() * 50);
+                    uptimeEl.innerText = '—';
+                    resolveEl.innerHTML = '—';
+                    cacheEl.innerText = '—';
+                    cacheSvg.setAttribute('stroke-dasharray', `0, 100`);
                 }
-                const cache = Math.floor(82 + Math.random() * 15);
-                
-                document.getElementById('metric-uptime').innerText = uptimeNum + '%';
-                document.getElementById('metric-resolve').innerHTML = resolveNum + '<span style="font-size: 14px; color: var(--text-muted);">ms</span>';
-                document.getElementById('metric-cache').innerText = cache + '%';
-                document.getElementById('metric-cache-svg').setAttribute('stroke-dasharray', `${cache}, 100`);
             } catch (err) {}
             
             if (btn) {

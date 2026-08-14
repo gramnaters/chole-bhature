@@ -652,10 +652,17 @@ app.use('/c/:configId', async (req, res, next) => {
     if (req.path === '/manifest.json' || req.path.startsWith('/stream/') || req.path.startsWith('/catalog/')) {
         try {
             const { configId } = req.params;
-            // Fall back to Turso when this Vercel instance hasn't loaded the config yet,
-            // so a fresh cold start does NOT silently fall back to the all-enabled default
-            // (which is what made disabled addons "come back" on Vercel).
-            const config = await getConfig(configId) || {};
+            const config = await getConfig(configId);
+            if (!config) {
+                // No stored config. NEVER fabricate a default addon here — that is what made
+                // disabled providers "come back" when a config was lost. Report it honestly so
+                // Stremio shows the addon as failed instead of serving a broken default.
+                console.log(`[Router] No config found for ${configId}; returning 404.`);
+                return res.status(404).json({
+                    error: 'Configuration not found.',
+                    hint: `Open https://${req.headers.host}/c/${configId}/configure to set up this addon.`
+                });
+            }
             config.configId = configId;
             config.addonHost = req.headers.host;
             const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
@@ -735,7 +742,10 @@ app.get('/:configJSON/clear-cache/:type/:id', async (req, res) => {
 app.get('/c/:configId/clear-cache/:type/:id', async (req, res) => {
     const { configId, type, id } = req.params;
     try {
-        const config = await getConfig(configId) || {};
+        const config = await getConfig(configId);
+        if (!config) {
+            return res.status(404).send('Configuration not found.');
+        }
         config.configId = configId;
         config.addonHost = req.headers.host;
         const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';

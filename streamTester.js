@@ -1069,18 +1069,18 @@ async function sortAndTagStreams(streams, config = {}, providerAnalytics) {
         }
         
         const tokens = [
-            meta.resolution || '1080p',
-            meta.quality || 'WEB-DL',
+            meta.resolution,
+            meta.quality,
             ...meta.hdr,
             ...meta.special,
-            meta.codec || 'HEVC',
+            meta.codec,
             ...meta.audio,
             meta.channels,
             ...meta.languages
         ].filter(Boolean);
 
         const baseTitle = (stremioStream.title || stremioStream.name || 'Video').split('\n')[0].replace(/[^a-zA-Z0-9]/g, '.');
-        const synthFilename = `${baseTitle}.${tokens.join('.')}.mkv`;
+        const synthFilename = tokens.length > 0 ? `${baseTitle}.${tokens.join('.')}.mkv` : `${baseTitle}.mkv`;
 
         stremioStream.behaviorHints = {
             ...(stremioStream.behaviorHints || {}),
