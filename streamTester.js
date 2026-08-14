@@ -41,7 +41,14 @@ function cleanProviderName(rawName) {
     if (clean.includes('|')) {
         clean = clean.split('|')[0].trim();
     }
-    return clean || 'Stream';
+    if (!clean) return 'Stream';
+    // A stream whose entire label is just a resolution/quality/audio token (e.g. "1080p",
+    // "WEB-DL", "Dual-Audio") is NOT a provider. Returning null keeps it from polluting
+    // the "A + B" merged-provider label (e.g. "NetMirror ... + 1080p").
+    if (/^(?:\d{2,4}p|4k|uhd|sd|hd|fhd|web[- ]?dl|webrip|blu[- ]?ray|bluray|hdrip|bdrip|dvdrip|hdtv|h26[45]|hevc|av1|x26[45]|vp9|aac|ac3|eac3|ddp|dts|truehd|atmos|flac|opus|mp3|pcm|2\.0|5\.1|7\.1|10bit|8bit|hdr10?\+?|sdr|dolby[- ]?vision|dv|mkv|mp4|avi|webm|multi[- ]?audio|dual[- ]?audio|english|hindi|tamil|telugu|japanese|korean)$/i.test(clean)) {
+        return null;
+    }
+    return clean;
 }
 
 function parseStreamMetadata(stream) {
@@ -236,7 +243,11 @@ function formatProviderLabel(providers, defaultName) {
     if (!providers || !Array.isArray(providers) || providers.length === 0) {
         return defaultName || 'Stream';
     }
-    const cleanList = [...new Set(providers.filter(Boolean))];
+    const cleanList = [];
+    for (const p of providers) {
+        if (!p) continue;
+        if (!cleanList.some(x => x.toLowerCase() === p.toLowerCase())) cleanList.push(p);
+    }
     if (cleanList.length === 0) return defaultName || 'Stream';
     if (cleanList.length === 1) return cleanList[0];
     if (cleanList.length === 2) return `${cleanList[0]} + ${cleanList[1]}`;
@@ -303,7 +314,7 @@ function deduplicateAndMergeStreams(streams, enabled = true) {
         const pName = cleanProviderName(stream.originalProvider || stream.name);
 
         if (!fingerprint) {
-            const copy = { ...stream, providers: pName ? [pName] : ['Stream'] };
+            const copy = { ...stream, providers: pName ? [pName] : [] };
             result.push(copy);
             continue;
         }
@@ -317,16 +328,16 @@ function deduplicateAndMergeStreams(streams, enabled = true) {
             const resExisting = parseStreamMetadata(existing).resolution;
             const resNew = parseStreamMetadata(stream).resolution;
             if (resExisting && resNew && resExisting !== resNew) {
-                const copy = { ...stream, providers: pName ? [pName] : ['Stream'] };
+                const copy = { ...stream, providers: pName ? [pName] : [] };
                 result.push(copy);
                 continue;
             }
 
             // Merge providers
             if (!existing.providers) {
-                existing.providers = [cleanProviderName(existing.originalProvider || existing.name)];
+                existing.providers = [cleanProviderName(existing.originalProvider || existing.name)].filter(Boolean);
             }
-            if (pName && !existing.providers.includes(pName)) {
+            if (pName && !existing.providers.some(p => p.toLowerCase() === pName.toLowerCase())) {
                 existing.providers.push(pName);
             }
 
@@ -351,7 +362,7 @@ function deduplicateAndMergeStreams(streams, enabled = true) {
                 existing.behaviorHints = { ...(existing.behaviorHints || {}), ...(stream.behaviorHints || {}) };
             }
         } else {
-            const copy = { ...stream, providers: pName ? [pName] : ['Stream'] };
+            const copy = { ...stream, providers: pName ? [pName] : [] };
             mergedMap.set(fingerprint, copy);
             result.push(copy);
         }
@@ -1000,18 +1011,22 @@ async function sortAndTagStreams(streams, config = {}, providerAnalytics) {
                 return rankA - rankB;
             }
 
-            // 2. Exact latency (lowest ms first) — STRICT PRIMARY sort in speed mode
-            if (latA !== latB) {
-                return latA - latB;
-            }
-
-            // 3. Multi-Language / Preferred Audio (tie-breaker for exact same latency)
+            // 2. Multi-Language / Preferred Audio — PRIMARY when the user asked to
+            //    prioritize a language (e.g. prioritizeHindi). Latency alone would
+            //    otherwise starve it (every real stream has a unique ms value, so the
+            //    old audio-tiebreaker never fired). Within the same language score we
+            //    still fall through to exact latency below.
             if (hasAudioPref) {
                 const audioA = getAudioScore(a, prefLanguages, config?.prioritizeHindi);
                 const audioB = getAudioScore(b, prefLanguages, config?.prioritizeHindi);
                 if (audioA !== audioB) {
                     return audioB - audioA;
                 }
+            }
+
+            // 3. Exact latency (lowest ms first)
+            if (latA !== latB) {
+                return latA - latB;
             }
 
             // 4. Higher resolution & quality as tie-breaker
@@ -1076,7 +1091,7 @@ async function sortAndTagStreams(streams, config = {}, providerAnalytics) {
     });
 }
 
-module.exports = { 
+module.exports = {
     sortAndTagStreams,
     parseStreamMetadata,
     formatStreamLabels,
@@ -1085,5 +1100,6 @@ module.exports = {
     getSeederScore,
     deduplicateAndMergeStreams,
     getStreamFingerprint,
-    normalizeTorrentHash
+    normalizeTorrentHash,
+    cleanProviderName
 };
