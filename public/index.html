@@ -2193,42 +2193,7 @@
             fetchRepos();
         }
 
-        async function initConfig() {
-            const pathParts = window.location.pathname.split('/').filter(Boolean);
-            
-            // 1. If URL path is /c/:configId
-            if (pathParts[0] === 'c' && pathParts[1]) {
-                configId = pathParts[1];
-                localStorage.setItem('cb_config_id', configId);
-                try {
-                    const res = await fetch(`/api/config/${configId}`);
-                    const data = await res.json();
-                    if (data && data.config) {
-                        loadConfigIntoUI(data.config);
-                        showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
-                        return;
-                    }
-                } catch (e) {}
-            }
-            
-            // 2. If URL path is /:base64JSON/configure or /:base64JSON
-            if (pathParts[0] && pathParts[0] !== 'configure' && pathParts[0] !== 'api' && pathParts[0] !== 'c') {
-                try {
-                    const decoded = JSON.parse(decodeURIComponent(pathParts[0]));
-                    if (decoded) {
-                        configId = getOrCreateConfigId();
-                        loadConfigIntoUI(decoded);
-                        showSyncBadge(`⚡ Imported from Nuvio (ID: ${configId})`);
-                        saveConfigurationToServer(false);
-                        return;
-                    }
-                } catch (e) {}
-            }
-            
-            // 3. Fallback to localStorage or new ID
-            configId = getOrCreateConfigId();
-            
-            // Load Settings UI
+        function applySettingsToUI() {
             document.getElementById('hideDead').checked = settings.hideDead || false;
             document.getElementById('hideSlow').checked = settings.hideSlow || false;
             const hideCamEl = document.getElementById('hideCam');
@@ -2236,7 +2201,6 @@
             document.getElementById('showSeeders').checked = settings.showSeeders !== false;
             const dedupeEl = document.getElementById('deduplicateStreams');
             if (dedupeEl) dedupeEl.checked = settings.deduplicateStreams !== false;
-            
             const initDohEl = document.getElementById('enableDoh');
             if (initDohEl) initDohEl.checked = settings.enableDoh !== false;
             const initDohProviderEl = document.getElementById('dohProvider');
@@ -2253,13 +2217,78 @@
             }
             updateSortModeUI(settings.sortBy || 'speed');
             renderLanguageChips();
+        }
+
+        async function initConfig() {
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+
+            // 0. Fast path: the server injected the live config into the HTML
+            // (window.__NUVIO_INITIAL_CONFIG__) so settings apply on first paint
+            // with no /api/config/:id round-trip and no default-flash.
+            const injected = window.__NUVIO_INITIAL_CONFIG__;
+            if (injected) {
+                if (injected.configId) {
+                    configId = injected.configId;
+                    localStorage.setItem('cb_config_id', configId);
+                } else {
+                    configId = getOrCreateConfigId();
+                }
+                if (injected.config) {
+                    loadConfigIntoUI(injected.config);
+                    showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
+                    return;
+                }
+            }
+
+            // 1. If URL path is /c/:configId — apply the cached settings from
+            // localStorage right away (no default-flash), then overlay the live
+            // config once it arrives.
+            if (pathParts[0] === 'c' && pathParts[1]) {
+                configId = pathParts[1];
+                localStorage.setItem('cb_config_id', configId);
+                applySettingsToUI();
+                fetchRepos();
+                showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
+                try {
+                    const res = await fetch(`/api/config/${configId}`);
+                    const data = await res.json();
+                    if (data && data.config) {
+                        loadConfigIntoUI(data.config);
+                        return;
+                    }
+                } catch (e) {}
+                return;
+            }
+
+            // 2. If URL path is /:base64JSON/configure or /:base64JSON
+            if (pathParts[0] && pathParts[0] !== 'configure' && pathParts[0] !== 'api' && pathParts[0] !== 'c') {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(pathParts[0]));
+                    if (decoded) {
+                        configId = getOrCreateConfigId();
+                        loadConfigIntoUI(decoded);
+                        showSyncBadge(`⚡ Imported from Nuvio (ID: ${configId})`);
+                        saveConfigurationToServer(false);
+                        return;
+                    }
+                } catch (e) {}
+            }
             
+            // 3. Fallback to localStorage or new ID
+            configId = getOrCreateConfigId();
+            applySettingsToUI();
             showSyncBadge(`⚡ Cloud Synced (ID: ${configId})`);
             fetchRepos();
         }
 
+        // In-flight guard: skip a second manifest fetch if we're already
+        // rendering the same repo list (e.g. cached render + live config overlay).
+        let reposFetchToken = null;
         async function fetchRepos() {
             const reposContainer = document.getElementById('installed-repos');
+            const fetchToken = JSON.stringify(repos);
+            if (reposFetchToken === fetchToken) return;
+            reposFetchToken = fetchToken;
             
             if (repos.length === 0) {
                 reposContainer.innerHTML = '<div class="empty-placeholder">No repositories installed. Enter a manifest URL above to add scrapers.</div>';

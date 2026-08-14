@@ -221,13 +221,35 @@ app.get(['/', '/configure', '/index.html'], (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Serve configure page on configId routes
-app.get('/c/:configId', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-app.get('/c/:configId/configure', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Serve configure page on configId routes. To avoid the page flashing default
+// settings while the client round-trips to /api/config/:id (cold serverless
+// start + Redis read), inject the live config straight into the HTML so it is
+// applied on first paint.
+async function sendConfigPage(req, res, configId) {
+    try {
+        const html = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+        const state = { configId };
+        if (configId) {
+            try {
+                const config = await getConfig(configId);
+                if (config) state.config = config;
+            } catch (e) {
+                console.error('[Config] Inject read failed:', e.message);
+            }
+        }
+        // Escape "<" so a config value can never break out of the inline script.
+        const injectedJson = JSON.stringify(state).replace(/</g, '\\u003c');
+        const injection = `<script>window.__NUVIO_INITIAL_CONFIG__ = ${injectedJson};</script>`;
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(html.replace('</head>', injection + '</head>'));
+    } catch (e) {
+        console.error('[Config] Failed to render config page:', e.message);
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    }
+}
+
+app.get('/c/:configId', (req, res) => sendConfigPage(req, res, req.params.configId));
+app.get('/c/:configId/configure', (req, res) => sendConfigPage(req, res, req.params.configId));
 
 // API to save configuration (Instant Sync)
 app.post('/api/config/save', async (req, res) => {
