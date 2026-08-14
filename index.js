@@ -69,7 +69,13 @@ try {
 } catch (e) {
     console.warn('[Config] Upstash Redis unavailable, using file storage only:', e.message);
 }
-const REDIS_CONFIGS_KEY = 'nuvio:user_configs';
+// Configs are stored under per-config Redis keys (nuvio:config:<configId>) instead of a
+// single shared blob. On Vercel every serverless instance keeps its own in-memory copy of
+// the map; if a save wrote the whole map back to one blob, a cold instance with a partial
+// map could overwrite Redis and silently wipe every other user's config. Per-key writes
+// make a save atomic — it can only ever affect its own config.
+const REDIS_CONFIGS_KEY = 'nuvio:config:';
+const REDIS_CONFIGS_LEGACY_KEY = 'nuvio:user_configs';
 
 function loadUserConfigsFromFile() {
     try {
@@ -89,30 +95,53 @@ function loadUserConfigsFromFile() {
 async function loadUserConfigsFromRedis() {
     if (!redis) return;
     try {
-        const raw = await redis.get(REDIS_CONFIGS_KEY);
-        if (raw) {
-            const data = JSON.parse(raw);
-            for (const [k, v] of Object.entries(data)) {
+        // Migration: read the legacy single-blob key once and fan it out to per-config keys.
+        const legacyRaw = await redis.get(REDIS_CONFIGS_LEGACY_KEY);
+        if (legacyRaw) {
+            const legacy = JSON.parse(legacyRaw);
+            for (const [k, v] of Object.entries(legacy)) {
                 userConfigs.set(k, v);
+                await redis.set(REDIS_CONFIGS_KEY + k, JSON.stringify(v));
             }
-            console.log(`[Config] Loaded ${userConfigs.size} configurations from Upstash Redis.`);
+            console.log(`[Config] Migrated ${Object.keys(legacy).length} configs from legacy blob to per-config keys.`);
+            await redis.del(REDIS_CONFIGS_LEGACY_KEY);
         }
+        console.log(`[Config] Loaded ${userConfigs.size} configurations from Upstash Redis.`);
     } catch (e) {
         console.error('[Config] Failed to load from Upstash Redis:', e.message);
     }
 }
 
-async function persistUserConfigsToRedis() {
-    if (!redis) return;
-    try {
-        const obj = {};
-        for (const [k, v] of userConfigs.entries()) {
-            obj[k] = v;
+async function saveUserConfig(configId, configData) {
+    userConfigs.set(configId, configData);
+    persistUserConfigsToFile();
+    if (redis) {
+        try {
+            // Per-config key: an instance can only ever overwrite its own config, never
+            // wipe another user's config by writing a stale full-map blob.
+            await redis.set(REDIS_CONFIGS_KEY + configId, JSON.stringify(configData));
+        } catch (e) {
+            console.error('[Config] Failed to persist to Upstash Redis:', e.message);
         }
-        await redis.set(REDIS_CONFIGS_KEY, JSON.stringify(obj));
-    } catch (e) {
-        console.error('[Config] Failed to persist to Upstash Redis:', e.message);
     }
+}
+
+// Reads a config, falling back to Redis when the in-memory map is empty (e.g. just
+// booted on a fresh Vercel instance before the background load finished).
+async function getConfig(configId) {
+    let config = userConfigs.get(configId) || null;
+    if (!config && redis) {
+        try {
+            const raw = await redis.get(REDIS_CONFIGS_KEY + configId);
+            if (raw) {
+                config = JSON.parse(raw);
+                if (config) userConfigs.set(configId, config);
+            }
+        } catch (e) {
+            console.error('[Config] Redis read fallback failed:', e.message);
+        }
+    }
+    return config;
 }
 
 function persistUserConfigsToFile() {
