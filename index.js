@@ -292,8 +292,9 @@ app.get('/:configJSON/configure', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Analytics tracker
+// Analytics tracker + Provider Quarantine Registry
 const providerAnalytics = new Map();
+const quarantineRegistry = new Map();
 
 // Token Verification API
 app.get('/api/verify-token/:token', (req, res) => {
@@ -354,6 +355,7 @@ app.get('/api/repo-manifest', async (req, res) => {
         res.set('Access-Control-Allow-Origin', '*');
         res.json(r.data);
     } catch (e) {
+        console.error(`[Repo Proxy] Failed to fetch ${url}:`, e.message);
         res.status(502).json({ error: 'Failed to fetch repo manifest', detail: e.message });
     }
 });
@@ -583,6 +585,15 @@ function createAddon(config) {
 
         await Promise.all(allProviders.map(async (provider) => {
             try {
+                // Quarantine check: skip providers quarantined after 3 consecutive failures
+                if (config.enableQuarantine !== false) {
+                    const qRecord = quarantineRegistry.get(provider.name);
+                    if (qRecord && qRecord.quarantineUntil > Date.now()) {
+                        console.log(`[Quarantine] Skipping provider ${provider.name} (quarantined until ${new Date(qRecord.quarantineUntil).toLocaleTimeString()})`);
+                        return;
+                    }
+                }
+
                 let nuvioType = type;
                 if (type === 'series' || type === 'tv') nuvioType = 'tv';
                 else if (type === 'movie') nuvioType = 'movie';
@@ -597,11 +608,26 @@ function createAddon(config) {
 
                 const streams = await Promise.race([scrapePromise, timeoutPromise]);
                 
+                // Success: clear quarantine strikes
+                if (config.enableQuarantine !== false) {
+                    quarantineRegistry.delete(provider.name);
+                }
+
                 if (Array.isArray(streams)) {
                     streams.forEach(s => s.name = s.name || provider.name);
                     allStreams = allStreams.concat(streams);
                 }
             } catch (err) {
+                // Quarantine: track consecutive failures, isolate after 3
+                if (config.enableQuarantine !== false) {
+                    const qRecord = quarantineRegistry.get(provider.name) || { strikes: 0, quarantineUntil: 0 };
+                    qRecord.strikes++;
+                    if (qRecord.strikes >= 3) {
+                        qRecord.quarantineUntil = Date.now() + (30 * 60 * 1000); // 30 minutes
+                        console.error(`[Quarantine] ${provider.name} failed 3 times consecutively. Quarantined for 30 minutes.`);
+                    }
+                    quarantineRegistry.set(provider.name, qRecord);
+                }
                 console.error(`[Provider] ${provider.name} failed or timed out:`, err.message);
             }
         }));

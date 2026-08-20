@@ -1614,6 +1614,26 @@
                     </div>
                 </div>
 
+                <!-- Provider Auto-Quarantine -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            Provider Auto-Quarantine System
+                            <span class="tag-pill-badge" style="background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.35); color: #f43f5e;">🛑 Bypass Delays</span>
+                        </div>
+                        <div class="setting-description">Automatically isolates broken, rate-limited, or offline scrapers for 30 minutes after 3 consecutive failures. This completely eliminates the brutal 26-second delay penalties caused by dead scrapers timing out during a search.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Enable automatic quarantine for failing providers">
+                            <span class="filter-capsule-text">🛑 Auto-Quarantine</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="enableQuarantine" checked onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Real-Time Torrent Seeders & Health -->
                 <div class="setting-item-row">
                     <div class="setting-text-block">
@@ -1873,8 +1893,12 @@
 
         <!-- Providers List -->
         <div class="section-wrap">
-            <div class="section-label-bar">
-                <span class="section-label">🧩 Scrapers & Providers</span>
+            <div class="section-label-bar" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+                <span class="section-label" style="white-space: nowrap;">🔌 Scrapers & Providers</span>
+                <div style="display: flex; gap: 8px;">
+                    <button class="action-btn" style="padding: 4px 12px; font-size: 12px; min-height: unset; border-radius: 6px; background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2);" onclick="setAllProviders(true)">Enable All</button>
+                    <button class="action-btn" style="padding: 4px 12px; font-size: 12px; min-height: unset; border-radius: 6px; background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2);" onclick="setAllProviders(false)">Disable All</button>
+                </div>
             </div>
             <div id="providers-list" class="providers-grid-container">
                 <div class="empty-placeholder" style="grid-column: 1 / -1;">No providers found.</div>
@@ -2048,6 +2072,9 @@
             if (realDebridKeyEl) settings.realDebridKey = realDebridKeyEl.value.trim();
             if (enableTrueProbingEl) settings.enableTrueProbing = enableTrueProbingEl.checked;
             
+            const enableQuarantineEl = document.getElementById('enableQuarantine');
+            if (enableQuarantineEl) settings.enableQuarantine = enableQuarantineEl.checked;
+            
             settings.prioritizeQuality = (settings.sortBy === 'quality');
             settings.preferredLanguages = settings.preferredLanguages || [];
             settings.prioritizeHindi = settings.preferredLanguages.includes('Hindi');
@@ -2091,6 +2118,7 @@
                 accessToken: settings.accessToken || '',
                 realDebridKey: settings.realDebridKey || '',
                 enableTrueProbing: settings.enableTrueProbing || false,
+                enableQuarantine: settings.enableQuarantine !== false,
                 sortBy: settings.sortBy || 'speed',
                 sortMode: settings.sortBy || 'speed',
                 prioritizeQuality: settings.sortBy === 'quality',
@@ -2154,6 +2182,7 @@
             else if (cfg.telegramId) settings.accessToken = cfg.telegramId; // Backwards compatibility
             if (cfg.realDebridKey) settings.realDebridKey = cfg.realDebridKey;
             if (cfg.enableTrueProbing !== undefined) settings.enableTrueProbing = cfg.enableTrueProbing;
+            if (cfg.enableQuarantine !== undefined) settings.enableQuarantine = cfg.enableQuarantine;
             if (cfg.sortBy) settings.sortBy = cfg.sortBy;
             else if (cfg.prioritizeQuality !== undefined) settings.sortBy = cfg.prioritizeQuality ? 'quality' : 'speed';
             if (cfg.preferredLanguages && Array.isArray(cfg.preferredLanguages)) {
@@ -2183,6 +2212,8 @@
             if (dohProviderEl) dohProviderEl.value = settings.dohProvider || 'cloudflare';
             const enableTrueProbingEl = document.getElementById('enableTrueProbing');
             if (enableTrueProbingEl) enableTrueProbingEl.checked = settings.enableTrueProbing || false;
+            const enableQuarantineEl = document.getElementById('enableQuarantine');
+            if (enableQuarantineEl) enableQuarantineEl.checked = settings.enableQuarantine !== false;
             const restoredAccessTokenEl = document.getElementById('accessToken');
             if (restoredAccessTokenEl) restoredAccessTokenEl.value = settings.accessToken || '';
             const restoredRdKeyEl = document.getElementById('realDebridKey');
@@ -2205,6 +2236,8 @@
             if (initDohEl) initDohEl.checked = settings.enableDoh !== false;
             const initDohProviderEl = document.getElementById('dohProvider');
             if (initDohProviderEl) initDohProviderEl.value = settings.dohProvider || 'cloudflare';
+            const initEnableQuarantineEl = document.getElementById('enableQuarantine');
+            if (initEnableQuarantineEl) initEnableQuarantineEl.checked = settings.enableQuarantine !== false;
             const initAccessTokenEl = document.getElementById('accessToken');
             if (initAccessTokenEl) {
                 initAccessTokenEl.value = settings.accessToken || '';
@@ -2341,6 +2374,7 @@
                             <div>
                                 <h3>Failed to load repository</h3>
                                 <p class="url">${url}</p>
+                                <p style="color: #f43f5e; font-size: 11px; margin-top: 4px;">Error: ${err.message}</p>
                             </div>
                             <div>
                                 <button class="btn-delete-icon" title="Remove Repository" onclick="removeRepo(${i})">✕</button>
@@ -2459,6 +2493,20 @@
             updateStatsBar();
             renderProviders();
             showToast(`🗑️ <b>Provider Disabled:</b> ${name}`);
+        }
+
+        function setAllProviders(enable) {
+            settings.disabledProviders = settings.disabledProviders || [];
+            if (enable) {
+                settings.disabledProviders = [];
+            } else {
+                settings.disabledProviders = allProvidersData.map(p => p.name);
+            }
+            saveSettingsLocal();
+            saveConfigurationToServer(false);
+            updateStatsBar();
+            renderProviders();
+            showToast(enable ? '✅ All providers enabled' : '🚫 All providers disabled');
         }
 
         function removeRepo(index) {
