@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chole Bhature — Config</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --app-bg: #121212;
+    --app-secondary-bg: #191919;
+    --ink: #f6f7f9;
+    --ink-muted: rgba(246,247,249,0.45);
+    --ink-faint: rgba(246,247,249,0.28);
+    --border: rgba(255,255,255,0.1);
+    --border-hover: rgba(255,255,255,0.18);
+    --surface: #191919;
+    --surface-2: #222;
+    --surface-3: #2a2a2a;
+    --accent: #f6f7f9;
+    --accent-fg: #121212;
+    --blue: #2997ff;
+    --blue-glow: rgba(41,151,255,0.12);
+    --green: #30d158;
+    --red: #ff453a;
+    --font: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; background: var(--app-bg); color: var(--ink); }
+  body { font-family: var(--font); line-height: 1.5; letter-spacing: -0.01em; background: transparent; }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(50% 40% at 50% 0%, rgba(200,200,220,0.12) 0%, transparent 70%),
+      radial-gradient(50% 50% at 50% 100%, rgba(160,160,180,0.15) 0%, transparent 70%);
+  }
+
+  /* ─── Floating Pill Nav (Nuvio style) ─── */
+  .nav-wrap {
+    position: sticky; top: 0; z-index: 100;
+    padding: 0.875rem clamp(0.75rem, 2vw, 2rem);
+    pointer-events: none;
+  }
+  .nav {
+    position: relative; display: grid; grid-template-columns: auto auto auto;
+    align-items: center; width: max-content; max-width: 100%;
+    min-height: 3.625rem; margin: 0 auto;
+    padding: 0.375rem; color: var(--ink);
+    background: rgba(30,30,35,0.55);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 8px 32px -8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    backdrop-filter: saturate(180%) blur(24px);
+    pointer-events: auto;
+  }
+  .nav-brand {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0.375rem 0.625rem;
+    border-radius: 999px; color: var(--ink);
+    text-decoration: none; font-weight: 600; font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    transition: background-color 0.16s ease;
+  }
+  .nav-brand:hover { background: rgba(255,255,255,0.06); }
+  .nav-brand img { width: 1.875rem; height: 1.875rem; border-radius: 0.375rem; object-fit: contain; }
+  .nav-center { display: flex; gap: 0.125rem; align-items: center; justify-content: center; }
+  .nav-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 2.5rem; padding: 0 1rem;
+    border-radius: 999px; color: rgba(246,247,249,0.64);
+    font-size: 0.875rem; font-weight: 600; letter-spacing: -0.01em;
+    text-decoration: none; background: transparent;
+    transition: color 0.16s ease, background-color 0.16s ease;
+  }
+  .nav-link:hover { color: var(--ink); background: rgba(255,255,255,0.08); }
+  .nav-link.active { color: var(--accent-fg); background: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 0.375rem; }
+  .nav-version {
+    font-size: 0.75rem; font-weight: 600; color: var(--ink-muted);
+    padding: 0.25rem 0.625rem; border-radius: 999px;
+    background: rgba(255,255,255,0.05); letter-spacing: 0.02em;
+    display: inline-flex; align-items: center; gap: 0.375rem;
+  }
+  .nav-sync {
+    font-size: 0.6875rem; font-weight: 500; color: var(--ink-muted);
+    letter-spacing: 0.01em;
+  }
+  .nav-sync .dot {
+    display: inline-block; width: 0.375rem; height: 0.375rem;
+    border-radius: 50%; background: var(--green); margin-right: 0.25rem;
+    vertical-align: middle;
+  }
+
+  /* ─── Shell ─── */
+  .nu-shell {
+    width: 100%; max-width: 56rem; margin: 0 auto;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+  }
+
+  /* ─── Page ─── */
+  .page { min-height: 70vh; padding-top: 1rem; padding-bottom: 4rem; }
+
+  /* ─── Hero ─── */
+  .hero {
+    text-align: center; padding: 4rem 0 3rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-size: 2.5rem; font-weight: 700; line-height: 1.1;
+    letter-spacing: -0.03em; margin-bottom: 0.75rem;
+  }
+  .hero p {
+    font-size: 1rem; color: var(--ink-muted); line-height: 1.6;
+    max-width: 32rem; margin: 0 auto 2rem;
+  }
+  .hero-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ─── Buttons (Nuvio style) ─── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 0.45rem; border-radius: 9999px; border: none;
+    padding: 0.82rem 1.4rem; font-size: 0.92rem; font-weight: 600;
+    font-family: var(--font); line-height: 1; cursor: pointer;
+    text-decoration: none; white-space: nowrap;
+    transition: background-color 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .btn-primary { color: var(--accent-fg); background: var(--accent); border: 1px solid var(--accent); }
+  .btn-primary:hover { background: #fff; }
+  .btn-outline {
+    color: var(--ink); background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { background: var(--surface-2); border-color: var(--border-hover); }
+  .btn-sm { padding: 0.32rem 0.65rem; font-size: 0.75rem; border-radius: 0.5rem; }
+
+  /* ─── Section ─── */
+  .section { padding: 2.5rem 0; }
+  .section + .section { border-top: 1px solid rgba(255,255,255,0.08); }
+  .section-head {
+    font-size: 1.5rem; font-weight: 700; line-height: 1.2;
+    letter-spacing: -0.02em; margin-bottom: 0.25rem;
+  }
+  .section-sub {
+    font-size: 0.875rem; color: var(--ink-muted); margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+
+  /* ─── Cards (Nuvio style) ─── */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.5rem;
+  }
+
+  /* ─── Toggle Row ─── */
+  .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 0; gap: 1.5rem;
+  }
+  .row + .row { border-top: 1px solid rgba(255,255,255,0.06); }
+  .row-label { display: flex; align-items: center; gap: 0.75rem; flex: 1; }
+  .row-label .icon {
+    width: 2.25rem; height: 2.25rem; border-radius: 0.625rem; flex-shrink: 0;
+    background: rgba(255,255,255,0.05); display: flex;
+    align-items: center; justify-content: center;
+  }
+  .row-label .icon svg { width: 1.125rem; height: 1.125rem; color: var(--ink); }
+  .row-label h3 { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.125rem; }
+  .row-label p { font-size: 0.8125rem; color: var(--ink-muted); line-height: 1.5; }
+
+  /* Toggle */
+  .toggle { position: relative; width: 2.75rem; height: 1.625rem; flex-shrink: 0; cursor: pointer; }
+  .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .toggle-track {
+    position: absolute; inset: 0; background: var(--surface-3);
+    border-radius: 999px; transition: background 0.2s;
+  }
+  .toggle input:checked + .toggle-track { background: var(--blue); }
+  .toggle-knob {
+    position: absolute; top: 0.125rem; left: 0.125rem;
+    width: 1.375rem; height: 1.375rem; background: #fff;
+    border-radius: 50%; transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25); pointer-events: none;
+  }
+  .toggle input:checked ~ .toggle-knob { transform: translateX(1.125rem); }
+
+  /* ─── Sort Grid ─── */
+  .sort-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .sort-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.25rem; cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s cubic-bezier(0.22,1,0.36,1), border-color 0.25s ease;
+    animation: sortEntrance 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    position: relative;
+    display: flex; align-items: flex-start; gap: 0.875rem;
+  }
+  .sort-card:nth-child(1) { animation-delay: 0s; }
+  .sort-card:nth-child(2) { animation-delay: 0.06s; }
+  @keyframes sortEntrance {
+    from { opacity: 0; transform: translateY(12px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .sort-card:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 8px 24px rgba(41,151,255,0.08), 0 2px 8px rgba(0,0,0,0.12);
+    border-color: rgba(41,151,255,0.2);
+  }
+  .sort-card.active { border-color: var(--blue); background: var(--blue-glow); }
+  .sort-card .icon {
+    font-size: 1.25rem; line-height: 1; margin-top: 0.125rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sort-card .icon svg { width: 1.25rem; height: 1.25rem; color: var(--ink); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+  .sort-card:hover .icon svg { transform: scale(1.15); }
+  .sort-card.active .icon svg { color: var(--blue); }
+  .sort-card h4 { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.125rem; transition: color 0.25s ease; }
+  .sort-card:hover h4 { color: var(--blue); }
+  .sort-card p { font-size: 0.8125rem; color: var(--ink-muted); line-height: 1.45; transition: color 0.25s ease; }
+  .sort-card:hover p { color: var(--ink); }
+  .sort-card .dot {
+    position: absolute; top: 1.125rem; right: 1.125rem;
+    width: 1.125rem; height: 1.125rem; border-radius: 50%;
+    border: 1.5px solid var(--surface-3); transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sort-card.active .dot { border-color: var(--blue); }
+  .sort-card.active .dot::after {
+    content: ''; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--blue);
+  }
+
+  /* ─── Language Cards (same as Sort) ─── */
+  .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .lang-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1rem 1.25rem; cursor: pointer;
+    transition: border-color 0.18s; position: relative;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .lang-card:hover { border-color: var(--border-hover); }
+  .lang-card.active { border-color: var(--blue); background: var(--blue-glow); }
+  .lang-card h4 { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.0625rem; }
+  .lang-card p { font-size: 0.8125rem; color: var(--ink-muted); line-height: 1.45; }
+  .lang-card .dot {
+    width: 1.125rem; height: 1.125rem; border-radius: 50%; flex-shrink: 0;
+    border: 1.5px solid var(--surface-3); transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lang-card.active .dot { border-color: var(--blue); }
+  .lang-card.active .dot::after {
+    content: ''; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--blue);
+  }
+
+  /* ─── Glass Grid (Premium) ─── */
+  .glass-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .glass-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.5rem;
+    transition: border-color 0.18s;
+  }
+  .glass-card:hover { border-color: var(--border-hover); }
+  .glass-card .card-icon {
+    width: 2.5rem; height: 2.5rem; border-radius: 0.625rem;
+    background: rgba(255,255,255,0.05); display: flex;
+    align-items: center; justify-content: center; font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+  .glass-card h4 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.125rem; }
+  .glass-card p { font-size: 0.8125rem; color: var(--ink-muted); line-height: 1.45; }
+
+  /* ─── Input ─── */
+  .input {
+    width: 100%; height: 2.5rem;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 0.625rem; padding: 0 0.875rem;
+    font-size: 0.875rem; font-family: var(--font); color: var(--ink);
+    outline: none; transition: border-color 0.18s;
+  }
+  .input:focus { border-color: var(--blue); }
+  .input::placeholder { color: var(--ink-muted); }
+  .input-row { display: flex; gap: 0.625rem; margin-bottom: 1.25rem; }
+  .input-row .input { flex: 1; }
+
+  /* ─── Repo Card ─── */
+  .repo {
+    background: var(--surface-2); border: 1px solid var(--border-hover);
+    border-radius: 0.875rem; padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .repo h4 { font-size: 0.9375rem; font-weight: 600; }
+  .repo .url { font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.125rem; }
+  .repo .count {
+    display: inline-block; margin-top: 0.5rem;
+    background: rgba(255,255,255,0.05); border-radius: 9999px;
+    padding: 0.1875rem 0.625rem; font-size: 0.75rem; color: var(--ink-muted);
+  }
+  .repo .x {
+    background: none; border: none; font-size: 1rem; color: var(--ink-muted);
+    cursor: pointer; padding: 0.375rem; border-radius: 0.5rem;
+    transition: all 0.15s; line-height: 1;
+  }
+  .repo .x:hover { color: var(--red); background: rgba(255,69,58,0.1); }
+
+  /* ─── Provider Grid ─── */
+  .prov-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .prov-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.25rem 1.5rem;
+    transition: border-color 0.18s;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .prov-card:hover { border-color: var(--border-hover); }
+  .prov-card .p-icon {
+    width: 2.5rem; height: 2.5rem; border-radius: 0.625rem;
+    background: rgba(255,255,255,0.05); display: flex;
+    align-items: center; justify-content: center; font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .prov-card .p-info { flex: 1; }
+  .prov-card h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.0625rem; }
+  .prov-card p { font-size: 0.75rem; color: var(--ink-muted); }
+
+  /* ─── Badge ─── */
+  .badge {
+    display: inline-block; background: var(--blue-glow);
+    color: var(--blue); border-radius: 9999px;
+    padding: 0.125rem 0.5rem; font-size: 0.6875rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    margin-left: 0.375rem; vertical-align: middle;
+  }
+
+  /* ─── Sticky Save Bar ─── */
+  .save-bar {
+    position: sticky; bottom: 0; z-index: 50;
+    background: rgba(18,18,18,0.92);
+    backdrop-filter: blur(18px);
+    border-top: 1px solid var(--border);
+    padding: 1rem clamp(1rem, 3vw, 2rem);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .save-bar .id { font-size: 0.8125rem; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.25rem; text-align: center;
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s cubic-bezier(0.22,1,0.36,1), border-color 0.25s ease;
+    animation: sortEntrance 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .stat-card:nth-child(1) { animation-delay: 0s; }
+  .stat-card:nth-child(2) { animation-delay: 0.06s; }
+  .stat-card:nth-child(3) { animation-delay: 0.12s; }
+  .stat-card:nth-child(4) { animation-delay: 0.18s; }
+  .stat-card:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 8px 24px rgba(41,151,255,0.08), 0 2px 8px rgba(0,0,0,0.12);
+    border-color: rgba(41,151,255,0.2);
+  }
+  .stat-card .stat-icon { margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; }
+  .stat-card .stat-icon svg { width: 1.5rem; height: 1.5rem; color: var(--ink); }
+  .stat-card .stat-value { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 0.125rem; }
+  .stat-card .stat-label { font-size: 0.75rem; color: var(--ink-muted); }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.5rem;
+  }
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.75rem; height: 1.75rem; border-radius: 50%;
+    background: var(--blue); color: #fff; font-size: 0.8125rem; font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .step h4 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.375rem; }
+  .step p { font-size: 0.8125rem; color: var(--ink-muted); line-height: 1.5; }
+
+  .about-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 0.875rem; padding: 1.5rem; margin-bottom: 2rem;
+  }
+  .about-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .about-card p { font-size: 0.875rem; color: var(--ink-muted); line-height: 1.6; }
+  .about-card .btn { margin-top: 1rem; }
+
+  @media (max-width: 48rem) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: 1fr; }
+    .sort-grid, .lang-grid, .prov-grid { grid-template-columns: 1fr; }
+    .glass-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.75rem; }
+    .hero { padding: 2.5rem 0 2rem; }
+  }
+  @media (max-width: 67.5rem) {
+    .nav-center { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav (Nuvio floating pill) -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="#" class="nav-brand">
+      <img src="https://raw.githubusercontent.com/gramnaters/chole-bhature/main/public/icon-512.png" alt="CB">
+      Chole Bhature
+    </a>
+    <div class="nav-center">
+      <a href="#" class="nav-link active">General</a>
+      <a href="#" class="nav-link">Sources</a>
+      <a href="#" class="nav-link">Analytics</a>
+    </div>
+    <div class="nav-right"></div>
+  </nav>
+</div>
+
+<div class="page">
+  <div class="nu-shell">
+
+    <!-- Hero -->
+    <section class="hero">
+      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;color:var(--ink-muted);"><span class="dot" style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--green);display:inline-block;"></span> Cloud Synced (ID: 56lfiv5b)</p>
+      <div class="hero-eyebrow">High-Performance Stream Meta-Sorter &amp; Priority Engine</div>
+      <h1>Configure your stream engine</h1>
+      <p>Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.</p>
+      <div class="hero-actions">
+        <a href="#sorting" class="btn btn-primary">Start configuring</a>
+        <a href="#sources" class="btn btn-outline">Manage sources</a>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M10.45 15.5q.625.625 1.575.588T13.4 15.4L19 7l-8.4 5.6q-.65.45-.712 1.362t.562 1.538M5.1 20q-.55 0-1.012-.238t-.738-.712q-.65-1.175-1-2.437T2 14q0-2.075.788-3.9t2.137-3.175T8.1 4.788T12 4q2.05 0 3.85.775T19 6.888t2.15 3.125t.825 3.837q.025 1.375-.312 2.688t-1.038 2.512q-.275.475-.737.713T18.874 20z"/></svg></div>
+        <div class="stat-value">Speed</div>
+        <div class="stat-label">Sort Mode</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M8 0h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m6.75 11.5c2.75 0 3.49-2.03 3.68-3.1c.91-.29 1.57-1.14 1.57-2.15C20 5 19 4 17.75 4S15.5 5 15.5 6.25c0 .94.57 1.75 1.39 2.08C16.67 9 16 10 14 10c-1.38 0-2.34.35-3 .84V6.87c.87-.31 1.5-1.14 1.5-2.12c0-1.25-1-2.25-2.25-2.25S8 3.5 8 4.75c0 .98.63 1.81 1.5 2.12v6.26c-.87.31-1.5 1.14-1.5 2.12c0 1.25 1 2.25 2.25 2.25s2.25-1 2.25-2.25c0-.93-.56-1.75-1.37-2.07c.28-.68 1.1-1.68 3.62-1.68m-4.5 3a.75.75 0 0 1 .75.75a.75.75 0 0 1-.75.75a.75.75 0 0 1-.75-.75a.75.75 0 0 1 .75-.75m0-10.5a.75.75 0 0 1 .75.75a.75.75 0 0 1-.75.75a.75.75 0 0 1-.75-.75a.75.75 0 0 1 .75-.75m7.5 1.5a.75.75 0 0 1 .75.75a.75.75 0 0 1-.75.75a.75.75 0 0 1-.75-.75a.75.75 0 0 1 .75-.75M16 22v2H4a2 2 0 0 1-2-2V6h2v16z"/></svg></div>
+        <div class="stat-value">7</div>
+        <div class="stat-label">Repositories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M20 10h-1V7c0-1.65-1.35-3-3-3h-2l-1.5-2h-3L8 4H6C4.35 4 3 5.35 3 7v3H2v10h16v-1h2c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2m-8 8c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5"/><circle cx="18.5" cy="4.5" r="2.5"/></svg></div>
+        <div class="stat-value">176</div>
+        <div class="stat-label">Scrapers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/><path d="m10 17-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="rgba(255,255,255,0.9)"/></svg></div>
+        <div class="stat-value">6 Active</div>
+        <div class="stat-label">Stream Filters</div>
+      </div>
+    </div>
+
+    <!-- How to Use -->
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h4>Configure Your Setup</h4><p>Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Add Repositories</h4><p>Visit the Sources tab to load community scrapers or add your own custom repository URL.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>Install Addon</h4><p>Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.</p></div>
+    </div>
+
+    <!-- About -->
+    <div class="about-card">
+      <h3>ℹ️ About the Addon</h3>
+      <p>Chole Bhature is a high-performance stream meta-sorter designed to drastically improve your viewing experience. It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.</p>
+      <a href="#" class="btn btn-primary" style="display:inline-flex;">✨ Get Nuvio Plugin Repo</a>
+    </div>
+
+    <!-- Sorting -->
+    <section class="section" id="sorting">
+      <h2 class="section-head">Sort Mode</h2>
+      <p class="section-sub">Choose how your streams are ranked.</p>
+      <div class="sort-grid">
+        <div class="sort-card active" onclick="pickSort(this)">
+          <div class="dot"></div>
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3v6.586l4.95 2.857-1.414 1.414L12 12V3h1z"/><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/></svg></div>
+          <div><h4>Speed</h4><p>Fastest responding streams first</p></div>
+        </div>
+        <div class="sort-card" onclick="pickSort(this)">
+          <div class="dot"></div>
+          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M13 19c0 .34.04.67.09 1H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1l2 4h3L8 4h2l2 4h3l-2-4h2l2 4h3l-2-4h4v9.81c-.88-.51-1.9-.81-3-.81c-3.31 0-6 2.69-6 6m10-1.11l-2.89-.25L19 15l-1.13 2.64l-2.87.25l2.18 1.88l-.68 2.81l2.5-1.49l2.45 1.49l-.65-2.81z"/></svg></div>
+          <div><h4>Quality</h4><p>4K UHD first, then by speed</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="section">
+      <h2 class="section-head">Auto-Hide Filters</h2>
+      <p class="section-sub">Strip broken or unwanted streams from results.</p>
+      <div class="card">
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 16h6m-5-5L8.5 9.5m0 0L7 8m1.5 1.5L7 11m1.5-1.5L10 8m7 3l-1.5-1.5m0 0L14 8m1.5 1.5L14 11m1.5-1.5L17 8"/></svg></div>
+            <div><h3>Dead Links</h3><p>Filter out completely offline or broken streams</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0"/><circle cx="10" cy="13" r="8"/><path d="M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6"/><path d="M18 3 19.1 5.2"/><path d="M22 3 20.9 5.2"/></svg></div>
+            <div><h3>Slow Links</h3><p>Filter out streams taking longer than 1.5s to respond</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg></div>
+            <div><h3>CAM &amp; TeleSync</h3><p>Filter out low-quality theater recordings</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div><h3>Auto-Quarantine <span class="badge">New</span></h3><p>Isolate failing scrapers for 30 min after 3 consecutive failures</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></div>
+            <div><h3>Deduplication</h3><p>Merge identical streams across providers</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path d="M0 0h16v16H0z" fill="none"/><path fill="currentColor" d="m6.922 3.768l-.644-.536A1 1 0 0 0 5.638 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H7.562a1 1 0 0 1-.64-.232"/><path fill="currentColor" opacity="0.4" d="M13.683 5.978a9 9 0 0 0-1.306.17c-.363.107-.734.23-1.088.32a6 6 0 0 0-1.177.631 4.71 4.713 0 0 0-.29.226l-.015.006a6 6 0 0 0-.68.686 11 11 0 0 1-.237.316 6 6 0 0 0-.752 1.562 8.728 8.734 0 0 0-.278 1.294 11.3 11.3 0 0 0-.08 1.883 17.366 17.378 0 0 0 .03.52 9.172 9.178 0 0 0 .036.437q.39.038.778.066q.504.033 1.01.02a9 9 0 0 0 2.402-.378 8 8 0 0 0 .394-.145 7.658 7.663 0 0 0 .762-.37q.405-.247.773-.547a11.774 11.782 0 0 0 .423-.413 8.904 8.91 0 0 0 .404-.51q.431-.639.692-1.368a7.7 7.7 0 0 0 .36-1.604q.15-1.338-.071-2.664a.02.02 0 0 0-.01-.016 6 6 0 0 0-.28-.05L15 6q-.66-.059-1.317-.022m.276 1.802q.06 0 .121.003a4.336 4.34 0 0 0-.683.32 8.2 8.2 0 0 0-1.425 1.016 8 8 0 0 1-.252.226 23.868 23.884 0 0 0-.586.608 14.349 14.359 0 0 1-.3.357q-.733.921-1.258 1.983q-.005.007-.01.003a5.56 5.56 0 0 1 .69-2.49q.918-1.56 2.7-1.923q.193-.039.388-.063q.308-.028.615-.04"/></svg></div>
+            <div><h3>Seeder Badges</h3><p>Show live torrent seeder count</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div>
+            <div><h3>True-Probing (FFprobe) <span class="badge" style="background:rgba(255,69,58,0.12);color:var(--red);">Heavy</span></h3><p>Runs FFprobe on every stream to verify actual video container/quality</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Languages -->
+    <section class="section">
+      <h2 class="section-head">Preferred Languages</h2>
+      <p class="section-sub">Streams with these languages float to the top.</p>
+      <div class="lang-grid">
+        <div class="lang-card active" onclick="pickLang(this)"><div><h4>Hindi</h4><p>Default priority</p></div><div class="dot"></div></div>
+        <div class="lang-card active" onclick="pickLang(this)"><div><h4>Dual-Audio</h4><p>Mixed language tracks</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Tamil</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Telugu</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Malayalam</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Kannada</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Marathi</h4><p>West Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Bengali</h4><p>East Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>Anime/Jap</h4><p>Japanese dub &amp; sub</p></div><div class="dot"></div></div>
+        <div class="lang-card" onclick="pickLang(this)"><div><h4>English</h4><p>Default global</p></div><div class="dot"></div></div>
+      </div>
+    </section>
+
+    <!-- Premium -->
+    <section class="section">
+      <h2 class="section-head">Premium Features</h2>
+      <p class="section-sub">Optional integrations for enhanced streaming.</p>
+      <div class="glass-grid">
+        <div class="glass-card">
+          <div class="card-icon">💎</div>
+          <h4>Real-Debrid</h4>
+          <p>Instant cached CDN links</p>
+          <div style="margin-top:1rem;"><input type="password" class="input" placeholder="API Key"></div>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">🔑</div>
+          <h4>Mini-Debrid</h4>
+          <p>Torrent-to-HTTP streaming</p>
+          <div style="margin-top:1rem;"><input type="text" class="input" placeholder="Access Token"></div>
+        </div>
+        <div class="glass-card">
+          <div class="card-icon">🛡️</div>
+          <h4>DNS-over-HTTPS</h4>
+          <p>Bypass ISP censorship</p>
+          <div style="margin-top:1rem;">
+            <select class="input" style="appearance:none;cursor:pointer;">
+              <option>Cloudflare (1.1.1.1)</option>
+              <option>Google DNS (8.8.8.8)</option>
+              <option>AdGuard DNS</option>
+              <option>Quad9 (9.9.9.9)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="section" id="sources">
+      <h2 class="section-head">Installed Repositories</h2>
+      <p class="section-sub">Manage your scraper sources.</p>
+
+      <div class="input-row">
+        <input type="url" class="input" placeholder="Enter repository manifest URL">
+        <button class="btn btn-primary" style="padding:0.82rem 1.2rem;">Add Repo</button>
+      </div>
+
+      <div class="repo">
+        <div>
+          <h4>All-in-One-Nuvio</h4>
+          <p class="url">raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio</p>
+          <span class="count">61 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+      <div class="repo" style="margin-top:0.75rem;">
+        <div>
+          <h4>Yoru's Repo</h4>
+          <p class="url">raw.githubusercontent.com/yoruix/nuvio-providers</p>
+          <span class="count">29 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+      <div class="repo" style="margin-top:0.75rem;">
+        <div>
+          <h4>Ray's Plugins</h4>
+          <p class="url">raw.githubusercontent.com/hihihihihiiray/plugins</p>
+          <span class="count">18 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+      <div class="repo" style="margin-top:0.75rem;">
+        <div>
+          <h4>Michat88 Repo</h4>
+          <p class="url">raw.githubusercontent.com/michat88/nuvio-providers</p>
+          <span class="count">30 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+      <div class="repo" style="margin-top:0.75rem;">
+        <div>
+          <h4>Asura Synthesis</h4>
+          <p class="url">raw.githubusercontent.com/PirateZoro9/asura-providers</p>
+          <span class="count">17 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+      <div class="repo" style="margin-top:0.75rem;">
+        <div>
+          <h4>Phisher's Repo</h4>
+          <p class="url">raw.githubusercontent.com/phisher98/phisher-nuvio-providers</p>
+          <span class="count">2 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+      <div class="repo" style="margin-top:0.75rem;">
+        <div>
+          <h4>Eclipsia</h4>
+          <p class="url">plugin.eclipsia.dpdns.org</p>
+          <span class="count">19 active scrapers</span>
+        </div>
+        <button class="x" title="Remove">✕</button>
+      </div>
+
+      <div style="margin-top:3rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <h2 class="section-head" style="font-size:1.25rem; margin-bottom:0.125rem;">Scrapers &amp; Providers</h2>
+            <p class="section-sub" style="margin-bottom:0;">176 scrapers from 7 repositories</p>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn btn-primary btn-sm">Enable All</button>
+            <button class="btn btn-outline btn-sm">Disable All</button>
+          </div>
+        </div>
+
+        <div class="prov-grid">
+          <div class="prov-card">
+            <div class="p-icon">🏰</div>
+            <div class="p-info"><h4>Castle</h4><p>movie · tv</p></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          </div>
+          <div class="prov-card">
+            <div class="p-icon">🎬</div>
+            <div class="p-info"><h4>CinemaHD</h4><p>movie · tv</p></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          </div>
+          <div class="prov-card">
+            <div class="p-icon">🧲</div>
+            <div class="p-info"><h4>Torrentio</h4><p>movie · tv</p></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          </div>
+          <div class="prov-card">
+            <div class="p-icon">🌙</div>
+            <div class="p-info"><h4>MoonFlix</h4><p>movie · tv</p></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          </div>
+          <div class="prov-card">
+            <div class="p-icon">🪨</div>
+            <div class="p-info"><h4>VidRock</h4><p>movie · tv</p></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          </div>
+          <div class="prov-card">
+            <div class="p-icon">🧂</div>
+            <div class="p-info"><h4>AnimeSalt</h4><p>movie · tv</p></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Save Bar -->
+<div class="save-bar">
+  <span class="id">ID: 56lfiv5b</span>
+  <button class="btn btn-primary">Save &amp; Sync</button>
+</div>
+
+<script>
+  function pickSort(el) {
+    el.parentElement.querySelectorAll('.sort-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function pickLang(el) {
+    el.classList.toggle('active');
+  }
+</script>
+
+</body>
+</html>
