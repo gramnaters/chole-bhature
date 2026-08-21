@@ -847,13 +847,26 @@
   setTimeout(() => hideBoot(0), 8000);
 
   (function initBootAnim() {
-    const c = document.getElementById('boot-lottie');
-    const tag = document.getElementById('boot-lottie-data');
-    if (!window.lottie || !c || !tag) return;
-    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    try {
-      lottie.loadAnimation({ container: c, renderer: 'svg', loop: true, autoplay: true, animationData: JSON.parse(tag.textContent) });
-    } catch (e) {}
+    function start() {
+      const c = document.getElementById('boot-lottie');
+      const tag = document.getElementById('boot-lottie-data');
+      if (!c || !tag) return;
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      try {
+        lottie.loadAnimation({ container: c, renderer: 'svg', loop: true, autoplay: true, animationData: JSON.parse(tag.textContent) });
+      } catch (e) {}
+    }
+    // Inline script runs BEFORE deferred CDN scripts — wait until lottie exists,
+    // but bail out immediately if the fresh-path already removed the overlay.
+    if (window.lottie && document.getElementById('boot-loader')) { start(); return; }
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      if (!document.getElementById('boot-loader') || window.lottie || tries > 50) {
+        clearInterval(t);
+        if (window.lottie && document.getElementById('boot-lottie')) start();
+      }
+    }, 100);
   })();
 
   // ─── Config ID (localStorage) ───
