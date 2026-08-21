@@ -998,12 +998,27 @@
   const defaultRepos = [
     { name: 'All-in-One-Nuvio', url: 'https://raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio/refs/heads/main/manifest.json' },
     { name: "Yoru's Repo", url: 'https://raw.githubusercontent.com/yoruix/nuvio-providers/refs/heads/main/manifest.json' },
-    { name: "Ray's Plugins", url: 'https://raw.githubusercontent.com/hihihihihiiray/plugins/main/manifest.json' },
-    { name: 'Michat88 Repo', url: 'https://raw.githubusercontent.com/michat88/nuvio-providers/main/manifest.json' },
-    { name: 'Asura Synthesis', url: 'https://raw.githubusercontent.com/PirateZoro9/asura-providers/main/manifest.json' },
-    { name: "Phisher's Repo", url: 'https://raw.githubusercontent.com/phisher98/phisher-nuvio-providers/main/manifest.json' },
+    { name: "Ray's Plugins", url: 'https://raw.githubusercontent.com/hihihihihiiray/plugins/refs/heads/main/manifest.json' },
+    { name: 'Michat88 Repo', url: 'https://raw.githubusercontent.com/michat88/nuvio-providers/refs/heads/main/manifest.json' },
+    { name: 'Asura Synthesis', url: 'https://raw.githubusercontent.com/PirateZoro9/asura-providers/refs/heads/main/manifest.json' },
+    { name: "Phisher's Repo", url: 'https://raw.githubusercontent.com/phisher98/phisher-nuvio-providers/refs/heads/main/manifest.json' },
     { name: 'Eclipsia', url: 'https://plugin.eclipsia.dpdns.org/x5rn8g7q/manifest.json' }
   ];
+
+  function repoMeta(url) {
+    const exact = defaultRepos.find(r => r.url === url);
+    if (exact) return { name: exact.name };
+    const ghOf = u => u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)/i);
+    const gh = ghOf(url);
+    if (gh) {
+      const key = (gh[1] + '/' + gh[2]).toLowerCase();
+      const known = defaultRepos.map(r => ghOf(r.url)).find(m => m && (m[1] + '/' + m[2]).toLowerCase() === key);
+      return { name: known ? defaultRepos.find(r => ghOf(r.url) === known).name : gh[2] };
+    }
+    const bare = url.replace(/^https?:\/\//i, '');
+    const parts = bare.split('/');
+    return { name: parts.length > 1 ? parts.slice(0, 2).join('/') : parts[0] };
+  }
 
   async function loadRepoManifests() {
     const repoUrls = config.repos && config.repos.length > 0 ? config.repos : [DEFAULT_REPO_URL];
@@ -1014,8 +1029,7 @@
     repoList.innerHTML = '';
 
     for (const url of repoUrls) {
-      const match = defaultRepos.find(r => r.url === url);
-      const name = match ? match.name : url.split('/').slice(-2).join('/');
+      const name = repoMeta(url).name;
       let count = '?';
       try {
         const res = await fetch('/api/repo-manifest?url=' + encodeURIComponent(url));
