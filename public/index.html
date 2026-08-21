@@ -325,6 +325,27 @@
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   }
   .prov-card:hover { border-color: var(--border-hover); }
+  .prov-card.off { opacity: 0.55; }
+  .prov-card .p-icon img {
+    width: 1.25rem; height: 1.25rem;
+    object-fit: contain; border-radius: 0.25rem; display: block;
+  }
+  .prov-card .p-icon svg { width: 1.125rem; height: 1.125rem; color: var(--ink-faint); }
+  .seg {
+    display: inline-flex; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 0.25rem; gap: 0.125rem; margin-bottom: 1rem;
+  }
+  .seg button {
+    border: none; background: transparent;
+    color: var(--ink-muted); font-family: var(--font);
+    font-size: 0.8125rem; font-weight: 600;
+    padding: 0.4rem 0.95rem; border-radius: 999px;
+    cursor: pointer; white-space: nowrap;
+    transition: color 0.16s ease, background-color 0.16s ease;
+  }
+  .seg button:hover { color: var(--ink); background: rgba(255,255,255,0.06); }
+  .seg button.active { background: var(--accent); color: var(--accent-fg); }
   .prov-card .p-icon {
     width: 2.5rem; height: 2.5rem; border-radius: 0.625rem;
     background: rgba(255,255,255,0.05); display: flex;
@@ -715,6 +736,12 @@
           </div>
         </div>
 
+        <div class="seg" role="group" aria-label="Filter scrapers">
+          <button type="button" class="active" data-pfilter="all">All</button>
+          <button type="button" data-pfilter="enabled">Enabled</button>
+          <button type="button" data-pfilter="disabled">Disabled</button>
+        </div>
+
         <div class="prov-grid">
           <div class="prov-card" data-provider="Castle">
             <div class="p-icon">🏰</div>
@@ -844,6 +871,7 @@
     setupSaveButton();
     setupInstallButton();
     setupProviderButtons();
+    setupProviderFilter();
   }
 
   // ─── Config Display Update ───
@@ -1073,22 +1101,80 @@
     updateStats();
   }
 
+  // ─── Provider Filters ───
+  let providerFilter = 'all';
+
+  function setupProviderFilter() {
+    document.querySelectorAll('[data-pfilter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-pfilter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        providerFilter = btn.dataset.pfilter;
+        renderProviders();
+      });
+    });
+  }
+
+  const FALLBACK_PROVIDER_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>';
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function cleanProviderName(name) {
+    return String(name).replace(/^[^\p{L}\p{N}]+/u, '') || String(name);
+  }
+
   function renderProviders() {
     const grid = document.querySelector('.prov-grid');
+    if (!grid) return;
     grid.innerHTML = '';
-    const emojis = ['🏰','🎬','🧲','🌙','🪨','🧂','⚡','🔮','🎯','🔥','💎','🌊','🍄','🗡️','🎬','📡'];
     const disabledList = config.disabled || [];
 
-    allProviders.forEach((p, i) => {
+    const visible = allProviders.filter(p => {
+      const off = disabledList.includes(p.name);
+      if (providerFilter === 'enabled') return !off;
+      if (providerFilter === 'disabled') return off;
+      return true;
+    });
+
+    if (visible.length === 0) {
+      const empty = document.createElement('p');
+      empty.style.cssText = 'color:var(--ink-muted);font-size:0.875rem;';
+      empty.textContent = providerFilter === 'disabled'
+        ? 'No disabled scrapers.'
+        : 'No enabled scrapers.';
+      grid.appendChild(empty);
+      return;
+    }
+
+    visible.forEach(p => {
       const isDisabled = disabledList.includes(p.name);
       const card = document.createElement('div');
-      card.className = 'prov-card';
+      card.className = 'prov-card' + (isDisabled ? ' off' : '');
       card.dataset.provider = p.name;
+
       card.innerHTML = `
-        <div class="p-icon">${emojis[i % emojis.length]}</div>
-        <div class="p-info"><h4>${p.name}</h4><p>${(p.supportedTypes || p.types || ['movie','tv']).join(' · ')}</p></div>
-        <label class="toggle"><input type="checkbox" ${!isDisabled ? 'checked' : ''} data-provider-toggle="${p.name}"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        <div class="p-icon"></div>
+        <div class="p-info"><h4>${escapeHtml(cleanProviderName(p.name))}</h4><p>${(p.supportedTypes || ['movie','tv']).join(' · ')}</p></div>
+        <label class="toggle"><input type="checkbox" ${!isDisabled ? 'checked' : ''} data-provider-toggle="${escapeHtml(p.name)}"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
       `;
+
+      const holder = card.querySelector('.p-icon');
+      if (typeof p.logo === 'string' && /^https?:\/\//i.test(p.logo)) {
+        const img = document.createElement('img');
+        img.src = p.logo;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.addEventListener('error', () => {
+          img.remove();
+          holder.innerHTML = FALLBACK_PROVIDER_SVG;
+        });
+        holder.appendChild(img);
+      } else {
+        holder.innerHTML = FALLBACK_PROVIDER_SVG;
+      }
+
       grid.appendChild(card);
     });
 
@@ -1102,6 +1188,8 @@
           if (!config.disabled) config.disabled = [];
           config.disabled.push(name);
         }
+        this.closest('.prov-card')?.classList.toggle('off', !this.checked);
+        if (providerFilter !== 'all') renderProviders();
       });
     });
   }
@@ -1111,10 +1199,12 @@
     document.getElementById('btn-enable-all')?.addEventListener('click', () => {
       config.disabled = [];
       document.querySelectorAll('[data-provider-toggle]').forEach(t => t.checked = true);
+      if (providerFilter !== 'all') renderProviders();
     });
     document.getElementById('btn-disable-all')?.addEventListener('click', () => {
       config.disabled = allProviders.map(p => p.name);
       document.querySelectorAll('[data-provider-toggle]').forEach(t => t.checked = false);
+      if (providerFilter !== 'all') renderProviders();
     });
   }
 
