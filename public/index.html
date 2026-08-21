@@ -833,14 +833,23 @@
 
   // ─── Boot Loader ───
   const BOOT_MIN_MS = 350;
+  window.__BOOT_TRACE = [];
+  const btrace = (ev, extra) => {
+    try { window.__BOOT_TRACE.push({ ev, t: Math.round(performance.now()), ...extra }); } catch (e) {}
+  };
+  window.addEventListener('unhandledrejection', e => btrace('unhandledRejection', { msg: String(e.reason && e.reason.message || e.reason) }));
+  window.addEventListener('error', e => btrace('error', { msg: e.message }));
+
   function hideBoot(minMs) {
+    btrace('hideBoot called', { minMs });
     const el = document.getElementById('boot-loader');
-    if (!el || el.dataset.done) return;
+    if (!el || el.dataset.done) { btrace('hideBoot skipped', { reason: !el ? 'no-el' : 'already-done' }); return; }
     el.dataset.done = '1';
-    if (!minMs) { el.remove(); return; }
+    if (!minMs) { el.remove(); btrace('boot removed instantly'); return; }
     setTimeout(() => {
       el.classList.add('done');
       setTimeout(() => el.remove(), 300);
+      btrace('boot faded out');
     }, Math.max(0, minMs - (performance.now() - bootStart)));
   }
   const bootStart = performance.now();
@@ -892,6 +901,7 @@
   async function init() {
     const injected = window.__NUVIO_INITIAL_CONFIG__;
     let syncedFromCloud = false;
+    btrace('init start', { injectedPresent: !!injected, injectedHasConfigId: !!(injected && injected.configId), injectedHasConfig: !!(injected && injected.config), path: location.pathname });
 
     // 1. Server-injected config (from /c/:configId route) — config painted instantly,
     //    but repo manifests still stream in, so treat as cloud-synced.
@@ -941,6 +951,7 @@
     setupProviderButtons();
     setupProviderFilter();
 
+    btrace('manifests done', { syncedFromCloud, repoCount: config.repos.length });
     hideBoot(syncedFromCloud ? BOOT_MIN_MS : 0);
   }
 
