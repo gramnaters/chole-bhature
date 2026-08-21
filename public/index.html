@@ -434,7 +434,7 @@
 
     <!-- Hero -->
     <section class="hero" data-section="general">
-      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;color:var(--ink-muted);"><span class="dot" style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--ink-muted);display:inline-block;" id="sync-dot"></span> <span id="sync-status">New Session</span> (<span id="config-id">No ID</span>)</p>
+      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;color:var(--ink-muted);"><span class="dot" style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--green);display:inline-block;" id="sync-dot"></span> <span id="sync-status">Cloud Synced</span> (<span id="config-id">Loading...</span>)</p>
       <div class="hero-eyebrow">High-Performance Stream Meta-Sorter &amp; Priority Engine</div>
       <h1>Configure your stream engine</h1>
       <p>Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.</p>
@@ -741,7 +741,7 @@
 
 <!-- Save Bar -->
 <div class="save-bar">
-  <span class="id">No ID</span>
+  <span class="id">Loading...</span>
   <button class="btn btn-primary btn-save">Save &amp; Sync</button>
 </div>
 
@@ -770,21 +770,53 @@
     miniDebridToken: ''
   };
 
+  // ─── Config ID (localStorage) ───
+  function getOrCreateConfigId() {
+    let savedId = localStorage.getItem('cb_config_id');
+    if (!savedId) {
+      savedId = Math.random().toString(36).substring(2, 10);
+      localStorage.setItem('cb_config_id', savedId);
+    }
+    return savedId;
+  }
+
   // ─── Init ───
-  function init() {
+  async function init() {
     const injected = window.__NUVIO_INITIAL_CONFIG__;
-    if (injected) {
-      configId = injected.configId || null;
+
+    // 1. Server-injected config (from /c/:configId route)
+    if (injected && injected.configId) {
+      configId = injected.configId;
+      localStorage.setItem('cb_config_id', configId);
       if (injected.config) config = { ...defaultConfig, ...injected.config };
       else config = { ...defaultConfig };
     } else {
-      config = { ...defaultConfig };
+      // 2. URL path /c/:configId without server injection
       const pathParts = window.location.pathname.split('/');
-      if (pathParts[1] === 'c' && pathParts[2]) configId = pathParts[2];
+      if (pathParts[1] === 'c' && pathParts[2]) {
+        configId = pathParts[2];
+        localStorage.setItem('cb_config_id', configId);
+        config = { ...defaultConfig };
+        // Try to load saved config from server
+        try {
+          const res = await fetch('/api/config/' + configId);
+          const data = await res.json();
+          if (data && data.config) config = { ...defaultConfig, ...data.config };
+        } catch (e) {}
+      } else {
+        // 3. Fallback: use localStorage or generate new ID
+        configId = getOrCreateConfigId();
+        config = { ...defaultConfig };
+        // Try to load saved config from server
+        try {
+          const res = await fetch('/api/config/' + configId);
+          const data = await res.json();
+          if (data && data.config) config = { ...defaultConfig, ...data.config };
+        } catch (e) {}
+      }
     }
 
     updateConfigDisplay();
-
     populateUI();
     loadRepoManifests();
     setupNavTabs();
@@ -798,17 +830,10 @@
     const syncDot = document.getElementById('sync-dot');
     const syncStatus = document.getElementById('sync-status');
     const configIdEl = document.getElementById('config-id');
-    if (configId) {
-      syncDot.style.background = 'var(--green)';
-      syncStatus.textContent = 'Cloud Synced';
-      configIdEl.textContent = 'ID: ' + configId;
-      document.querySelectorAll('.save-bar .id').forEach(el => el.textContent = 'ID: ' + configId);
-    } else {
-      syncDot.style.background = 'var(--ink-muted)';
-      syncStatus.textContent = 'New Session';
-      configIdEl.textContent = 'No ID';
-      document.querySelectorAll('.save-bar .id').forEach(el => el.textContent = 'No ID');
-    }
+    syncDot.style.background = 'var(--green)';
+    syncStatus.textContent = 'Cloud Synced';
+    configIdEl.textContent = 'ID: ' + configId;
+    document.querySelectorAll('.save-bar .id').forEach(el => el.textContent = 'ID: ' + configId);
   }
 
   // ─── Populate UI from config ───
@@ -1084,6 +1109,7 @@
           const data = await res.json();
           if (data.success) {
             configId = data.configId;
+            localStorage.setItem('cb_config_id', configId);
             updateConfigDisplay();
             btn.textContent = 'Saved!';
             setTimeout(() => { btn.textContent = 'Save & Sync'; btn.disabled = false; }, 2000);
