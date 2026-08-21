@@ -232,6 +232,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get(['/', '/configure', '/index.html'], (req, res) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store, must-revalidate');
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -255,6 +256,7 @@ async function sendConfigPage(req, res, configId) {
         const injectedJson = JSON.stringify(state).replace(/</g, '\\u003c');
         const injection = `<script>window.__NUVIO_INITIAL_CONFIG__ = ${injectedJson};</script>`;
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-store, must-revalidate');
         res.send(html.replace('</head>', injection + '</head>'));
     } catch (e) {
         console.error('[Config] Failed to render config page:', e.message);
@@ -291,6 +293,7 @@ app.get('/api/config/:configId', async (req, res) => {
 
 // Handle Nuvio/Stremio gear icon clicks which append /configure or / to the addon base URL
 app.get('/:configJSON/configure', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, must-revalidate');
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
