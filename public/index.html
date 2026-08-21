@@ -433,8 +433,8 @@
   <div class="nu-shell">
 
     <!-- Hero -->
-    <section class="hero">
-      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;color:var(--ink-muted);"><span class="dot" style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--green);display:inline-block;"></span> Cloud Synced (ID: 56lfiv5b)</p>
+    <section class="hero" data-section="general">
+      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;color:var(--ink-muted);"><span class="dot" style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--green);display:inline-block;"></span> Cloud Synced (<span id="config-id">ID: 56lfiv5b</span>)</p>
       <div class="hero-eyebrow">High-Performance Stream Meta-Sorter &amp; Priority Engine</div>
       <h1>Configure your stream engine</h1>
       <p>Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.</p>
@@ -445,7 +445,7 @@
     </section>
 
     <!-- Stats -->
-    <div class="stats-grid">
+    <div class="stats-grid" id="stats-grid" data-section="general">
       <div class="stat-card">
         <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M10.45 15.5q.625.625 1.575.588T13.4 15.4L19 7l-8.4 5.6q-.65.45-.712 1.362t.562 1.538M5.1 20q-.55 0-1.012-.238t-.738-.712q-.65-1.175-1-2.437T2 14q0-2.075.788-3.9t2.137-3.175T8.1 4.788T12 4q2.05 0 3.85.775T19 6.888t2.15 3.125t.825 3.837q.025 1.375-.312 2.688t-1.038 2.512q-.275.475-.737.713T18.874 20z"/></svg></div>
         <div class="stat-value">Speed</div>
@@ -469,30 +469,42 @@
     </div>
 
     <!-- How to Use -->
-    <div class="steps">
+    <div class="steps" data-section="general">
       <div class="step"><div class="step-num">1</div><h4>Configure Your Setup</h4><p>Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.</p></div>
       <div class="step"><div class="step-num">2</div><h4>Add Repositories</h4><p>Visit the Sources tab to load community scrapers or add your own custom repository URL.</p></div>
       <div class="step"><div class="step-num">3</div><h4>Install Addon</h4><p>Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.</p></div>
     </div>
 
     <!-- About -->
-    <div class="about-card">
+    <div class="about-card" id="about-card" data-section="general">
       <h3>ℹ️ About the Addon</h3>
       <p>Chole Bhature is a high-performance stream meta-sorter designed to drastically improve your viewing experience. It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.</p>
-      <a href="#" class="btn btn-primary">✨ Get Nuvio Plugin Repo</a>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+        <a href="#" class="btn btn-primary" id="btn-install">Install Addon</a>
+        <a href="https://github.com/gramnaters/chole-bhature" target="_blank" class="btn btn-outline">GitHub</a>
+      </div>
     </div>
 
+    <!-- Analytics (hidden by default) -->
+    <section class="section" id="section-analytics" style="display:none;">
+      <h2 class="section-head">Analytics</h2>
+      <p class="section-sub">Provider performance and stream statistics.</p>
+      <div id="analytics-content">
+        <p style="color:var(--ink-muted);font-size:0.875rem;">Loading analytics...</p>
+      </div>
+    </section>
+
     <!-- Sorting -->
-    <section class="section" id="sorting">
+    <section class="section" id="sorting" data-section="general">
       <h2 class="section-head">Sort Mode</h2>
       <p class="section-sub">Choose how your streams are ranked.</p>
       <div class="sort-grid">
-        <div class="sort-card active" onclick="pickSort(this)">
+        <div class="sort-card active" data-sort="speed" onclick="pickSort(this)">
           <div class="dot"></div>
           <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3v6.586l4.95 2.857-1.414 1.414L12 12V3h1z"/><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/></svg></div>
           <div><h4>Speed</h4><p>Fastest responding streams first</p></div>
         </div>
-        <div class="sort-card" onclick="pickSort(this)">
+        <div class="sort-card" data-sort="quality" onclick="pickSort(this)">
           <div class="dot"></div>
           <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M13 19c0 .34.04.67.09 1H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1l2 4h3L8 4h2l2 4h3l-2-4h2l2 4h3l-2-4h4v9.81c-.88-.51-1.9-.81-3-.81c-3.31 0-6 2.69-6 6m10-1.11l-2.89-.25L19 15l-1.13 2.64l-2.87.25l2.18 1.88l-.68 2.81l2.5-1.49l2.45 1.49l-.65-2.81z"/></svg></div>
           <div><h4>Quality</h4><p>4K UHD first, then by speed</p></div>
@@ -501,7 +513,7 @@
     </section>
 
     <!-- Filters -->
-    <section class="section">
+    <section class="section" data-section="general">
       <h2 class="section-head">Auto-Hide Filters</h2>
       <p class="section-sub">Strip broken or unwanted streams from results.</p>
       <div class="card">
@@ -510,42 +522,42 @@
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 16h6m-5-5L8.5 9.5m0 0L7 8m1.5 1.5L7 11m1.5-1.5L10 8m7 3l-1.5-1.5m0 0L14 8m1.5 1.5L14 11m1.5-1.5L17 8"/></svg></div>
             <div><h3>Dead Links</h3><p>Filter out completely offline or broken streams</p></div>
           </div>
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          <label class="toggle"><input type="checkbox" checked data-filter="hideDead"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13a6 6 0 1 0 12 0 4 4 0 1 0-8 0 2 2 0 0 0 4 0"/><circle cx="10" cy="13" r="8"/><path d="M2 21h12c4.4 0 8-3.6 8-8V7a2 2 0 1 0-4 0v6"/><path d="M18 3 19.1 5.2"/><path d="M22 3 20.9 5.2"/></svg></div>
             <div><h3>Slow Links</h3><p>Filter out streams taking longer than 1.5s to respond</p></div>
           </div>
-          <label class="toggle"><input type="checkbox"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          <label class="toggle"><input type="checkbox" data-filter="hideSlow"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg></div>
             <div><h3>CAM &amp; TeleSync</h3><p>Filter out low-quality theater recordings</p></div>
           </div>
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          <label class="toggle"><input type="checkbox" checked data-filter="hideCam"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
             <div><h3>Auto-Quarantine <span class="badge">New</span></h3><p>Isolate failing scrapers for 30 min after 3 consecutive failures</p></div>
           </div>
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          <label class="toggle"><input type="checkbox" checked data-filter="enableQuarantine"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></div>
             <div><h3>Deduplication</h3><p>Merge identical streams across providers</p></div>
           </div>
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          <label class="toggle"><input type="checkbox" checked data-filter="deduplicateStreams"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
             <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path d="M0 0h16v16H0z" fill="none"/><path fill="currentColor" d="m6.922 3.768l-.644-.536A1 1 0 0 0 5.638 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H7.562a1 1 0 0 1-.64-.232"/><path fill="currentColor" opacity="0.4" d="M13.683 5.978a9 9 0 0 0-1.306.17c-.363.107-.734.23-1.088.32a6 6 0 0 0-1.177.631 4.71 4.713 0 0 0-.29.226l-.015.006a6 6 0 0 0-.68.686 11 11 0 0 1-.237.316 6 6 0 0 0-.752 1.562 8.728 8.734 0 0 0-.278 1.294 11.3 11.3 0 0 0-.08 1.883 17.366 17.378 0 0 0 .03.52 9.172 9.178 0 0 0 .036.437q.39.038.778.066q.504.033 1.01.02a9 9 0 0 0 2.402-.378 8 8 0 0 0 .394-.145 7.658 7.663 0 0 0 .762-.37q.405-.247.773-.547a11.774 11.782 0 0 0 .423-.413 8.904 8.91 0 0 0 .404-.51q.431-.639.692-1.368a7.7 7.7 0 0 0 .36-1.604q.15-1.338-.071-2.664a.02.02 0 0 0-.01-.016 6 6 0 0 0-.28-.05L15 6q-.66-.059-1.317-.022m.276 1.802q.06 0 .121.003a4.336 4.34 0 0 0-.683.32 8.2 8.2 0 0 0-1.425 1.016 8 8 0 0 1-.252.226 23.868 23.884 0 0 0-.586.608 14.349 14.359 0 0 1-.3.357q-.733.921-1.258 1.983q-.005.007-.01.003a5.56 5.56 0 0 1 .69-2.49q.918-1.56 2.7-1.923q.193-.039.388-.063q.308-.028.615-.04"/></svg></div>
             <div><h3>Seeder Badges</h3><p>Show live torrent seeder count</p></div>
           </div>
-          <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+          <label class="toggle"><input type="checkbox" checked data-filter="showSeeders"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
@@ -558,25 +570,25 @@
     </section>
 
     <!-- Languages -->
-    <section class="section">
+    <section class="section" data-section="general">
       <h2 class="section-head">Preferred Languages</h2>
       <p class="section-sub">Streams with these languages float to the top.</p>
       <div class="lang-grid">
-        <div class="lang-card active" onclick="pickLang(this)"><div><h4>Hindi</h4><p>Default priority</p></div><div class="dot"></div></div>
-        <div class="lang-card active" onclick="pickLang(this)"><div><h4>Dual-Audio</h4><p>Mixed language tracks</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Tamil</h4><p>South Indian</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Telugu</h4><p>South Indian</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Malayalam</h4><p>South Indian</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Kannada</h4><p>South Indian</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Marathi</h4><p>West Indian</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Bengali</h4><p>East Indian</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>Anime/Jap</h4><p>Japanese dub &amp; sub</p></div><div class="dot"></div></div>
-        <div class="lang-card" onclick="pickLang(this)"><div><h4>English</h4><p>Default global</p></div><div class="dot"></div></div>
+        <div class="lang-card active" data-lang="Hindi" onclick="pickLang(this)"><div><h4>Hindi</h4><p>Default priority</p></div><div class="dot"></div></div>
+        <div class="lang-card active" data-lang="Dual-Audio" onclick="pickLang(this)"><div><h4>Dual-Audio</h4><p>Mixed language tracks</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Tamil" onclick="pickLang(this)"><div><h4>Tamil</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Telugu" onclick="pickLang(this)"><div><h4>Telugu</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Malayalam" onclick="pickLang(this)"><div><h4>Malayalam</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Kannada" onclick="pickLang(this)"><div><h4>Kannada</h4><p>South Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Marathi" onclick="pickLang(this)"><div><h4>Marathi</h4><p>West Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Bengali" onclick="pickLang(this)"><div><h4>Bengali</h4><p>East Indian</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="Anime/Jap" onclick="pickLang(this)"><div><h4>Anime/Jap</h4><p>Japanese dub &amp; sub</p></div><div class="dot"></div></div>
+        <div class="lang-card" data-lang="English" onclick="pickLang(this)"><div><h4>English</h4><p>Default global</p></div><div class="dot"></div></div>
       </div>
     </section>
 
     <!-- Premium -->
-    <section class="section">
+    <section class="section" data-section="general">
       <h2 class="section-head">Premium Features</h2>
       <p class="section-sub">Optional integrations for enhanced streaming.</p>
       <div class="glass-grid">
@@ -584,24 +596,24 @@
           <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1.125rem" height="1.125rem" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/><path d="M12 6l-1.5 3.5L7 11l3.5 1.5L12 16l1.5-3.5L17 11l-3.5-1.5L12 6z" fill="rgba(255,255,255,0.9)"/></svg></div>
           <h4>Real-Debrid</h4>
           <p>Instant cached CDN links</p>
-          <div style="margin-top:1rem;"><input type="password" class="input" placeholder="API Key"></div>
+          <div style="margin-top:1rem;"><input type="password" class="input" placeholder="API Key" data-premium="realDebridKey"></div>
         </div>
         <div class="glass-card">
           <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1.125rem" height="1.125rem" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg></div>
           <h4>Mini-Debrid</h4>
           <p>Torrent-to-HTTP streaming</p>
-          <div style="margin-top:1rem;"><input type="text" class="input" placeholder="Access Token"></div>
+          <div style="margin-top:1rem;"><input type="text" class="input" placeholder="Access Token" data-premium="miniDebridToken"></div>
         </div>
         <div class="glass-card">
           <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1.125rem" height="1.125rem" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/><path d="m10 17-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="rgba(255,255,255,0.9)"/></svg></div>
           <h4>DNS-over-HTTPS</h4>
           <p>Bypass ISP censorship</p>
           <div style="margin-top:1rem;">
-            <select class="input">
-              <option>Cloudflare (1.1.1.1)</option>
-              <option>Google DNS (8.8.8.8)</option>
-              <option>AdGuard DNS</option>
-              <option>Quad9 (9.9.9.9)</option>
+            <select class="input" data-premium="dohProvider">
+              <option value="cloudflare">Cloudflare (1.1.1.1)</option>
+              <option value="google">Google DNS (8.8.8.8)</option>
+              <option value="adguard">AdGuard DNS</option>
+              <option value="quad9">Quad9 (9.9.9.9)</option>
             </select>
           </div>
         </div>
@@ -609,13 +621,13 @@
     </section>
 
     <!-- Sources -->
-    <section class="section" id="sources">
+    <section class="section" id="sources" data-section="sources">
       <h2 class="section-head">Installed Repositories</h2>
       <p class="section-sub">Manage your scraper sources.</p>
 
       <div class="input-row">
-        <input type="url" class="input" placeholder="Enter repository manifest URL">
-        <button class="btn btn-primary">Add Repo</button>
+        <input type="url" class="input" placeholder="Enter repository manifest URL" id="repo-url-input">
+        <button class="btn btn-primary" id="btn-add-repo">Add Repo</button>
       </div>
 
       <div class="repo-list">
@@ -684,41 +696,41 @@
             <p class="section-sub" style="margin-bottom:0;">176 scrapers from 7 repositories</p>
           </div>
           <div style="display:flex; gap:0.5rem;">
-            <button class="btn btn-primary btn-sm">Enable All</button>
-            <button class="btn btn-outline btn-sm">Disable All</button>
+            <button class="btn btn-primary btn-sm" id="btn-enable-all">Enable All</button>
+            <button class="btn btn-outline btn-sm" id="btn-disable-all">Disable All</button>
           </div>
         </div>
 
         <div class="prov-grid">
-          <div class="prov-card">
+          <div class="prov-card" data-provider="Castle">
             <div class="p-icon">🏰</div>
             <div class="p-info"><h4>Castle</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input type="checkbox" checked data-provider-toggle="Castle"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
-          <div class="prov-card">
+          <div class="prov-card" data-provider="CinemaHD">
             <div class="p-icon">🎬</div>
             <div class="p-info"><h4>CinemaHD</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input type="checkbox" checked data-provider-toggle="CinemaHD"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
-          <div class="prov-card">
+          <div class="prov-card" data-provider="Torrentio">
             <div class="p-icon">🧲</div>
             <div class="p-info"><h4>Torrentio</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input type="checkbox" checked data-provider-toggle="Torrentio"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
-          <div class="prov-card">
+          <div class="prov-card" data-provider="MoonFlix">
             <div class="p-icon">🌙</div>
             <div class="p-info"><h4>MoonFlix</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input type="checkbox" checked data-provider-toggle="MoonFlix"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
-          <div class="prov-card">
+          <div class="prov-card" data-provider="VidRock">
             <div class="p-icon">🪨</div>
             <div class="p-info"><h4>VidRock</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input type="checkbox" checked data-provider-toggle="VidRock"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
-          <div class="prov-card">
+          <div class="prov-card" data-provider="AnimeSalt">
             <div class="p-icon">🧂</div>
             <div class="p-info"><h4>AnimeSalt</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+            <label class="toggle"><input type="checkbox" checked data-provider-toggle="AnimeSalt"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
         </div>
       </div>
@@ -730,17 +742,377 @@
 <!-- Save Bar -->
 <div class="save-bar">
   <span class="id">ID: 56lfiv5b</span>
-  <button class="btn btn-primary">Save &amp; Sync</button>
+  <button class="btn btn-primary btn-save">Save &amp; Sync</button>
 </div>
 
 <script>
-  function pickSort(el) {
-    el.parentElement.querySelectorAll('.sort-card').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+(function() {
+  // ─── State ───
+  let configId = null;
+  let config = {};
+  let allProviders = [];
+
+  const defaultConfig = {
+    sortBy: 'speed',
+    hideDead: true,
+    hideSlow: false,
+    hideCam: true,
+    enableQuarantine: true,
+    deduplicateStreams: true,
+    showSeeders: true,
+    enableDoh: true,
+    dohProvider: 'cloudflare',
+    prioritizeHindi: true,
+    preferredLanguages: ['Hindi', 'Dual-Audio'],
+    repos: [],
+    disabled: [],
+    realDebridKey: '',
+    miniDebridToken: ''
+  };
+
+  // ─── Init ───
+  function init() {
+    const injected = window.__NUVIO_INITIAL_CONFIG__;
+    if (injected) {
+      configId = injected.configId || null;
+      if (injected.config) config = { ...defaultConfig, ...injected.config };
+      else config = { ...defaultConfig };
+    } else {
+      config = { ...defaultConfig };
+      const pathParts = window.location.pathname.split('/');
+      if (pathParts[1] === 'c' && pathParts[2]) configId = pathParts[2];
+    }
+
+    if (configId) {
+      document.getElementById('config-id').textContent = 'ID: ' + configId;
+      document.querySelectorAll('.save-bar .id').forEach(el => el.textContent = 'ID: ' + configId);
+    }
+
+    populateUI();
+    loadRepoManifests();
+    setupNavTabs();
+    setupSaveButton();
+    setupInstallButton();
+    setupProviderButtons();
   }
-  function pickLang(el) {
-    el.classList.toggle('active');
+
+  // ─── Populate UI from config ───
+  function populateUI() {
+    // Sort mode
+    document.querySelectorAll('.sort-card[data-sort]').forEach(card => {
+      card.classList.toggle('active', card.dataset.sort === config.sortBy);
+    });
+
+    // Filters
+    document.querySelectorAll('[data-filter]').forEach(input => {
+      const key = input.dataset.filter;
+      if (key in config) input.checked = !!config[key];
+    });
+
+    // Languages
+    const langs = config.preferredLanguages || [];
+    document.querySelectorAll('.lang-card[data-lang]').forEach(card => {
+      card.classList.toggle('active', langs.includes(card.dataset.lang));
+    });
+
+    // Premium inputs
+    document.querySelectorAll('[data-premium]').forEach(el => {
+      const key = el.dataset.premium;
+      if (key === 'dohProvider') el.value = config[key] || 'cloudflare';
+      else if (config[key]) el.value = config[key];
+    });
+
+    // DoH toggle state
+    if (!config.enableDoh) {
+      document.querySelector('[data-premium="dohProvider"]').disabled = true;
+    }
   }
+
+  // ─── Sort Mode ───
+  document.querySelectorAll('.sort-card[data-sort]').forEach(card => {
+    card.addEventListener('click', function() {
+      document.querySelectorAll('.sort-card[data-sort]').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      config.sortBy = this.dataset.sort;
+    });
+  });
+
+  // ─── Filter Toggles ───
+  document.querySelectorAll('[data-filter]').forEach(input => {
+    input.addEventListener('change', function() {
+      config[this.dataset.filter] = this.checked;
+    });
+  });
+
+  // ─── Language Cards ───
+  document.querySelectorAll('.lang-card[data-lang]').forEach(card => {
+    card.addEventListener('click', function() {
+      this.classList.toggle('active');
+      const langs = [];
+      document.querySelectorAll('.lang-card[data-lang].active').forEach(c => {
+        langs.push(c.dataset.lang);
+      });
+      config.preferredLanguages = langs;
+      config.prioritizeHindi = langs.includes('Hindi');
+    });
+  });
+
+  // ─── Premium Inputs ───
+  document.querySelectorAll('[data-premium]').forEach(el => {
+    el.addEventListener('change', function() {
+      config[this.dataset.premium] = this.value;
+      if (this.dataset.premium === 'dohProvider') {
+        config.enableDoh = !!this.value;
+      }
+    });
+    el.addEventListener('input', function() {
+      config[this.dataset.premium] = this.value;
+    });
+  });
+
+  // ─── Nav Tabs ───
+  function setupNavTabs() {
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+        const tab = this.textContent.trim().toLowerCase();
+        document.querySelectorAll('[data-section]').forEach(section => {
+          section.style.display = '';
+        });
+        if (tab === 'sources') {
+          document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
+          document.getElementById('section-analytics').style.display = 'none';
+        } else if (tab === 'analytics') {
+          document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
+          document.getElementById('section-analytics').style.display = '';
+          loadAnalytics();
+        } else {
+          document.getElementById('section-analytics').style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // ─── Analytics ───
+  async function loadAnalytics() {
+    const container = document.getElementById('analytics-content');
+    container.innerHTML = '<p style="color:var(--ink-muted);font-size:0.875rem;">Loading analytics...</p>';
+    try {
+      const res = await fetch('/api/analytics');
+      const data = await res.json();
+      const keys = Object.keys(data);
+      if (keys.length === 0) {
+        container.innerHTML = '<p style="color:var(--ink-muted);font-size:0.875rem;">No analytics data yet. Streams will appear here after first use.</p>';
+        return;
+      }
+      let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:0.75rem;">';
+      keys.forEach(provider => {
+        const d = data[provider];
+        html += `<div class="stat-card" style="text-align:left;padding:1rem 1.25rem;">
+          <div style="font-weight:600;font-size:0.9375rem;margin-bottom:0.5rem;">${provider}</div>
+          <div style="font-size:0.8125rem;color:var(--ink-muted);line-height:1.8;">
+            Requests: ${d.requests || 0}<br>
+            Errors: ${d.errors || 0}<br>
+            Avg Speed: ${d.avgSpeed ? d.avgSpeed.toFixed(1) + 'ms' : 'N/A'}
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    } catch (e) {
+      container.innerHTML = '<p style="color:var(--red);font-size:0.875rem;">Failed to load analytics.</p>';
+    }
+  }
+
+  // ─── Repos ───
+  const defaultRepos = [
+    { name: 'All-in-One-Nuvio', url: 'https://raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio/main/manifest.json' },
+    { name: "Yoru's Repo", url: 'https://raw.githubusercontent.com/yoruix/nuvio-providers/main/public/manifest.json' },
+    { name: "Ray's Plugins", url: 'https://raw.githubusercontent.com/hihihihihiiray/plugins/main/manifest.json' },
+    { name: 'Michat88 Repo', url: 'https://raw.githubusercontent.com/michat88/nuvio-providers/main/manifest.json' },
+    { name: 'Asura Synthesis', url: 'https://raw.githubusercontent.com/PirateZoro9/asura-providers/main/manifest.json' },
+    { name: "Phisher's Repo", url: 'https://raw.githubusercontent.com/phisher98/phisher-nuvio-providers/main/manifest.json' },
+    { name: 'Eclipsia', url: 'https://plugin.eclipsia.dpdns.org/manifest.json' }
+  ];
+
+  async function loadRepoManifests() {
+    const repoUrls = config.repos && config.repos.length > 0 ? config.repos : defaultRepos.map(r => r.url);
+    config.repos = repoUrls;
+
+    let totalScrapers = 0;
+    const repoList = document.querySelector('.repo-list');
+    repoList.innerHTML = '';
+
+    for (const url of repoUrls) {
+      const match = defaultRepos.find(r => r.url === url);
+      const name = match ? match.name : url.split('/').slice(-2).join('/');
+      let count = '?';
+      try {
+        const res = await fetch('/api/repo-manifest?url=' + encodeURIComponent(url));
+        const data = await res.json();
+        const providers = data.providers || data.addons || [];
+        count = providers.length;
+        totalScrapers += count;
+        providers.forEach(p => {
+          if (!allProviders.find(ep => ep.name === p.name)) {
+            allProviders.push(p);
+          }
+        });
+      } catch (e) {
+        count = 'err';
+      }
+      const repoEl = document.createElement('div');
+      repoEl.className = 'repo';
+      repoEl.innerHTML = `
+        <div>
+          <h4>${name}</h4>
+          <p class="url">${url.replace('https://', '').slice(0, 60)}</p>
+          <span class="count">${count} active scrapers</span>
+        </div>
+        <button class="x" title="Remove" data-repo-url="${url}">✕</button>
+      `;
+      repoList.appendChild(repoEl);
+    }
+
+    // Wire remove buttons
+    repoList.querySelectorAll('.x').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const url = this.dataset.repoUrl;
+        config.repos = config.repos.filter(u => u !== url);
+        this.closest('.repo').remove();
+        updateStats();
+      });
+    });
+
+    // Populate provider toggles from loaded providers
+    renderProviders();
+    updateStats();
+  }
+
+  function renderProviders() {
+    const grid = document.querySelector('.prov-grid');
+    grid.innerHTML = '';
+    const emojis = ['🏰','🎬','🧲','🌙','🪨','🧂','⚡','🔮','🎯','🔥','💎','🌊','🍄','🗡️','🎬','📡'];
+    const disabledList = config.disabled || [];
+
+    allProviders.forEach((p, i) => {
+      const isDisabled = disabledList.includes(p.name);
+      const card = document.createElement('div');
+      card.className = 'prov-card';
+      card.dataset.provider = p.name;
+      card.innerHTML = `
+        <div class="p-icon">${emojis[i % emojis.length]}</div>
+        <div class="p-info"><h4>${p.name}</h4><p>${(p.types || ['movie','tv']).join(' · ')}</p></div>
+        <label class="toggle"><input type="checkbox" ${!isDisabled ? 'checked' : ''} data-provider-toggle="${p.name}"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+      `;
+      grid.appendChild(card);
+    });
+
+    // Wire provider toggles
+    grid.querySelectorAll('[data-provider-toggle]').forEach(input => {
+      input.addEventListener('change', function() {
+        const name = this.dataset.providerToggle;
+        if (this.checked) {
+          config.disabled = (config.disabled || []).filter(n => n !== name);
+        } else {
+          if (!config.disabled) config.disabled = [];
+          config.disabled.push(name);
+        }
+      });
+    });
+  }
+
+  // ─── Provider Bulk Buttons ───
+  function setupProviderButtons() {
+    document.getElementById('btn-enable-all')?.addEventListener('click', () => {
+      config.disabled = [];
+      document.querySelectorAll('[data-provider-toggle]').forEach(t => t.checked = true);
+    });
+    document.getElementById('btn-disable-all')?.addEventListener('click', () => {
+      config.disabled = allProviders.map(p => p.name);
+      document.querySelectorAll('[data-provider-toggle]').forEach(t => t.checked = false);
+    });
+  }
+
+  // ─── Add Repo ───
+  document.getElementById('btn-add-repo')?.addEventListener('click', async () => {
+    const input = document.getElementById('repo-url-input');
+    const url = input.value.trim();
+    if (!url) return;
+    if (config.repos.includes(url)) return alert('Repo already added.');
+    try {
+      const res = await fetch('/api/repo-manifest?url=' + encodeURIComponent(url));
+      if (!res.ok) throw new Error('Invalid manifest');
+      config.repos.push(url);
+      input.value = '';
+      loadRepoManifests();
+    } catch (e) {
+      alert('Failed to fetch repo manifest. Check the URL.');
+    }
+  });
+
+  // ─── Save & Sync ───
+  function setupSaveButton() {
+    document.querySelectorAll('.btn-save').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        btn.textContent = 'Saving...';
+        btn.disabled = true;
+        try {
+          const res = await fetch('/api/config/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ configId, config })
+          });
+          const data = await res.json();
+          if (data.success) {
+            configId = data.configId;
+            document.querySelectorAll('.save-bar .id').forEach(el => el.textContent = 'ID: ' + configId);
+            btn.textContent = 'Saved!';
+            setTimeout(() => { btn.textContent = 'Save & Sync'; btn.disabled = false; }, 2000);
+          } else {
+            throw new Error(data.error);
+          }
+        } catch (e) {
+          btn.textContent = 'Error - Retry';
+          btn.disabled = false;
+          alert('Save failed: ' + e.message);
+        }
+      });
+    });
+  }
+
+  // ─── Install Addon ───
+  function setupInstallButton() {
+    document.getElementById('btn-install')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!configId) {
+        alert('Save your config first to get an install link.');
+        return;
+      }
+      const installUrl = 'stremio://' + window.location.host + '/c/' + configId + '/manifest.json';
+      window.open(installUrl, '_blank');
+    });
+  }
+
+  // ─── Stats Update ───
+  function updateStats() {
+    const statsGrid = document.getElementById('stats-grid');
+    if (!statsGrid) return;
+    const cards = statsGrid.querySelectorAll('.stat-card');
+    if (cards.length >= 2) {
+      cards[1].querySelector('.stat-value').textContent = config.repos.length;
+    }
+    if (cards.length >= 3) {
+      cards[2].querySelector('.stat-value').textContent = allProviders.length || '176';
+    }
+  }
+
+  // ─── Init ───
+  init();
+})();
 </script>
 
 </body>
