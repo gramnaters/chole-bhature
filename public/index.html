@@ -303,7 +303,7 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.3);
   }
   .repo h4 { font-size: 0.9375rem; font-weight: 600; }
-  .repo .url { font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.125rem; }
+  .repo .url { font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.125rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; user-select: all; cursor: text; }
   .repo .count {
     display: inline-block; margin-top: 0.5rem;
     background: rgba(255,255,255,0.05); border-radius: 9999px;
@@ -1050,7 +1050,7 @@
       repoEl.innerHTML = `
         <div>
           <h4>${name}</h4>
-          <p class="url">${url.replace('https://', '').slice(0, 60)}</p>
+          <p class="url" title="${url}">${url.replace(/^https?:\/\//, '')}</p>
           <span class="count">${count} active scrapers</span>
         </div>
         <button class="x" title="Remove" data-repo-url="${url}">✕</button>
@@ -1121,17 +1121,25 @@
   // ─── Add Repo ───
   document.getElementById('btn-add-repo')?.addEventListener('click', async () => {
     const input = document.getElementById('repo-url-input');
-    const url = input.value.trim();
+    let url = input.value.trim();
     if (!url) return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
     if (config.repos.includes(url)) return alert('Repo already added.');
+    const btn = document.getElementById('btn-add-repo');
+    btn.textContent = 'Adding…'; btn.disabled = true;
     try {
       const res = await fetch('/api/repo-manifest?url=' + encodeURIComponent(url));
-      if (!res.ok) throw new Error('Invalid manifest');
+      if (res.status === 400) throw new Error('That does not look like a valid manifest URL.');
+      if (!res.ok) throw new Error('The repo host did not respond (' + res.status + '). It may be offline or the URL path is wrong.');
+      const data = await res.json();
+      if (!data || !(data.scrapers || data.providers || data.addons)) throw new Error('URL is reachable but contains no scrapers — are you sure this points to a manifest.json?');
       config.repos.push(url);
       input.value = '';
-      loadRepoManifests();
+      await loadRepoManifests();
     } catch (e) {
-      alert('Failed to fetch repo manifest. Check the URL.');
+      alert(e.message || 'Failed to fetch repo manifest. Check the URL.');
+    } finally {
+      btn.textContent = 'Add Repo'; btn.disabled = false;
     }
   });
 
@@ -1174,7 +1182,7 @@
         alert('Save your config first to get an install link.');
         return;
       }
-      const installUrl = 'stremio://manifest.desitvhub.eu.org/c/' + configId + '/manifest.json';
+      const installUrl = 'stremio://' + window.location.host + '/c/' + configId + '/manifest.json';
       window.open(installUrl, '_blank');
     });
   }
