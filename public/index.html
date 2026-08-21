@@ -353,7 +353,21 @@
     padding: 1rem clamp(1rem, 3vw, 2rem);
     display: flex; align-items: center; justify-content: space-between;
   }
-  .save-bar .id { font-size: 0.8125rem; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .save-bar .id { font-size: 0.8125rem; color: var(--ink-muted); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; }
+  .pulse-dot {
+    position: relative; display: inline-block;
+    width: 0.4375rem; height: 0.4375rem; border-radius: 50%;
+    background: var(--green); margin-right: 0.5rem; flex-shrink: 0;
+  }
+  .pulse-dot::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: var(--green);
+    animation: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes pulseRing {
+    0% { transform: scale(1); opacity: 0.7; }
+    70%, 100% { transform: scale(2.8); opacity: 0; }
+  }
 
   .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
   .stat-card {
@@ -434,7 +448,7 @@
 
     <!-- Hero -->
     <section class="hero" data-section="general">
-      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;color:var(--ink-muted);"><span class="dot" style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--green);display:inline-block;" id="sync-dot"></span> <span id="sync-status">Cloud Synced</span> (<span id="config-id">Loading...</span>)</p>
+      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;font-weight:600;color:var(--ink-muted);letter-spacing:0.02em;" id="addon-version">v3.4.0</p>
       <div class="hero-eyebrow">High-Performance Stream Meta-Sorter &amp; Priority Engine</div>
       <h1>Configure your stream engine</h1>
       <p>Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.</p>
@@ -741,7 +755,7 @@
 
 <!-- Save Bar -->
 <div class="save-bar">
-  <span class="id">Loading...</span>
+  <span class="id"><span class="pulse-dot"></span>ID: Loading…</span>
   <button class="btn btn-primary btn-save">Save &amp; Sync</button>
 </div>
 
@@ -817,6 +831,7 @@
     }
 
     updateConfigDisplay();
+    loadVersion();
     populateUI();
     loadRepoManifests();
     setupNavTabs();
@@ -827,13 +842,18 @@
 
   // ─── Config Display Update ───
   function updateConfigDisplay() {
-    const syncDot = document.getElementById('sync-dot');
-    const syncStatus = document.getElementById('sync-status');
-    const configIdEl = document.getElementById('config-id');
-    syncDot.style.background = 'var(--green)';
-    syncStatus.textContent = 'Cloud Synced';
-    configIdEl.textContent = 'ID: ' + configId;
-    document.querySelectorAll('.save-bar .id').forEach(el => el.textContent = 'ID: ' + configId);
+    document.querySelectorAll('.save-bar .id').forEach(el => {
+      el.innerHTML = '<span class="pulse-dot"></span>ID: ' + configId;
+    });
+  }
+
+  function loadVersion() {
+    const el = document.getElementById('addon-version');
+    if (!el) return;
+    fetch('/api/version')
+      .then(r => r.json())
+      .then(d => { if (d && d.version) el.textContent = 'v' + d.version; })
+      .catch(() => {});
   }
 
   // ─── Populate UI from config ───

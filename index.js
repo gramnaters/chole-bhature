@@ -12,6 +12,8 @@ const realDebrid = require('./realDebrid');
 const telebot = require('./telebot');
 telebot.init();
 
+const pkg = require('./package.json');
+
 const app = express();
 app.use(express.json());
 
@@ -292,6 +294,10 @@ app.get('/:configJSON/configure', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get('/api/version', (req, res) => {
+    res.json({ version: pkg.version });
+});
+
 // Analytics tracker + Provider Quarantine Registry
 const providerAnalytics = new Map();
 const quarantineRegistry = new Map();
@@ -489,7 +495,7 @@ function createAddon(config) {
 
     const builder = new addonBuilder({
         id: addonId,
-        version: '3.0.0',
+        version: pkg.version,
         name: addonName,
         description: 'Dynamically loads Nuvio providers, tests stream speed, and sorts them.',
         logo: addonLogo,
