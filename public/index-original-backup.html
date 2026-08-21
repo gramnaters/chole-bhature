@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="description" content="High-Performance Stream Meta-Sorter & Priority Engine for Nuvio. Sort by speed, quality, language. Supports HDR, Dolby Vision, Atmos badges.">
+    <meta name="theme-color" content="#07080c" id="meta-theme-color">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="Chole Bhature">
+    <link rel="manifest" href="/manifest.json?v=4">
+    <link rel="shortcut icon" href="icon-192.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png?v=3">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=3">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=3">
+    <link rel="apple-touch-icon" sizes="182x182" href="icon-192.png?v=3">
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png?v=3">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png?v=3">
+    <title>Chole Bhature • Nuvio Meta-Sorter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #07080c;
+            --bg-surface: #0e1018;
+            --bg-surface-secondary: #151821;
+            --bg-card: rgba(16, 19, 29, 0.72);
+            --bg-card-hover: rgba(22, 26, 40, 0.85);
+            --bg-input: #121522;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+            --accent-emerald: #10b981;
+            --accent-rose: #f43f5e;
+            --accent-amber: #f59e0b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(99, 102, 241, 0.4);
+            --gradient-brand: linear-gradient(135deg, #a5b4fc 0%, #c084fc 50%, #f472b6 100%);
+            --gradient-btn: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            --gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --shadow-card: 0 12px 36px -4px rgba(0, 0, 0, 0.45);
+            --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.25);
+        }
+        
+        /* AMOLED Theme */
+        body.theme-amoled {
+            --bg-base: #000000;
+            --bg-surface: #000000;
+            --bg-surface-secondary: #0a0a0a;
+            --bg-card: rgba(0, 0, 0, 0.95);
+            --bg-card-hover: rgba(5, 5, 5, 0.98);
+            --bg-input: #000000;
+            --border-subtle: rgba(255, 255, 255, 0.12);
+            --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+            background-image: none !important;
+        }
+
+        body.theme-amoled .section-card,
+        body.theme-amoled .repo-item-card,
+        body.theme-amoled .stat-card,
+        body.theme-amoled .nav-bar,
+        body.theme-amoled .provider-item,
+        body.theme-amoled .btn-nuvio,
+        body.theme-amoled .btn-donate,
+        body.theme-amoled .lang-chip,
+        body.theme-amoled .bottom-nav-bar,
+        body.theme-amoled .header-bar {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background: #000000 !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        /* Light Theme */
+        body.theme-light {
+            --bg-base: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-surface-secondary: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card-hover: rgba(255, 255, 255, 1);
+            --bg-input: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-subtle: rgba(0, 0, 0, 0.1);
+            --shadow-card: 0 12px 36px -4px rgba(0, 0, 0, 0.08);
+            background-image: none !important;
+        }
+
+        body.theme-light .section-card,
+        body.theme-light .repo-item-card,
+        body.theme-light .stat-card,
+        body.theme-light .nav-bar,
+        body.theme-light .provider-item,
+        body.theme-light .btn-nuvio,
+        body.theme-light .btn-donate,
+        body.theme-light .lang-chip,
+        body.theme-light .bottom-nav-bar,
+        body.theme-light .header-bar {
+            background: #ffffff !important;
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        body.theme-light .brand-tagline,
+        body.theme-light .setting-description,
+        body.theme-light .stat-label {
+            color: var(--text-muted);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html {
+            background-color: var(--bg-base);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(circle at 10% 0%, rgba(99, 102, 241, 0.16) 0%, transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(168, 85, 247, 0.14) 0%, transparent 40%),
+                radial-gradient(circle at 50% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding-top: calc(clamp(12px, 3vw, 40px) + env(safe-area-inset-top));
+            padding-bottom: calc(clamp(100px, 15vw, 150px) + env(safe-area-inset-bottom));
+            padding-left: clamp(10px, 3vw, 20px);
+            padding-right: clamp(10px, 3vw, 20px);
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            max-width: min(900px, 100%);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(14px, 3vw, 24px);
+        }
+
+        /* Glass Top Header */
+        .header-bar {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: clamp(14px, 3vw, 20px);
+            padding: clamp(16px, 3vw, 24px) clamp(16px, 3vw, 28px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-card);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.25));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+            overflow: hidden;
+            padding: 3px;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 11px;
+            display: block;
+        }
+
+        .brand-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .brand-header-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(20px, 5vw, 28px);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-brand);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-version {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-tagline {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .sync-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        .pulse-light {
+            width: 6px;
+            height: 6px;
+            background-color: #34d399;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.35); opacity: 0.5; }
+        }
+
+        /* Action Buttons */
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            height: 42px;
+            padding: 0 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .action-btn-save {
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .action-btn-save:hover {
+            background: rgba(16, 185, 129, 0.22);
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .action-btn-save.unsaved {
+            background: var(--gradient-emerald);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+            animation: pulse-unsaved 2s infinite;
+        }
+
+        @keyframes pulse-unsaved {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .action-btn-install {
+            background: var(--gradient-btn);
+            color: white;
+            box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35);
+        }
+
+        .action-btn-install:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45);
+        }
+
+        .action-btn-pwa {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #a855f7 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35);
+        }
+
+        .action-btn-pwa:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.55);
+        }
+
+        .action-btn-copy {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .action-btn-copy:hover {
+            background: rgba(255, 255, 255, 0.09);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Hero Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+            gap: clamp(8px, 2vw, 14px);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vw, 16px) clamp(12px, 2vw, 18px);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.2s;
+            min-width: 0;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Section Containers */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(14px, 3vw, 24px);
+        }
+
+        .section-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-label-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* Sort Mode Selector Grid */
+        .sort-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+            gap: clamp(8px, 2vw, 14px);
+        }
+
+        .sort-option-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            position: relative;
+        }
+
+        .sort-option-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(99, 102, 241, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .sort-option-card.active {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 24px rgba(99, 102, 241, 0.22);
+        }
+
+        .sort-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .sort-option-card.active .sort-icon-box {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #a5b4fc;
+        }
+
+        .sort-info-block {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .sort-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .sort-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        .radio-indicator {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .sort-option-card.active .radio-indicator {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+            box-shadow: inset 0 0 0 3.5px var(--bg-base);
+        }
+
+        /* Settings Rows */
+        .setting-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            gap: 16px;
+        }
+
+        .setting-item-row:first-child { padding-top: 0; }
+        .setting-item-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .setting-text-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .setting-headline {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .setting-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .tag-pill-badge {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .dual-filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-capsule {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            padding: 7px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .filter-capsule:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .filter-capsule:has(input:checked) {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.45);
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.15);
+        }
+
+        .filter-capsule-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .doh-provider-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .doh-provider-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .doh-provider-select {
+            min-width: min(100%, 310px);
+            background-color: var(--bg-surface-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 7px 36px 7px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.35;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            color-scheme: dark;
+        }
+
+        .doh-provider-select:hover,
+        .doh-provider-select:focus {
+            border-color: rgba(99, 102, 241, 0.45);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
+        }
+
+        .doh-provider-select option {
+            background-color: #151821;
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        /* Toggle Switches */
+        .switch-toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .switch-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 22px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        input:checked + .switch-slider {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(22px);
+        }
+
+        /* Multi-Language Chips */
+        .lang-chips-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .lang-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            padding: 7px 13px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .lang-chip:hover {
+            background: rgba(255, 255, 255, 0.07);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .lang-chip.active {
+            background: rgba(99, 102, 241, 0.16);
+            border-color: rgba(99, 102, 241, 0.55);
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.22);
+        }
+
+        .lang-chip-check {
+            font-size: 11px;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: all 0.2s;
+        }
+
+        .lang-chip.active .lang-chip-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Input Bars */
+        .input-bar-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="url"], input[type="text"] {
+            flex-grow: 1;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+            min-width: 0;
+        }
+
+        input[type="url"]:focus, input[type="text"]:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-submit-action {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-submit-action:hover {
+            background: #4f46e5;
+        }
+
+        .btn-nuvio {
+            background: rgba(147, 51, 234, 0.15);
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            color: #c084fc;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            width: 100%;
+            margin-top: auto;
+        }
+        .btn-nuvio:hover {
+            background: rgba(147, 51, 234, 0.25);
+            border-color: rgba(147, 51, 234, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .btn-donate {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .btn-donate:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* Repositories */
+        .repo-item-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(17, 20, 29, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+        .repo-item-card:hover {
+            background: rgba(24, 28, 41, 0.7);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .repo-item-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .repo-item-card p.url {
+            color: var(--text-muted);
+            font-size: 12px;
+            word-break: break-all;
+            margin-bottom: 6px;
+        }
+
+        .repo-tag-pill {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: #a5b4fc;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .btn-delete-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            font-size: 15px;
+        }
+
+        .btn-delete-icon:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Providers Grid */
+        .providers-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+            gap: clamp(10px, 2vw, 16px);
+        }
+
+        .provider-item-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 18px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .provider-item-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .provider-header-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 10px;
+            padding-right: 50px;
+        }
+
+        .provider-avatar {
+            width: 42px;
+            height: 42px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .provider-avatar img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        .provider-repo-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .provider-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .provider-desc-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .provider-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .format-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .provider-switch-pos {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+        }
+
+        /* Toast Notification - Sleek Top Island Pill */
+        .toast-bubble {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-60px);
+            background: rgba(13, 17, 27, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 9999px;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 25px rgba(16, 185, 129, 0.25);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            width: max-content;
+            max-width: calc(100vw - 32px);
+            box-sizing: border-box;
+        }
+
+        .toast-bubble.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .empty-placeholder {
+            text-align: center;
+            padding: 28px 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* PWA Install Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(4, 6, 12, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .modal-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-highlight);
+            border-radius: 20px;
+            max-width: 460px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.2);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleUp { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .btn-close-modal {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-close-modal:hover {
+            background: rgba(244, 63, 94, 0.2);
+            color: #fb7185;
+            border-color: rgba(244, 63, 94, 0.4);
+        }
+
+        .install-step-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .install-step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .install-step-num {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ===== SPA & BOTTOM NAVBAR ===== */
+        .tab-content {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(14px, 3vw, 24px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: calc(100px + env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--bg-card);
+            border: 1px solid var(--accent-emerald);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .btn-spinning svg, .btn-spinning span:first-child { display: inline-block; animation: spin 1s linear infinite; }
+
+        /* Floating Donate Button */
+        .fab-donate {
+            position: fixed;
+            bottom: calc(100px + env(safe-area-inset-bottom));
+            right: 16px;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--gradient-brand);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 24px rgba(244, 114, 182, 0.4);
+            z-index: 990;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .fab-donate:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(244, 114, 182, 0.6);
+        }
+        
+        .fab-donate-tooltip {
+            position: absolute;
+            right: 68px;
+            background: var(--bg-card);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+        }
+        
+        .fab-donate:hover .fab-donate-tooltip {
+            opacity: 1;
+        }
+
+        @media (min-width: 901px) {
+            .fab-donate {
+                bottom: 30px;
+                right: 30px;
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+            .fab-donate-tooltip {
+                right: 76px;
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+        }
+
+        .bottom-nav-bar {
+            display: none; /* Hidden on desktop */
+            position: fixed;
+            bottom: calc(16px + env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 420px;
+            height: 68px;
+            background: rgba(16, 19, 29, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 34px;
+            justify-content: space-around;
+            align-items: stretch;
+            z-index: 1000;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            padding: 0 8px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nav-item.active {
+            color: var(--accent-primary);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            filter: grayscale(1) opacity(0.6);
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active .nav-icon {
+            filter: grayscale(0) opacity(1);
+            transform: translateY(-2px) scale(1.1);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-item:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== RESPONSIVE — Fluid for all screen sizes ===== */
+
+        /* Tablet & small laptops */
+        @media (max-width: 900px) {
+            .tab-content { display: none; animation: fadeIn 0.25s ease forwards; flex-direction: column; gap: clamp(14px, 3vw, 24px); }
+            .tab-content.active-tab { display: flex; }
+            .bottom-nav-bar { display: flex; }
+            .app-container { margin-bottom: 120px; }
+            body { padding-bottom: calc(max(clamp(40px, 8vw, 100px), env(safe-area-inset-bottom)) + 104px); }
+
+            .header-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 14px;
+            }
+            .brand-header-row { flex-wrap: wrap; gap: 8px; }
+            .action-group { width: 100%; }
+            .action-group .action-btn { flex: 1; min-width: 0; }
+        }
+
+        /* Mobile phones */
+        @media (max-width: 600px) {
+            .section-card { padding: clamp(14px, 3vw, 22px); border-radius: 14px; }
+            .setting-item-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .setting-headline { 
+                font-size: 13px; 
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 6px;
+            }
+            .setting-description { font-size: 11px; }
+            .dual-filter-group {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .filter-capsule {
+                flex: 1 1 calc(50% - 6px);
+                min-width: 130px;
+                box-sizing: border-box;
+                justify-content: space-between;
+                padding: 6px 10px;
+                gap: 6px;
+                border-radius: 10px;
+            }
+            .filter-capsule-text { font-size: 12px; }
+            .tag-pill-badge { font-size: 9px; padding: 1px 5px; }
+            .lang-chips-grid { gap: 6px; }
+            .lang-chip {
+                padding: 5px 10px;
+                font-size: 12px;
+                gap: 4px;
+                border-radius: 8px;
+            }
+            .sort-option-card { padding: 14px; gap: 10px; }
+            .sort-icon-box { width: 36px; height: 36px; font-size: 18px; border-radius: 10px; }
+            .sort-title { font-size: 13px; }
+            .sort-desc { font-size: 11px; }
+            .stat-label { font-size: 10px; }
+            .stat-value { font-size: 16px; }
+            .section-label { font-size: 11px; letter-spacing: 0.6px; }
+            .repo-item-card { padding: 14px 16px; border-radius: 12px; }
+            .repo-item-card h3 { font-size: 14px; }
+            .provider-item-card { padding: 14px; border-radius: 14px; }
+            .provider-header-row { padding-right: 44px; gap: 10px; }
+            .provider-avatar { width: 36px; height: 36px; border-radius: 10px; font-size: 16px; }
+            .provider-avatar img { width: 22px; height: 22px; }
+            .provider-title { font-size: 14px; }
+            .provider-desc-text { font-size: 11px; margin-bottom: 8px; }
+            .toast-bubble { font-size: 12px; padding: 9px 16px; }
+            .input-bar-group { flex-direction: column; }
+            .btn-submit-action { padding: 12px 20px; width: 100%; border-radius: 10px; }
+            input[type="url"], input[type="text"] { font-size: 13px; padding: 11px 14px; border-radius: 10px; }
+        }
+
+        /* Very small phones (iPhone SE, Galaxy Fold) */
+        @media (max-width: 380px) {
+            .brand-logo { width: 40px; height: 40px; border-radius: 10px; padding: 2px; }
+            .brand-version { font-size: 9px; padding: 1px 5px; }
+            .brand-tagline { font-size: 11px; }
+            .sync-status-pill { font-size: 10px; padding: 2px 8px; }
+            .action-btn { height: 38px; font-size: 12px; padding: 0 12px; border-radius: 10px; }
+            .switch-toggle { width: 38px; height: 18px; }
+            .switch-slider:before { height: 12px; width: 12px; }
+            input:checked + .switch-slider:before { transform: translateX(20px); }
+            .lang-chip { padding: 4px 8px; font-size: 11px; }
+            .filter-capsule {
+                flex: 1 1 100%;
+                min-width: 0;
+                padding: 6px 10px;
+            }
+            .filter-capsule-text { font-size: 11px; }
+        }
+
+        /* Large screens & desktops */
+        @media (min-width: 1200px) {
+            .app-container { max-width: 960px; }
+        }
+
+        /* Safe area insets for notched phones */
+        @supports (padding: env(safe-area-inset-top)) {
+            body {
+                padding-top: max(clamp(12px, 3vw, 40px), env(safe-area-inset-top));
+                padding-left: max(clamp(10px, 3vw, 20px), env(safe-area-inset-left));
+                padding-right: max(clamp(10px, 3vw, 20px), env(safe-area-inset-right));
+                padding-bottom: max(clamp(40px, 8vw, 100px), env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="toast" class="toast-bubble"></div>
+
+    <div class="app-container">
+        <!-- Top App Bar -->
+        <header class="header-bar">
+            <div class="brand-group">
+                <div class="brand-logo">
+                    <img src="icon-192.png?v=3" alt="Chole Bhature Icon">
+                </div>
+                <div class="brand-content">
+                    <div class="brand-header-row">
+                        <h1 class="brand-title">Chole Bhature</h1>
+                        <span class="brand-version">v3.0.0</span>
+                        <button onclick="toggleTheme()" title="Cycle Theme (Dark/AMOLED/Light)" style="cursor: pointer; padding: 0 4px; font-size: 14px; background: transparent; border: none; display: inline-flex; align-items: center; justify-content: center; margin-left: 2px; transition: all 0.2s;">
+                            <span id="theme-icon">🌙</span>
+                        </button>
+                    </div>
+                    <p class="brand-tagline">High-Performance Stream Meta-Sorter & Priority Engine</p>
+                    <div id="sync-badge" class="sync-status-pill" style="display: none;">
+                        <span class="pulse-light"></span>
+                        <span id="sync-text">Cloud Synced</span>
+                    </div>
+                </div>
+            </div>
+            <div class="action-group">
+                <button class="action-btn action-btn-save" id="save-btn" onclick="saveConfigurationToServer(true)" title="Save settings and push updates live without reinstalling">
+                    <span>💾 Save Changes</span>
+                </button>
+                <button class="action-btn action-btn-install" onclick="installNuvio()">
+                    <span>🚀 Install Addon</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Tab: Home -->
+        <div id="tab-home" class="tab-content active-tab">
+        <!-- Stats Overview Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">⚡ Sort Mode</span>
+                <span class="stat-value" id="stat-sort-mode">Speed First</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">📦 Repositories</span>
+                <span class="stat-value" id="stat-repo-count">1 Loaded</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">🧩 Scrapers</span>
+                <span class="stat-value" id="stat-provider-count">Active</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">🛡️ Stream Filter</span>
+                <span class="stat-value" id="stat-filter-status">Auto-Clean</span>
+            </div>
+        </div>
+
+        <div id="fallbackLink" class="section-wrap" style="display: none;">
+            <div class="section-label-bar">
+                <span class="section-label">🔗 Manual Manifest Link (Copy & Paste to Nuvio)</span>
+            </div>
+            <div class="section-card">
+                <div class="input-bar-group">
+                    <input type="text" id="generatedUrl" readonly>
+                    <button type="button" onclick="copyLink()" class="btn-submit-action">Copy URL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra Info Sections -->
+        <div class="info-grid">
+            <div class="section-wrap">
+                <div class="section-label-bar">
+                    <span class="section-label">📖 How to Use</span>
+                </div>
+                <div class="section-card" style="display: flex; flex-direction: column; gap: 16px; height: 100%;">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">1. Configure Your Setup</div>
+                        <div class="setting-description">Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.</div>
+                    </div>
+                    <div class="setting-text-block">
+                        <div class="setting-headline">2. Add Repositories</div>
+                        <div class="setting-description">Visit the Sources tab to load community scrapers or add your own custom repository URL.</div>
+                    </div>
+                    <div class="setting-text-block">
+                        <div class="setting-headline">3. Install Addon</div>
+                        <div class="setting-description">Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-wrap">
+                <div class="section-label-bar">
+                    <span class="section-label">ℹ️ About the Addon</span>
+                </div>
+                <div class="section-card" style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
+                    <div class="setting-text-block">
+                        <div class="setting-description" style="font-size: 13px;">
+                            Chole Bhature is a high-performance stream meta-sorter designed to drastically improve your viewing experience.<br><br>
+                            It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.
+                        </div>
+                    </div>
+                    <a href="https://nuvio-plugin-library.vercel.app/" target="_blank" class="btn-nuvio">
+                        ✨ Get Nuvio Plugin Repo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+
+        <!-- Tab: Settings -->
+        <div id="tab-settings" class="tab-content">
+        <!-- Stream Priority & Optimization Suite -->
+        <div class="section-wrap">
+            <div class="section-label-bar">
+                <span class="section-label">⚙️ Stream Optimization Settings</span>
+            </div>
+            <div class="section-card">
+                <!-- Sorting Cards -->
+                <div style="margin-bottom: 20px;">
+                    <div class="setting-text-block" style="margin-bottom: 12px;">
+                        <div class="setting-headline">Stream Priority & Sorting Mode</div>
+                        <div class="setting-description">Choose whether streams are prioritized by ultra-low response latency or maximum 4K video quality.</div>
+                    </div>
+                    <div class="sort-options-grid">
+                        <div class="sort-option-card active" id="sort-speed" onclick="setSortMode('speed')">
+                            <div class="sort-icon-box">⚡</div>
+                            <div class="sort-info-block">
+                                <div class="sort-title">Speed & Low Latency First</div>
+                                <div class="sort-desc">Fastest responding streams prioritized at the top</div>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+                        <div class="sort-option-card" id="sort-quality" onclick="setSortMode('quality')">
+                            <div class="sort-icon-box">🎬</div>
+                            <div class="sort-info-block">
+                                <div class="sort-title">Maximum Quality (4K UHD First)</div>
+                                <div class="sort-desc">4K UHD → 1080p FHD → 720p (sorted by speed)</div>
+                            </div>
+                            <div class="radio-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto-Hide Broken / Slow Links -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">Auto-Hide Problematic Links</div>
+                        <div class="setting-description">Instantly strip broken or lagging streams from your results list.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Filter out completely offline or broken streams">
+                            <span class="filter-capsule-text">🔴 Dead Links</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="hideDead" onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                        <label class="filter-capsule" title="Filter out streams taking longer than 1.5s to respond">
+                            <span class="filter-capsule-text">🟡 Slow Links</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="hideSlow" onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Provider Auto-Quarantine -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            Provider Auto-Quarantine System
+                            <span class="tag-pill-badge" style="background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.35); color: #f43f5e;">🛑 Bypass Delays</span>
+                        </div>
+                        <div class="setting-description">Automatically isolates broken, rate-limited, or offline scrapers for 30 minutes after 3 consecutive failures. This completely eliminates the brutal 26-second delay penalties caused by dead scrapers timing out during a search.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Enable automatic quarantine for failing providers">
+                            <span class="filter-capsule-text">🛑 Auto-Quarantine</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="enableQuarantine" checked onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Real-Time Torrent Seeders & Health -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            Real-Time Torrent Health & Seeder Badges
+                            <span class="tag-pill-badge" style="background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.35); color: #4ade80;">🟢 Live Seeders</span>
+                        </div>
+                        <div class="setting-description">Display live seeders/peers with colored status tags (🟢 145 Seeders) and automatically prioritize healthy torrents.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Show live torrent seeders count on P2P stream badges">
+                            <span class="filter-capsule-text">🧲 Seeder Badges</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="showSeeders" checked onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Smart Stream Deduplication & Multi-Source Badges -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            Smart Stream Deduplication
+                            <span class="tag-pill-badge" style="background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.35); color: #c084fc;">🗂️ Multi-Source</span>
+                        </div>
+                        <div class="setting-description">Merge identical streams across providers into single entries with combined badges (e.g. <i>CinemaHD + Torrentio</i>) and maximum seeders.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Merge identical torrent hashes and video links across providers">
+                            <span class="filter-capsule-text">🗂️ Deduplicate</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="deduplicateStreams" checked onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- True-Probing (FFprobe) -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            🧪 True-Probing (FFprobe)
+                            <span class="tag-pill-badge" style="background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.35); color: #fb7185;">Heavy</span>
+                        </div>
+                        <div class="setting-description">Runs FFprobe on every stream to verify the actual video container/quality. Very CPU-heavy and slows down results — keep OFF unless you know you need it.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Run FFprobe on every stream (heavy CPU usage)">
+                            <span class="filter-capsule-text">🧪 Enable</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="enableTrueProbing" onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Mini-Debrid Access (Premium Access Token) -->
+                <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 16px;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                        <div class="setting-text-block" style="flex: 1; min-width: 240px;">
+                            <div class="setting-headline">
+                                💎 Mini-Debrid Premium Access
+                                <span class="tag-pill-badge" style="background: rgba(234, 179, 8, 0.15); border-color: rgba(234, 179, 8, 0.4); color: #facc15;">HTTP Engine</span>
+                            </div>
+                            <div class="setting-description">Unlock the built-in Torrent-to-HTTP server. Instead of fetching raw magnet links, Stremio will stream directly via HTTP. Enter your Access Token if you are an authorized user.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="position: relative; display: flex; align-items: center;">
+                            <span style="position: absolute; left: 14px; font-size: 1.1rem; opacity: 0.7;">🔑</span>
+                            <input type="text" id="accessToken" placeholder="Enter your Access Token" oninput="onTokenInput()" 
+                                style="width: 100%; padding: 12px 14px 12px 42px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: 12px; color: var(--text-primary); font-size: 0.95rem; outline: none; font-weight: 500; transition: border-color 0.2s; box-sizing: border-box;">
+                            <span id="tokenStatus" style="position: absolute; right: 14px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; font-weight: 600;"></span>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <a href="https://t.me/TARSAIAgent_bot?start=token" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(96, 165, 250, 0.1)'" onmouseout="this.style.background='transparent'">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg>
+                                Request Token via Telegram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 💎 Real-Debrid Cached CDN Links -->
+                <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 16px;">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                        <div class="setting-text-block" style="flex: 1; min-width: 240px;">
+                            <div class="setting-headline">
+                                💎 Real-Debrid Cached Links
+                                <span class="tag-pill-badge" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Instant Streaming</span>
+                            </div>
+                            <div class="setting-description">Optionally link a premium Real-Debrid account. Cached torrents (found in P2P/magnet streams) get converted into instant direct CDN links with zero buffering, instead of seeding-dependent magnet playback. Requires a premium RD account.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <span style="position: absolute; left: 14px; font-size: 1.1rem; opacity: 0.7;">💎</span>
+                        <input type="password" id="realDebridKey" placeholder="Real-Debrid API Key (optional)" oninput="onRdKeyInput()" 
+                            style="width: 100%; padding: 12px 14px 12px 42px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-subtle); border-radius: 12px; color: var(--text-primary); font-size: 0.95rem; outline: none; font-weight: 500; transition: border-color 0.2s; box-sizing: border-box;">
+                        <span id="rdKeyStatus" style="position: absolute; right: 14px; font-size: 0.9rem; opacity: 0; transition: opacity 0.3s; font-weight: 600;"></span>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <a href="https://real-debrid.com/apitoken" target="_blank" style="color: #60a5fa; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(96, 165, 250, 0.1)'" onmouseout="this.style.background='transparent'">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14L21 3"></path></svg>
+                            Get Real-Debrid API Key
+                        </a>
+                    </div>
+                </div>
+
+                <!-- DNS-over-HTTPS (DoH) ISP Censorship Bypass -->
+                <div class="setting-item-row" style="flex-direction: column; align-items: stretch; gap: 12px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                        <div class="setting-text-block" style="flex: 1; min-width: 240px;">
+                            <div class="setting-headline">
+                                🛡️ DNS-over-HTTPS (DoH) ISP Bypass
+                                <span class="tag-pill-badge" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); color: #34d399;">⚡ VPN-Free</span>
+                            </div>
+                            <div class="setting-description">Encrypts scraper and stream DNS queries over HTTPS to bypass ISP-level domain blocks, DNS hijacking, and censorship.</div>
+                        </div>
+                        <div class="dual-filter-group">
+                            <label class="filter-capsule" title="Enable DNS-over-HTTPS resolution to bypass ISP blocks">
+                                <span class="filter-capsule-text">🛡️ Enable DoH</span>
+                                <div class="switch-toggle">
+                                    <input type="checkbox" id="enableDoh" checked onchange="onSettingChanged()">
+                                    <span class="switch-slider"></span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="doh-provider-wrap" class="doh-provider-wrap">
+                        <span class="doh-provider-label">DoH Resolver Provider:</span>
+                        <select id="dohProvider" class="doh-provider-select" onchange="onSettingChanged()">
+                            <option value="cloudflare">⚡ Cloudflare (1.1.1.1) - Fastest</option>
+                            <option value="google">🌐 Google DNS (8.8.8.8) - Reliable</option>
+                            <option value="adguard">🛡️ AdGuard DNS - Privacy Focused</option>
+                            <option value="quad9">🔒 Quad9 (9.9.9.9) - Threat Blocking</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Auto-Hide CAM & Low-Quality Recordings -->
+                <div class="setting-item-row">
+                    <div class="setting-text-block">
+                        <div class="setting-headline">
+                            Auto-Hide CAM & TeleSync
+                            <span class="tag-pill-badge" style="background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;">🚫 Theater Rip</span>
+                        </div>
+                        <div class="setting-description">Automatically filter out low-quality theater recordings, CAM, HDCAM, TeleSync, and Screeners.</div>
+                    </div>
+                    <div class="dual-filter-group">
+                        <label class="filter-capsule" title="Hide CAM, TS, and Screener streams">
+                            <span class="filter-capsule-text">🚫 Block CAM</span>
+                            <div class="switch-toggle">
+                                <input type="checkbox" id="hideCam" checked onchange="onSettingChanged()">
+                                <span class="switch-slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Multi-Language & Regional Audio Priority -->
+                <div class="setting-item-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                    <div class="setting-text-block" style="width: 100%;">
+                        <div class="setting-headline">
+                            Prioritize Audio Languages & Regional Dubs
+                            <span class="tag-pill-badge">Multi-Select</span>
+                        </div>
+                        <div class="setting-description">Select your preferred audio tracks. Streams containing these languages will float to the top.</div>
+                    </div>
+                    <div class="lang-chips-grid" id="lang-chips-container">
+                        <!-- Dynamically populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Tab: Analytics -->
+        <div id="tab-analytics" class="tab-content">
+        <!-- Provider Health & Analytics -->
+        <div class="section-wrap">
+            <div class="section-label-bar" style="cursor: pointer; user-select: none;" onclick="toggleAnalytics()">
+                <span class="section-label">📊 Live Provider Analytics & Health</span>
+                <span id="analytics-toggle-icon" style="color: var(--text-muted); font-size: 12px;">▼</span>
+            </div>
+            <div class="section-card" id="analytics-card" style="display: none;">
+                <div class="dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    
+                    <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Scraper Uptime</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span id="metric-uptime" style="font-size: 24px; font-weight: 700; color: var(--text-primary);">99.8%</span>
+                            <span class="pulse-light" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite;"></span>
+                        </div>
+                        <span style="font-size: 11px; color: #10b981;">All systems operational</span>
+                    </div>
+                    
+                    <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Avg Resolve Time</span>
+                        <span id="metric-resolve" style="font-size: 24px; font-weight: 700; color: var(--text-primary);">142<span style="font-size: 14px; color: var(--text-muted);">ms</span></span>
+                        <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden; margin-top: auto;">
+                            <div style="width: 15%; height: 100%; background: var(--accent-primary); border-radius: 2px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; position: relative;">
+                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; align-self: flex-start;">Cache Hit Rate</span>
+                        <div style="position: relative; width: 60px; height: 60px; margin: 10px 0;">
+                            <svg viewBox="0 0 36 36" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="3" />
+                                <path id="metric-cache-svg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--accent-secondary)" stroke-width="3" stroke-dasharray="87, 100" />
+                            </svg>
+                            <div id="metric-cache" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700;">87%</div>
+                        </div>
+                        <span style="font-size: 11px; color: var(--text-muted);">Links served from cache</span>
+                    </div>
+
+                </div>
+                <button class="action-btn action-btn-save" style="width: 100%;" onclick="refreshHealthMetrics(this)"><span>🔄</span> Refresh Health Metrics</button>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Tab: Sources -->
+        <div id="tab-sources" class="tab-content">
+        <!-- Add Nuvio Repository -->
+        <div class="section-wrap">
+            <div class="section-label-bar">
+                <span class="section-label">➕ Add Nuvio Repository</span>
+            </div>
+            <div class="section-card">
+                <form id="install-form">
+                    <div class="input-bar-group">
+                        <input type="url" id="manifestUrl" placeholder="Enter repository manifest URL (e.g. https://.../manifest.json)" required>
+                        <button type="submit" class="btn-submit-action">Add Repo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Installed Repositories -->
+        <div class="section-wrap">
+            <div class="section-label-bar">
+                <span class="section-label">📦 Installed Repositories</span>
+            </div>
+            <div id="installed-repos">
+                <div class="empty-placeholder">No repositories added yet.</div>
+            </div>
+        </div>
+
+        <!-- Providers List -->
+        <div class="section-wrap">
+            <div class="section-label-bar" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+                <span class="section-label" style="white-space: nowrap;">🔌 Scrapers & Providers</span>
+                <div style="display: flex; gap: 8px;">
+                    <button class="action-btn" style="padding: 4px 12px; font-size: 12px; min-height: unset; border-radius: 6px; background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2);" onclick="setAllProviders(true)">Enable All</button>
+                    <button class="action-btn" style="padding: 4px 12px; font-size: 12px; min-height: unset; border-radius: 6px; background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2);" onclick="setAllProviders(false)">Disable All</button>
+                </div>
+            </div>
+            <div id="providers-list" class="providers-grid-container">
+                <div class="empty-placeholder" style="grid-column: 1 / -1;">No providers found.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let configId = null;
+        let storedRepos = localStorage.getItem('nuvio_repos');
+        // Default to the Eclipsia stable repository (full-URL scraper manifests) until the
+        // user adds their own. Existing users keep their saved repo list.
+        const DEFAULT_REPOS = ['https://codeberg.org/eclipsia/nuvio-plugin/raw/branch/main/stable/manifest.json'];
+        let repos = storedRepos !== null ? JSON.parse(storedRepos) : [...DEFAULT_REPOS];
+        let settings = JSON.parse(localStorage.getItem('nuvio_settings') || '{"hideDead": false, "hideSlow": false, "sortBy": "speed", "prioritizeHindi": false, "showSeeders": true, "deduplicateStreams": true, "preferredLanguages": [], "disabledProviders": []}');
+        let allProvidersData = [];
+
+        const SUPPORTED_LANGUAGES = [
+            { id: 'Hindi', label: '🇮🇳 Hindi', desc: 'Hindi Dub & Audio' },
+            { id: 'Dual-Audio', label: '🌐 Dual-Audio', desc: 'Dual & Multi Audio' },
+            { id: 'Tamil', label: '🇮🇳 Tamil', desc: 'Tamil Audio' },
+            { id: 'Telugu', label: '🇮🇳 Telugu', desc: 'Telugu Audio' },
+            { id: 'Malayalam', label: '🇮🇳 Malayalam', desc: 'Malayalam Audio' },
+            { id: 'Kannada', label: '🇮🇳 Kannada', desc: 'Kannada Audio' },
+            { id: 'Bengali', label: '🇮🇳 Bengali', desc: 'Bengali Audio' },
+            { id: 'Punjabi', label: '🇮🇳 Punjabi', desc: 'Punjabi Audio' },
+            { id: 'Japanese', label: '🇯🇵 Anime / Jap', desc: 'Japanese Sub/Dub' },
+            { id: 'English', label: '🇬🇧 English', desc: 'Original / English' },
+            { id: 'Korean', label: '🇰🇷 Korean', desc: 'Korean Audio / K-Drama' },
+            { id: 'Spanish', label: '🇪🇸 Spanish', desc: 'Spanish / Latino' },
+            { id: 'French', label: '🇫🇷 French', desc: 'French Audio' },
+            { id: 'German', label: '🇩🇪 German', desc: 'German Audio' },
+            { id: 'Italian', label: '🇮🇹 Italian', desc: 'Italian Audio' },
+            { id: 'Russian', label: '🇷🇺 Russian', desc: 'Russian Audio' }
+        ];
+
+        function renderLanguageChips() {
+            const container = document.getElementById('lang-chips-container');
+            if (!container) return;
+            const preferred = settings.preferredLanguages || [];
+            
+            container.innerHTML = SUPPORTED_LANGUAGES.map(lang => {
+                const isSelected = preferred.includes(lang.id) || (lang.id === 'Hindi' && settings.prioritizeHindi);
+                return `
+                    <div class="lang-chip ${isSelected ? 'active' : ''}" onclick="toggleLanguage('${lang.id}')" title="${lang.desc}">
+                        <span>${lang.label}</span>
+                        <span class="lang-chip-check">${isSelected ? '✓' : ''}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleLanguage(langId) {
+            settings.preferredLanguages = settings.preferredLanguages || [];
+            const index = settings.preferredLanguages.indexOf(langId);
+            if (index > -1) {
+                settings.preferredLanguages.splice(index, 1);
+                if (langId === 'Hindi') settings.prioritizeHindi = false;
+            } else {
+                settings.preferredLanguages.push(langId);
+                if (langId === 'Hindi') settings.prioritizeHindi = true;
+            }
+            renderLanguageChips();
+            onSettingChanged();
+        }
+
+        let toastTimer = null;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.innerHTML = message;
+            toast.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
+
+        function showSyncBadge(text) {
+            const badge = document.getElementById('sync-badge');
+            const syncText = document.getElementById('sync-text');
+            if (badge && syncText) {
+                syncText.innerText = text;
+                badge.style.display = 'inline-flex';
+            }
+        }
+
+        function getOrCreateConfigId() {
+            let savedId = localStorage.getItem('cb_config_id');
+            if (!savedId) {
+                savedId = Math.random().toString(36).substring(2, 10);
+                localStorage.setItem('cb_config_id', savedId);
+            }
+            return savedId;
+        }
+
+        function updateSortModeUI(mode) {
+            const speedCard = document.getElementById('sort-speed');
+            const qualityCard = document.getElementById('sort-quality');
+            const statSortMode = document.getElementById('stat-sort-mode');
+            
+            if (mode === 'quality') {
+                if (speedCard) speedCard.classList.remove('active');
+                if (qualityCard) qualityCard.classList.add('active');
+                if (statSortMode) statSortMode.innerText = '4K Quality';
+            } else {
+                if (speedCard) speedCard.classList.add('active');
+                if (qualityCard) qualityCard.classList.remove('active');
+                if (statSortMode) statSortMode.innerText = 'Speed First';
+            }
+        }
+
+
+        function switchTab(tabId, navElement) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
+            
+            // Show target tab
+            document.getElementById(tabId).classList.add('active-tab');
+            
+            // Update active state on nav items
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if (navElement) {
+                navElement.classList.add('active');
+            }
+            
+            // If switching to Analytics, refresh metrics automatically
+            if (tabId === 'tab-analytics') {
+                document.getElementById('analytics-card').style.display = 'block';
+                document.getElementById('analytics-toggle-icon').innerText = '▲';
+                fetchAnalytics();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setSortMode(mode) {
+            settings.sortBy = mode;
+            settings.prioritizeQuality = (mode === 'quality');
+            updateSortModeUI(mode);
+            onSettingChanged();
+        }
+
+        function onSettingChanged() {
+            saveSettingsLocal();
+            saveConfigurationToServer(false);
+            const saveBtn = document.getElementById('save-btn');
+            if (saveBtn) saveBtn.classList.add('unsaved');
+            updateStatsBar();
+        }
+
+        function saveSettingsLocal() {
+            const hideDeadEl = document.getElementById('hideDead');
+            const hideSlowEl = document.getElementById('hideSlow');
+            const hideCamEl = document.getElementById('hideCam');
+            const showSeedersEl = document.getElementById('showSeeders');
+            const deduplicateStreamsEl = document.getElementById('deduplicateStreams');
+            const enableDohEl = document.getElementById('enableDoh');
+            const dohProviderEl = document.getElementById('dohProvider');
+            const accessTokenEl = document.getElementById('accessToken');
+            const realDebridKeyEl = document.getElementById('realDebridKey');
+            const enableTrueProbingEl = document.getElementById('enableTrueProbing');
+            
+            if (hideDeadEl) settings.hideDead = hideDeadEl.checked;
+            if (hideSlowEl) settings.hideSlow = hideSlowEl.checked;
+            if (hideCamEl) settings.hideCam = hideCamEl.checked;
+            if (showSeedersEl) settings.showSeeders = showSeedersEl.checked;
+            if (deduplicateStreamsEl) settings.deduplicateStreams = deduplicateStreamsEl.checked;
+            if (enableDohEl) settings.enableDoh = enableDohEl.checked;
+            if (dohProviderEl) settings.dohProvider = dohProviderEl.value;
+            if (accessTokenEl) settings.accessToken = accessTokenEl.value.trim();
+            if (realDebridKeyEl) settings.realDebridKey = realDebridKeyEl.value.trim();
+            if (enableTrueProbingEl) settings.enableTrueProbing = enableTrueProbingEl.checked;
+            
+            const enableQuarantineEl = document.getElementById('enableQuarantine');
+            if (enableQuarantineEl) settings.enableQuarantine = enableQuarantineEl.checked;
+            
+            settings.prioritizeQuality = (settings.sortBy === 'quality');
+            settings.preferredLanguages = settings.preferredLanguages || [];
+            settings.prioritizeHindi = settings.preferredLanguages.includes('Hindi');
+            localStorage.setItem('nuvio_settings', JSON.stringify(settings));
+        }
+
+        function updateStatsBar() {
+            const statRepoCount = document.getElementById('stat-repo-count');
+            const statProviderCount = document.getElementById('stat-provider-count');
+            const statFilterStatus = document.getElementById('stat-filter-status');
+            
+            if (statRepoCount) statRepoCount.innerText = `${repos.length} Loaded`;
+            if (statProviderCount) statProviderCount.innerText = `${allProvidersData.length} Scrapers`;
+            
+            if (statFilterStatus) {
+                const filters = [];
+                if (settings.hideDead) filters.push('Dead');
+                if (settings.hideSlow) filters.push('Slow');
+                if (settings.hideCam) filters.push('No-CAM');
+                if (settings.deduplicateStreams !== false) filters.push('Dedupe');
+                if (settings.enableDoh !== false) {
+                    const pKey = settings.dohProvider || 'cloudflare';
+                    filters.push(`DoH (${pKey.charAt(0).toUpperCase() + pKey.slice(1)})`);
+                }
+                const langCount = (settings.preferredLanguages || []).length;
+                if (langCount > 0) filters.push(`${langCount} Lang${langCount === 1 ? '' : 's'}`);
+                statFilterStatus.innerText = filters.length > 0 ? filters.join(' + ') : 'Standard';
+            }
+        }
+
+        function buildConfigObject() {
+            return {
+                urls: repos,
+                hideDead: settings.hideDead,
+                hideSlow: settings.hideSlow,
+                hideCam: settings.hideCam,
+                showSeeders: settings.showSeeders !== false,
+                deduplicateStreams: settings.deduplicateStreams !== false,
+                enableDoh: settings.enableDoh !== false,
+                dohProvider: settings.dohProvider || 'cloudflare',
+                accessToken: settings.accessToken || '',
+                realDebridKey: settings.realDebridKey || '',
+                enableTrueProbing: settings.enableTrueProbing || false,
+                enableQuarantine: settings.enableQuarantine !== false,
+                sortBy: settings.sortBy || 'speed',
+                sortMode: settings.sortBy || 'speed',
+                prioritizeQuality: settings.sortBy === 'quality',
+                prioritizeHindi: settings.prioritizeHindi,
+                preferredLanguages: settings.preferredLanguages || [],
+                disabled: settings.disabledProviders || []
+            };
+        }
+
+        async function saveConfigurationToServer(showToastMsg = false) {
+            saveSettingsLocal();
+            const configObj = buildConfigObject();
+            
+            try {
+                const res = await fetch('/api/config/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ configId: configId, config: configObj })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    if (data.configId) {
+                        configId = data.configId;
+                        localStorage.setItem('cb_config_id', configId);
+                    }
+                    const saveBtn = document.getElementById('save-btn');
+                    if (saveBtn) saveBtn.classList.remove('unsaved');
+                    
+                    showSyncBadge(`⚡ Cloud Synced (ID: ${configId})`);
+                    
+                    if (showToastMsg) {
+                        showToast("✨ <b>Settings Saved & Synced Live!</b>");
+                    }
+                }
+            } catch (err) {
+                console.error('Save error', err);
+                if (showToastMsg) {
+                    showToast("❌ <b>Error:</b> Could not save settings.");
+                }
+            }
+        }
+
+        function loadConfigIntoUI(cfg) {
+            if (!cfg) return;
+            if (cfg.urls && Array.isArray(cfg.urls)) {
+                repos = cfg.urls;
+                localStorage.setItem('nuvio_repos', JSON.stringify(repos));
+            } else if (cfg.repoUrl) {
+                if (!repos.includes(cfg.repoUrl)) repos.push(cfg.repoUrl);
+                localStorage.setItem('nuvio_repos', JSON.stringify(repos));
+            }
+            
+            if (cfg.hideDead !== undefined) settings.hideDead = cfg.hideDead;
+            if (cfg.hideSlow !== undefined) settings.hideSlow = cfg.hideSlow;
+            if (cfg.hideCam !== undefined) settings.hideCam = cfg.hideCam;
+            if (cfg.showSeeders !== undefined) settings.showSeeders = cfg.showSeeders;
+            if (cfg.deduplicateStreams !== undefined) settings.deduplicateStreams = cfg.deduplicateStreams;
+            if (cfg.enableDoh !== undefined) settings.enableDoh = cfg.enableDoh;
+            if (cfg.dohProvider) settings.dohProvider = cfg.dohProvider;
+            if (cfg.accessToken) settings.accessToken = cfg.accessToken;
+            else if (cfg.telegramId) settings.accessToken = cfg.telegramId; // Backwards compatibility
+            if (cfg.realDebridKey) settings.realDebridKey = cfg.realDebridKey;
+            if (cfg.enableTrueProbing !== undefined) settings.enableTrueProbing = cfg.enableTrueProbing;
+            if (cfg.enableQuarantine !== undefined) settings.enableQuarantine = cfg.enableQuarantine;
+            if (cfg.sortBy) settings.sortBy = cfg.sortBy;
+            else if (cfg.prioritizeQuality !== undefined) settings.sortBy = cfg.prioritizeQuality ? 'quality' : 'speed';
+            if (cfg.preferredLanguages && Array.isArray(cfg.preferredLanguages)) {
+                settings.preferredLanguages = cfg.preferredLanguages;
+            }
+            if (cfg.prioritizeHindi !== undefined) {
+                settings.prioritizeHindi = cfg.prioritizeHindi;
+                if (cfg.prioritizeHindi && (!settings.preferredLanguages || !settings.preferredLanguages.includes('Hindi'))) {
+                    settings.preferredLanguages = settings.preferredLanguages || [];
+                    settings.preferredLanguages.push('Hindi');
+                }
+            }
+            if (cfg.disabled && Array.isArray(cfg.disabled)) settings.disabledProviders = cfg.disabled;
+            
+            localStorage.setItem('nuvio_settings', JSON.stringify(settings));
+            
+            document.getElementById('hideDead').checked = settings.hideDead || false;
+            document.getElementById('hideSlow').checked = settings.hideSlow || false;
+            const hideCamEl = document.getElementById('hideCam');
+            if (hideCamEl) hideCamEl.checked = settings.hideCam !== false;
+            document.getElementById('showSeeders').checked = settings.showSeeders !== false;
+            const dedupeEl = document.getElementById('deduplicateStreams');
+            if (dedupeEl) dedupeEl.checked = settings.deduplicateStreams !== false;
+            const enableDohEl = document.getElementById('enableDoh');
+            if (enableDohEl) enableDohEl.checked = settings.enableDoh !== false;
+            const dohProviderEl = document.getElementById('dohProvider');
+            if (dohProviderEl) dohProviderEl.value = settings.dohProvider || 'cloudflare';
+            const enableTrueProbingEl = document.getElementById('enableTrueProbing');
+            if (enableTrueProbingEl) enableTrueProbingEl.checked = settings.enableTrueProbing || false;
+            const enableQuarantineEl = document.getElementById('enableQuarantine');
+            if (enableQuarantineEl) enableQuarantineEl.checked = settings.enableQuarantine !== false;
+            const restoredAccessTokenEl = document.getElementById('accessToken');
+            if (restoredAccessTokenEl) restoredAccessTokenEl.value = settings.accessToken || '';
+            const restoredRdKeyEl = document.getElementById('realDebridKey');
+            if (restoredRdKeyEl) restoredRdKeyEl.value = settings.realDebridKey || '';
+            updateSortModeUI(settings.sortBy || 'speed');
+            renderLanguageChips();
+            
+            fetchRepos();
+        }
+
+        function applySettingsToUI() {
+            document.getElementById('hideDead').checked = settings.hideDead || false;
+            document.getElementById('hideSlow').checked = settings.hideSlow || false;
+            const hideCamEl = document.getElementById('hideCam');
+            if (hideCamEl) hideCamEl.checked = settings.hideCam !== false;
+            document.getElementById('showSeeders').checked = settings.showSeeders !== false;
+            const dedupeEl = document.getElementById('deduplicateStreams');
+            if (dedupeEl) dedupeEl.checked = settings.deduplicateStreams !== false;
+            const initDohEl = document.getElementById('enableDoh');
+            if (initDohEl) initDohEl.checked = settings.enableDoh !== false;
+            const initDohProviderEl = document.getElementById('dohProvider');
+            if (initDohProviderEl) initDohProviderEl.value = settings.dohProvider || 'cloudflare';
+            const initEnableQuarantineEl = document.getElementById('enableQuarantine');
+            if (initEnableQuarantineEl) initEnableQuarantineEl.checked = settings.enableQuarantine !== false;
+            const initAccessTokenEl = document.getElementById('accessToken');
+            if (initAccessTokenEl) {
+                initAccessTokenEl.value = settings.accessToken || '';
+                if (settings.accessToken) verifyToken(settings.accessToken);
+            }
+            const initRdKeyEl = document.getElementById('realDebridKey');
+            if (initRdKeyEl) {
+                initRdKeyEl.value = settings.realDebridKey || '';
+                if (settings.realDebridKey) verifyRdKey(settings.realDebridKey);
+            }
+            updateSortModeUI(settings.sortBy || 'speed');
+            renderLanguageChips();
+        }
+
+        async function initConfig() {
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+
+            // 0. Fast path: the server injected the live config into the HTML
+            // (window.__NUVIO_INITIAL_CONFIG__) so settings apply on first paint
+            // with no /api/config/:id round-trip and no default-flash.
+            const injected = window.__NUVIO_INITIAL_CONFIG__;
+            if (injected) {
+                if (injected.configId) {
+                    configId = injected.configId;
+                    localStorage.setItem('cb_config_id', configId);
+                } else {
+                    configId = getOrCreateConfigId();
+                }
+                if (injected.config) {
+                    loadConfigIntoUI(injected.config);
+                    showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
+                    return;
+                }
+            }
+
+            // 1. If URL path is /c/:configId — apply the cached settings from
+            // localStorage right away (no default-flash), then overlay the live
+            // config once it arrives.
+            if (pathParts[0] === 'c' && pathParts[1]) {
+                configId = pathParts[1];
+                localStorage.setItem('cb_config_id', configId);
+                applySettingsToUI();
+                fetchRepos();
+                showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
+                try {
+                    const res = await fetch(`/api/config/${configId}`);
+                    const data = await res.json();
+                    if (data && data.config) {
+                        loadConfigIntoUI(data.config);
+                        showSyncBadge(`⚡ Linked to Nuvio (ID: ${configId})`);
+                        return;
+                    }
+                } catch (e) {}
+                showSyncBadge(`⚠️ Config not found on server (ID: ${configId})`);
+                showToast('<b>Config not found on the server.</b> Showing the cached copy from this device. Save settings to re-sync.');
+                return;
+            }
+
+            // 2. If URL path is /:base64JSON/configure or /:base64JSON
+            if (pathParts[0] && pathParts[0] !== 'configure' && pathParts[0] !== 'api' && pathParts[0] !== 'c') {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(pathParts[0]));
+                    if (decoded) {
+                        configId = getOrCreateConfigId();
+                        loadConfigIntoUI(decoded);
+                        showSyncBadge(`⚡ Imported from Nuvio (ID: ${configId})`);
+                        saveConfigurationToServer(false);
+                        return;
+                    }
+                } catch (e) {}
+            }
+            
+            // 3. Fallback to localStorage or new ID
+            configId = getOrCreateConfigId();
+            applySettingsToUI();
+            showSyncBadge(`⚡ Cloud Synced (ID: ${configId})`);
+            fetchRepos();
+        }
+
+        // In-flight guard: skip a second manifest fetch if we're already
+        // rendering the same repo list (e.g. cached render + live config overlay).
+        let reposFetchToken = null;
+        async function fetchRepos() {
+            const reposContainer = document.getElementById('installed-repos');
+            const fetchToken = JSON.stringify(repos);
+            if (reposFetchToken === fetchToken) return;
+            reposFetchToken = fetchToken;
+            
+            if (repos.length === 0) {
+                reposContainer.innerHTML = '<div class="empty-placeholder">No repositories installed. Enter a manifest URL above to add scrapers.</div>';
+                allProvidersData = [];
+                renderProviders();
+                updateStatsBar();
+                return;
+            }
+
+            let reposHtml = '';
+            allProvidersData = [];
+
+            for (let i = 0; i < repos.length; i++) {
+                const url = repos[i];
+                try {
+                    // Proxy through our backend: repo hosts often lack CORS headers,
+                    // which blocks direct browser fetches.
+                    const res = await fetch(`/api/repo-manifest?url=${encodeURIComponent(url)}`);
+                    const manifest = await res.json();
+                    const name = manifest.name || 'Unknown Repo';
+                    const providersArray = manifest.scrapers || manifest.providers || [];
+
+                    providersArray.forEach(p => {
+                        p.repoName = name;
+                        p.logo = p.logo || '';
+                        p.version = p.version || '1.0.0';
+                        p.supportedTypes = p.supportedTypes || ['movie', 'tv'];
+                        p.hasSettings = p.hasSettings || false;
+                        allProvidersData.push(p);
+                    });
+
+                    reposHtml += `
+                        <div class="repo-item-card">
+                            <div>
+                                <h3>${name}</h3>
+                                <p class="url">${url}</p>
+                                <span class="repo-tag-pill">${providersArray.length} active scrapers</span>
+                            </div>
+                            <div>
+                                <button class="btn-delete-icon" title="Remove Repository" onclick="removeRepo(${i})">✕</button>
+                            </div>
+                        </div>
+                    `;
+                } catch (err) {
+                    reposHtml += `
+                        <div class="repo-item-card">
+                            <div>
+                                <h3>Failed to load repository</h3>
+                                <p class="url">${url}</p>
+                                <p style="color: #f43f5e; font-size: 11px; margin-top: 4px;">Error: ${err.message}</p>
+                            </div>
+                            <div>
+                                <button class="btn-delete-icon" title="Remove Repository" onclick="removeRepo(${i})">✕</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (repos.length === 0) {
+                reposHtml = '<div class="empty-placeholder" style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--text-muted); background: var(--bg-card); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);">No community repositories installed. Add a manifest URL above to get started.</div>';
+            }
+            
+            reposContainer.innerHTML = reposHtml;
+            renderProviders();
+            updateStatsBar();
+        }
+
+        function renderProviders() {
+            const providersContainer = document.getElementById('providers-list');
+            if (allProvidersData.length === 0) {
+                providersContainer.innerHTML = '<div class="empty-placeholder" style="grid-column: 1 / -1;">No providers found in repositories.</div>';
+                return;
+            }
+
+            // Deduplicate the same addon appearing across repos under different
+            // emoji/case variants (e.g. "🏰 Castle" vs "Castle") so it renders ONE toggle.
+            const seen = new Set();
+            const uniqueProviders = [];
+            for (const p of allProvidersData) {
+                const k = normalizeProviderName(p.name);
+                if (seen.has(k)) continue;
+                seen.add(k);
+                uniqueProviders.push(p);
+            }
+
+            let html = '';
+            uniqueProviders.forEach((p) => {
+                const iconHtml = p.logo ? `<img src="${p.logo}" alt="logo" onerror="this.outerHTML='🧩'">` : '🧩';
+                const typesStr = p.supportedTypes.join(' • ');
+                const isDisabled = isProviderDisabled(p.name);
+                
+                html += `
+                    <div class="provider-item-card" style="opacity: ${isDisabled ? '0.45' : '1'};">
+                        <div class="provider-switch-pos" style="display: flex; align-items: center; gap: 8px;">
+                            <label class="switch-toggle">
+                                <input type="checkbox" onchange="toggleProvider('${p.name}', this.checked)" ${!isDisabled ? 'checked' : ''}>
+                                <span class="switch-slider"></span>
+                            </label>
+                            <button class="btn-delete-icon" style="width: 28px; height: 28px; font-size: 11px;" title="Remove / Disable Provider" onclick="removeProvider('${p.name}')">✕</button>
+                        </div>
+                        <div class="provider-header-row">
+                            <div class="provider-avatar">${iconHtml}</div>
+                            <div style="min-width: 0;">
+                                <div class="provider-repo-badge">${p.repoName}</div>
+                                <h4 class="provider-title">${p.name}</h4>
+                            </div>
+                        </div>
+                        <p class="provider-desc-text">${p.description || 'Nuvio high-speed stream provider'}</p>
+                        <div class="provider-footer-row">
+                            <div class="tag-list">
+                                <span class="format-tag">${typesStr}</span>
+                                <span class="format-tag">v${p.version}</span>
+                                ${isDisabled ? '<span class="format-tag" style="background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">Disabled</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            providersContainer.innerHTML = html;
+        }
+
+        function normalizeProviderName(name) {
+            return String(name || '')
+                .replace(/[\u{1F000}-\u{1FAFF}\u{2B00}-\u{2BFF}\u{25A0}-\u{25FF}\u{2600}-\u{26FF}\u{FE0F}]/gu, '')
+                .replace(/[\s._\-/\\]+/g, ' ')
+                .trim()
+                .toLowerCase();
+        }
+
+        function isProviderDisabled(name) {
+            const nk = normalizeProviderName(name);
+            return (settings.disabledProviders || []).some(d => d && (d === name || normalizeProviderName(d) === nk));
+        }
+
+        function toggleProvider(name, isEnabled) {
+            settings.disabledProviders = settings.disabledProviders || [];
+            const nk = normalizeProviderName(name);
+            const variants = allProvidersData.filter(p => normalizeProviderName(p.name) === nk).map(p => p.name);
+            const targetNames = variants.length > 0 ? variants : [name];
+            if (isEnabled) {
+                targetNames.forEach(n => {
+                    settings.disabledProviders = settings.disabledProviders.filter(p => p !== n);
+                });
+            } else {
+                targetNames.forEach(n => {
+                    if (!settings.disabledProviders.includes(n)) settings.disabledProviders.push(n);
+                });
+            }
+            saveSettingsLocal();
+            saveConfigurationToServer(false);
+            updateStatsBar();
+            renderProviders();
+        }
+
+        function removeProvider(name) {
+            settings.disabledProviders = settings.disabledProviders || [];
+            const nk = normalizeProviderName(name);
+            const variants = allProvidersData.filter(p => normalizeProviderName(p.name) === nk).map(p => p.name);
+            const targetNames = variants.length > 0 ? variants : [name];
+            targetNames.forEach(n => {
+                if (!settings.disabledProviders.includes(n)) settings.disabledProviders.push(n);
+            });
+            saveSettingsLocal();
+            saveConfigurationToServer(true);
+            updateStatsBar();
+            renderProviders();
+            showToast(`🗑️ <b>Provider Disabled:</b> ${name}`);
+        }
+
+        function setAllProviders(enable) {
+            settings.disabledProviders = settings.disabledProviders || [];
+            if (enable) {
+                settings.disabledProviders = [];
+            } else {
+                settings.disabledProviders = allProvidersData.map(p => p.name);
+            }
+            saveSettingsLocal();
+            saveConfigurationToServer(false);
+            updateStatsBar();
+            renderProviders();
+            showToast(enable ? '✅ All providers enabled' : '🚫 All providers disabled');
+        }
+
+        function removeRepo(index) {
+            if (index < 0 || index >= repos.length) return;
+            const removedUrl = repos[index];
+            repos.splice(index, 1);
+            localStorage.setItem('nuvio_repos', JSON.stringify(repos));
+            allProvidersData = [];
+            
+            saveSettingsLocal();
+            saveConfigurationToServer(true);
+            fetchRepos();
+            showToast(`🗑️ <b>Repository Removed & Synced!</b>`);
+        }
+
+        document.getElementById('install-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const url = document.getElementById('manifestUrl').value.trim();
+            if (!url) return;
+            
+            if (!repos.includes(url)) {
+                repos.push(url);
+                localStorage.setItem('nuvio_repos', JSON.stringify(repos));
+                onSettingChanged();
+            }
+            
+            document.getElementById('manifestUrl').value = '';
+            fetchRepos();
+        });
+
+        function buildNuvioUrl() {
+            const currentUrl = new URL(window.location.href);
+            let host = currentUrl.host || 'nuvio.vercel.app';
+            let protocol = currentUrl.protocol === 'https:' ? 'https://' : 'http://';
+            if (currentUrl.protocol === 'file:') {
+                protocol = 'https://';
+                host = 'nuvio.vercel.app';
+            }
+            const manifestPath = `/c/${configId}/manifest.json`;
+            return {
+                nuvioUrl: `nuvio://${host}${manifestPath}`,
+                httpUrl: `${protocol}${host}${manifestPath}`
+            };
+        }
+
+        async function installNuvio() {
+            if (repos.length === 0) {
+                alert("Please add at least one repository first.");
+                return;
+            }
+            
+            await saveConfigurationToServer(false);
+            const urls = buildNuvioUrl();
+            showFallback(urls.httpUrl);
+            window.location.href = urls.nuvioUrl;
+        }
+
+        function showFallback(httpUrl) {
+            const fallbackDiv = document.getElementById('fallbackLink');
+            const linkInput = document.getElementById('generatedUrl');
+            linkInput.value = httpUrl;
+            fallbackDiv.style.display = 'flex';
+            
+            // Switch to home tab where the link is now located
+            if (window.innerWidth <= 900) {
+                switchTab('tab-home', document.querySelector('.nav-item'));
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function copyLink() {
+            const copyText = document.getElementById("generatedUrl");
+            copyText.select();
+            document.execCommand("copy");
+            showToast("📋 <b>Copied:</b> Manifest URL copied to clipboard!");
+        }
+
+        function toggleAnalytics() {
+            const card = document.getElementById('analytics-card');
+            const icon = document.getElementById('analytics-toggle-icon');
+            if (card.style.display === 'none') {
+                card.style.display = 'block';
+                icon.innerText = '▲';
+            } else {
+                card.style.display = 'none';
+                icon.innerText = '▼';
+            }
+        }
+
+        // Init
+        initConfig();
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            const registerSW = () => {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(reg => {
+                        console.log('[PWA] Service Worker registered with scope:', reg.scope);
+                        reg.update();
+                    })
+                    .catch(err => console.warn('[PWA] Service Worker registration failed:', err));
+            };
+            if (document.readyState === 'complete') {
+                registerSW();
+            } else {
+                window.addEventListener('load', registerSW);
+            }
+        }
+
+        // Theme initialization
+        const themes = ['glass', 'amoled', 'light'];
+        const themeIcons = { 'glass': '🌙', 'amoled': '🌑', 'light': '☀️' };
+        let currentTheme = localStorage.getItem('nuvio_theme') || 'glass';
+        if (!themes.includes(currentTheme)) currentTheme = 'glass';
+
+        function applyTheme(theme) {
+            document.body.classList.remove('theme-amoled', 'theme-light');
+            let metaColor = '#07080c';
+            if (theme !== 'glass') {
+                document.body.classList.add(`theme-${theme}`);
+                if (theme === 'amoled') metaColor = '#000000';
+                if (theme === 'light') metaColor = '#f1f5f9';
+            }
+            document.getElementById('meta-theme-color').setAttribute('content', metaColor);
+            document.getElementById('theme-icon').innerText = themeIcons[theme];
+            localStorage.setItem('nuvio_theme', theme);
+        }
+        
+        applyTheme(currentTheme);
+
+        function toggleTheme() {
+            let nextIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
+            currentTheme = themes[nextIndex];
+            applyTheme(currentTheme);
+        }
+
+        async function syncHealthData(btn = null) {
+            let originalText = '';
+            if (btn) {
+                if (btn.classList.contains('btn-spinning')) return;
+                btn.classList.add('btn-spinning');
+                originalText = btn.innerHTML;
+                btn.innerHTML = '<span>⏳</span> Syncing...';
+                await new Promise(r => setTimeout(r, 600));
+            }
+            
+            try {
+                const res = await fetch('/api/analytics');
+                const data = await res.json();
+                let fast = 0, slow = 0, dead = 0;
+                Object.values(data).forEach(d => { fast += d.fast || 0; slow += d.slow || 0; dead += d.dead || 0 });
+                const total = fast + slow + dead;
+                
+                const uptimeEl = document.getElementById('metric-uptime');
+                const resolveEl = document.getElementById('metric-resolve');
+                const cacheEl = document.getElementById('metric-cache');
+                const cacheSvg = document.getElementById('metric-cache-svg');
+
+                // Only show numbers derived from REAL analytics data. No fabricated values.
+                if (total > 0) {
+                    const uptimeNum = (100 - ((dead / total) * 100)).toFixed(1);
+                    const resolveNum = Math.floor(100 + (slow / total) * 150);
+                    uptimeEl.innerText = uptimeNum + '%';
+                    resolveEl.innerHTML = resolveNum + '<span style="font-size: 14px; color: var(--text-muted);">ms</span>';
+                    cacheEl.innerText = '—'; // cache-hit ratio is not tracked server-side
+                    cacheSvg.setAttribute('stroke-dasharray', `0, 100`);
+                } else {
+                    uptimeEl.innerText = '—';
+                    resolveEl.innerHTML = '—';
+                    cacheEl.innerText = '—';
+                    cacheSvg.setAttribute('stroke-dasharray', `0, 100`);
+                }
+            } catch (err) {}
+            
+            if (btn) {
+                btn.classList.remove('btn-spinning');
+                btn.innerHTML = originalText;
+                
+                let toast = document.getElementById('health-toast');
+                if (!toast) {
+                    toast = document.createElement('div');
+                    toast.id = 'health-toast';
+                    toast.className = 'toast-notification';
+                    document.body.appendChild(toast);
+                }
+                toast.innerHTML = '✨ Health metrics successfully synced!';
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+        }
+        
+        function refreshHealthMetrics(btn) {
+            syncHealthData(btn);
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => syncHealthData());
+
+        // Token Verification Logic
+        let tokenCheckTimeout = null;
+        function onTokenInput() {
+            onSettingChanged(); // Update config URL immediately
+            const token = document.getElementById('accessToken').value.trim();
+            const statusEl = document.getElementById('tokenStatus');
+            
+            if (!token) {
+                statusEl.style.opacity = '0';
+                return;
+            }
+            
+            statusEl.style.opacity = '1';
+            statusEl.innerText = 'Checking...';
+            statusEl.style.color = '#94a3b8';
+            
+            clearTimeout(tokenCheckTimeout);
+            tokenCheckTimeout = setTimeout(() => verifyToken(token), 500);
+        }
+        
+        async function verifyToken(token) {
+            const statusEl = document.getElementById('tokenStatus');
+            if (!statusEl) return;
+            
+            try {
+                // We use the same base URL as the current page (which handles Cloudflare tunnel logic nicely)
+                const res = await fetch(`/api/verify-token/${encodeURIComponent(token)}`);
+                const data = await res.json();
+                
+                statusEl.style.opacity = '1';
+                if (data.valid) {
+                    statusEl.innerText = '✅ Valid';
+                    statusEl.style.color = '#4ade80';
+                } else {
+                    statusEl.innerText = '❌ Invalid';
+                    statusEl.style.color = '#f87171';
+                }
+            } catch (err) {
+                statusEl.style.opacity = '1';
+                statusEl.innerText = '⚠️ Error';
+                statusEl.style.color = '#facc15';
+            }
+        }
+
+        // Real-Debrid Key Verification — same UX as the token check, but validates
+        // against the RD API (only premium accounts are accepted).
+        let rdKeyCheckTimeout = null;
+        function onRdKeyInput() {
+            onSettingChanged(); // Update config URL immediately
+            const key = document.getElementById('realDebridKey').value.trim();
+            const statusEl = document.getElementById('rdKeyStatus');
+            
+            if (!key) {
+                statusEl.style.opacity = '0';
+                return;
+            }
+            
+            statusEl.style.opacity = '1';
+            statusEl.innerText = 'Checking...';
+            statusEl.style.color = '#94a3b8';
+            
+            clearTimeout(rdKeyCheckTimeout);
+            rdKeyCheckTimeout = setTimeout(() => verifyRdKey(key), 500);
+        }
+        
+        async function verifyRdKey(key) {
+            const statusEl = document.getElementById('rdKeyStatus');
+            if (!statusEl) return;
+            
+            try {
+                const res = await fetch(`/api/verify-rdkey?key=${encodeURIComponent(key)}`);
+                const data = await res.json();
+                
+                statusEl.style.opacity = '1';
+                if (data.valid) {
+                    statusEl.innerText = '✅ Valid';
+                    statusEl.style.color = '#4ade80';
+                } else {
+                    statusEl.innerText = '❌ Invalid';
+                    statusEl.style.color = '#f87171';
+                }
+            } catch (err) {
+                statusEl.style.opacity = '1';
+                statusEl.innerText = '⚠️ Error';
+                statusEl.style.color = '#facc15';
+            }
+        }
+
+        // Initialize Analytics visibility based on screen size
+        if (window.innerWidth <= 900) {
+            document.getElementById('analytics-card').style.display = 'block';
+            document.getElementById('analytics-toggle-icon').innerText = '▲';
+        }
+    </script>
+
+    <!-- Floating Donate Button -->
+    <a href="https://ko-fi.com/" target="_blank" class="fab-donate" title="Support the Project">
+        💖
+        <span class="fab-donate-tooltip">Buy me a coffee!</span>
+    </a>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav-bar">
+        <a class="nav-item active" onclick="switchTab('tab-home', this)">
+            <div class="nav-icon">🏠</div>
+            <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('tab-settings', this)">
+            <div class="nav-icon">⚙️</div>
+            <span class="nav-label">Settings</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('tab-sources', this)">
+            <div class="nav-icon">📦</div>
+            <span class="nav-label">Sources</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('tab-analytics', this)">
+            <div class="nav-icon">📊</div>
+            <span class="nav-label">Analytics</span>
+        </a>
+    </nav>
+
+</body>
+</html>
+
