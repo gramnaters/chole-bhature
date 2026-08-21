@@ -30,6 +30,7 @@
   }
 
   html { font-size: 16px; -webkit-font-smoothing: antialiased; background: var(--app-bg); color: var(--ink); }
+  html, body { max-width: 100vw; overflow-x: clip; }
   body { font-family: var(--font); line-height: 1.5; letter-spacing: -0.01em; background: transparent; }
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
@@ -301,7 +302,9 @@
     border-radius: 0.875rem; padding: 1.25rem 1.5rem;
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.3);
+    min-width: 0;
   }
+  .repo > div { min-width: 0; }
   .repo h4 { font-size: 0.9375rem; font-weight: 600; }
   .repo .url { font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.125rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; user-select: all; cursor: text; }
   .repo .count {
@@ -352,8 +355,8 @@
     align-items: center; justify-content: center; font-size: 1rem;
     flex-shrink: 0;
   }
-  .prov-card .p-info { flex: 1; }
-  .prov-card h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.0625rem; }
+  .prov-card .p-info { flex: 1; min-width: 0; }
+  .prov-card h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.0625rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .prov-card p { font-size: 0.75rem; color: var(--ink-muted); }
 
   /* ─── Badge ─── */
