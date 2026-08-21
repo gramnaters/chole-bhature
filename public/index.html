@@ -794,6 +794,15 @@
     return savedId;
   }
 
+  // Backend stores repos under `urls`; UI uses `repos`. Normalize both ways.
+  function normalizeConfig(raw) {
+    const merged = { ...defaultConfig, ...raw };
+    if (!merged.repos || merged.repos.length === 0) {
+      merged.repos = Array.isArray(raw.urls) ? raw.urls : [];
+    }
+    return merged;
+  }
+
   // ─── Init ───
   async function init() {
     const injected = window.__NUVIO_INITIAL_CONFIG__;
@@ -802,8 +811,7 @@
     if (injected && injected.configId) {
       configId = injected.configId;
       localStorage.setItem('cb_config_id', configId);
-      if (injected.config) config = { ...defaultConfig, ...injected.config };
-      else config = { ...defaultConfig };
+      config = injected.config ? normalizeConfig(injected.config) : { ...defaultConfig };
     } else {
       // 2. URL path /c/:configId without server injection
       const pathParts = window.location.pathname.split('/');
@@ -811,21 +819,19 @@
         configId = pathParts[2];
         localStorage.setItem('cb_config_id', configId);
         config = { ...defaultConfig };
-        // Try to load saved config from server
         try {
           const res = await fetch('/api/config/' + configId);
           const data = await res.json();
-          if (data && data.config) config = { ...defaultConfig, ...data.config };
+          if (data && data.config) config = normalizeConfig(data.config);
         } catch (e) {}
       } else {
         // 3. Fallback: use localStorage or generate new ID
         configId = getOrCreateConfigId();
         config = { ...defaultConfig };
-        // Try to load saved config from server
         try {
           const res = await fetch('/api/config/' + configId);
           const data = await res.json();
-          if (data && data.config) config = { ...defaultConfig, ...data.config };
+          if (data && data.config) config = normalizeConfig(data.config);
         } catch (e) {}
       }
     }
@@ -1125,7 +1131,7 @@
           const res = await fetch('/api/config/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ configId, config })
+            body: JSON.stringify({ configId, config: { ...config, urls: config.repos } })
           });
           const data = await res.json();
           if (data.success) {
