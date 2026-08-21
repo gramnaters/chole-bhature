@@ -993,7 +993,7 @@
       try {
         const res = await fetch('/api/repo-manifest?url=' + encodeURIComponent(url));
         const data = await res.json();
-        const providers = data.providers || data.addons || [];
+        const providers = data.scrapers || data.providers || data.addons || [];
         count = providers.length;
         totalScrapers += count;
         providers.forEach(p => {
@@ -1045,7 +1045,7 @@
       card.dataset.provider = p.name;
       card.innerHTML = `
         <div class="p-icon">${emojis[i % emojis.length]}</div>
-        <div class="p-info"><h4>${p.name}</h4><p>${(p.types || ['movie','tv']).join(' · ')}</p></div>
+        <div class="p-info"><h4>${p.name}</h4><p>${(p.supportedTypes || p.types || ['movie','tv']).join(' · ')}</p></div>
         <label class="toggle"><input type="checkbox" ${!isDisabled ? 'checked' : ''} data-provider-toggle="${p.name}"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
       `;
       grid.appendChild(card);
@@ -1143,11 +1143,18 @@
     const statsGrid = document.getElementById('stats-grid');
     if (!statsGrid) return;
     const cards = statsGrid.querySelectorAll('.stat-card');
+    if (cards.length >= 1) {
+      cards[0].querySelector('.stat-value').textContent = config.sortBy === 'quality' ? 'Quality' : 'Speed';
+    }
     if (cards.length >= 2) {
       cards[1].querySelector('.stat-value').textContent = config.repos.length;
     }
     if (cards.length >= 3) {
-      cards[2].querySelector('.stat-value').textContent = allProviders.length || '176';
+      cards[2].querySelector('.stat-value').textContent = allProviders.length || '—';
+    }
+    if (cards.length >= 4) {
+      const activeFilters = ['hideDead','hideSlow','hideCam','enableQuarantine','deduplicateStreams','showSeeders'].filter(k => config[k]).length;
+      cards[3].querySelector('.stat-value').textContent = activeFilters + ' Active';
     }
   }
 
