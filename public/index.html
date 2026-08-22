@@ -442,29 +442,10 @@
     74%, 86% { transform: rotate(72deg); }
     100% { transform: rotate(0deg); }
   }
-  /* Blocks — nudges out and settles back */
-  .stat-anim .ic-blocks .blk { animation: blkNudge 4s ease-in-out infinite; }
-  @keyframes blkNudge {
-    0%, 68%, 100% { transform: translate(0, 0); }
-    80% { transform: translate(-4px, 4px); }
-    91% { transform: translate(-2px, 2px); }
-  }
-  /* SlidersHorizontal — knobs wander along tracks at their own pace */
-  .stat-anim .ic-sliders .k1 { animation: knobSlide1 6s ease-in-out infinite; }
-  .stat-anim .ic-sliders .k2 { animation: knobSlide2 7s ease-in-out infinite; }
-  .stat-anim .ic-sliders .k3 { animation: knobSlide3 8s ease-in-out infinite; }
-  @keyframes knobSlide1 {
-    0%, 18%, 100% { transform: translateX(0); }
-    42%, 62% { transform: translateX(-5px); }
-  }
-  @keyframes knobSlide2 {
-    0%, 8%, 100% { transform: translateX(0); }
-    34%, 58% { transform: translateX(6px); }
-  }
-  @keyframes knobSlide3 {
-    0%, 28%, 100% { transform: translateX(0); }
-    52%, 78% { transform: translateX(-8px); }
-  }
+  /* Blocks — replaced by Lottie puzzle (fallback svg hidden when lottie loads) */
+  .stat-anim .stat-icon .ltz { display: none; width: 1.5rem; height: 1.5rem; }
+  .stat-anim .stat-icon .ltz.on { display: block; }
+  .stat-anim .stat-icon svg.off { display: none; }
   /* GitHub — body draws itself in on load, tail wags forever */
   .stat-anim .ic-github .body {
     stroke-dasharray: 70;
@@ -500,11 +481,7 @@
     80% { transform: rotate(-5deg); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .stat-anim .stat-icon svg,
-    .stat-anim .ic-blocks .blk,
-    .stat-anim .ic-sliders .k1,
-    .stat-anim .ic-sliders .k2,
-    .stat-anim .ic-sliders .k3 { animation: none !important; transform: none !important; }
+    .stat-anim .stat-icon svg { animation: none !important; transform: none !important; }
     .stat-anim .ic-github .body,
     .stat-anim .ic-github .tail { stroke-dashoffset: 0 !important; opacity: 1 !important; animation: none !important; }
   }
@@ -554,6 +531,7 @@
 </style>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js" defer></script>
 
 
 
@@ -601,12 +579,12 @@
         <div class="stat-label">Repositories</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><svg class="ic-blocks" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"/><path class="blk" d="M14 3h7v7h-7z"/></svg></div>
+        <div class="stat-icon"><svg class="ic-blocks" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"/><path class="blk" d="M14 3h7v7h-7z"/></svg><div class="ltz" data-src="/lottie/puzzle-pinch.json"></div></div>
         <div class="stat-value">0</div>
         <div class="stat-label">Scrapers</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><svg class="ic-sliders" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="3" y1="20" x2="12" y2="20"/><line x1="16" y1="20" x2="21" y2="20"/><line class="knob k1" x1="14" y1="2" x2="14" y2="6"/><line class="knob k2" x1="8" y1="10" x2="8" y2="14"/><line class="knob k3" x1="16" y1="18" x2="16" y2="22"/></svg></div>
+        <div class="stat-icon"><svg class="ic-sliders" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="3" y1="20" x2="12" y2="20"/><line x1="16" y1="20" x2="21" y2="20"/><line class="knob k1" x1="14" y1="2" x2="14" y2="6"/><line class="knob k2" x1="8" y1="10" x2="8" y2="14"/><line class="knob k3" x1="16" y1="18" x2="16" y2="22"/></svg><div class="ltz" data-src="/lottie/filter-hover.json"></div></div>
         <div class="stat-value">0 Active</div>
         <div class="stat-label">Stream Filters</div>
       </div>
@@ -919,6 +897,31 @@
     realDebridKey: '',
     miniDebridToken: ''
   };
+
+  // ─── Card Lottie icons (Scrapers puzzle, Filters filter) ───
+  function initCardLotties() {
+    if (!window.lottie) return;
+    document.querySelectorAll('.ltz[data-src]:not(.ready)').forEach(el => {
+      el.classList.add('ready');
+      try {
+        const a = lottie.loadAnimation({ container: el, renderer: 'svg', loop: true, autoplay: true, path: el.dataset.src });
+        a.addEventListener('DOMLoaded', () => {
+          el.classList.add('on');
+          const sib = el.parentElement.querySelector('svg:not(.off)');
+          if (sib) sib.classList.add('off');
+        });
+      } catch (e) {}
+    });
+  }
+  (function waitLottie() {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let tries = 0;
+    const t = setInterval(() => {
+      tries++;
+      if (window.lottie) { clearInterval(t); initCardLotties(); }
+      else if (tries > 80) clearInterval(t);
+    }, 100);
+  })();
 
   // ─── Config ID (localStorage) ───
   function getOrCreateConfigId() {
