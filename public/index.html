@@ -33,33 +33,6 @@
   html, body { max-width: 100vw; overflow-x: clip; }
   body { font-family: var(--font); line-height: 1.5; letter-spacing: -0.01em; background: transparent; }
 
-  /* ─── Boot Loader ─── */
-  #boot-loader {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #121212;
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.25s ease;
-  }
-  #boot-loader.done { opacity: 0; pointer-events: none; }
-  #boot-lottie { width: 6rem; height: 6rem; display: flex; align-items: center; justify-content: center; }
-  .px-grid { display: grid; grid-template-columns: repeat(4, 1.125rem); grid-auto-rows: 1.125rem; }
-  .px-grid i {
-    width: 1.125rem; height: 1.125rem;
-    background: #fff; border-radius: 0.125rem;
-    transform: scale(0);
-    animation: pxPulse 1533ms infinite;
-    animation-delay: var(--d, 0ms);
-  }
-  @keyframes pxPulse {
-    0% { transform: scale(0); }
-    21.7% { transform: scale(1); }
-    39.1% { transform: scale(1); }
-    60.9% { transform: scale(0); }
-    100% { transform: scale(0); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    #boot-lottie { display: none; }
-  }
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background:
@@ -478,7 +451,7 @@
 </style>
 </head>
 <body>
-<div id="boot-loader" aria-hidden="true"><div id="boot-lottie"><div class="px-grid"><i style="--d:0ms"></i><i style="--d:100ms"></i><i style="--d:200ms"></i><i style="--d:300ms"></i><i style="--d:100ms"></i><i style="--d:200ms"></i><i style="--d:300ms"></i><i style="--d:400ms"></i><i style="--d:200ms"></i><i style="--d:300ms"></i><i style="--d:400ms"></i><i style="--d:500ms"></i><i style="--d:300ms"></i><i style="--d:400ms"></i><i style="--d:500ms"></i><i style="--d:600ms"></i></div></div></div>
+
 
 
 <!-- Nav (Nuvio floating pill) -->
@@ -844,30 +817,6 @@
     miniDebridToken: ''
   };
 
-  // ─── Boot Loader ───
-  const BOOT_MIN_MS = 900;
-  window.__BOOT_TRACE = [];
-  const btrace = (ev, extra) => {
-    try { window.__BOOT_TRACE.push({ ev, t: Math.round(performance.now()), ...extra }); } catch (e) {}
-  };
-  window.addEventListener('unhandledrejection', e => btrace('unhandledRejection', { msg: String(e.reason && e.reason.message || e.reason) }));
-  window.addEventListener('error', e => btrace('error', { msg: e.message }));
-
-  function hideBoot(minMs) {
-    btrace('hideBoot called', { minMs });
-    const el = document.getElementById('boot-loader');
-    if (!el || el.dataset.done) { btrace('hideBoot skipped', { reason: !el ? 'no-el' : 'already-done' }); return; }
-    el.dataset.done = '1';
-    if (!minMs) { el.remove(); btrace('boot removed instantly'); return; }
-    setTimeout(() => {
-      el.classList.add('done');
-      setTimeout(() => el.remove(), 300);
-      btrace('boot faded out');
-    }, Math.max(0, minMs - (performance.now() - bootStart)));
-  }
-  const bootStart = performance.now();
-  setTimeout(() => hideBoot(0), 8000);
-
   // ─── Config ID (localStorage) ───
   function getOrCreateConfigId() {
     let savedId = localStorage.getItem('cb_config_id');
@@ -891,7 +840,6 @@
   async function init() {
     const injected = window.__NUVIO_INITIAL_CONFIG__;
     let syncedFromCloud = false;
-    btrace('init start', { injectedPresent: !!injected, injectedHasConfigId: !!(injected && injected.configId), injectedHasConfig: !!(injected && injected.config), path: location.pathname });
 
     // 1. Server-injected config (from /c/:configId route) — config painted instantly,
     //    but repo manifests still stream in, so treat as cloud-synced.
@@ -917,8 +865,6 @@
         const hadSavedId = !!localStorage.getItem('cb_config_id');
         configId = getOrCreateConfigId();
         config = { ...defaultConfig };
-        // Brand-new device: definitely nothing in cloud — reveal instantly.
-        if (!hadSavedId) hideBoot(0);
         try {
           const res = await fetch('/api/config/' + configId);
           const data = await res.json();
@@ -940,9 +886,6 @@
     setupInstallButton();
     setupProviderButtons();
     setupProviderFilter();
-
-    btrace('manifests done', { syncedFromCloud, repoCount: config.repos.length });
-    hideBoot(syncedFromCloud ? BOOT_MIN_MS : 0);
   }
 
   // ─── Config Display Update ───
