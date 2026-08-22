@@ -35,25 +35,9 @@
 
   body::before {
     content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    transform-origin: 50% 44%;
     background:
-      radial-gradient(42% 34% at 45% 36%, rgba(124,92,255,0.21) 0%, rgba(84,58,190,0.11) 45%, transparent 72%),
-      radial-gradient(40% 32% at 60% 54%, rgba(45,212,168,0.15) 0%, rgba(24,120,105,0.08) 48%, transparent 74%),
+      radial-gradient(46% 36% at 50% 36%, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.035) 45%, transparent 72%),
       radial-gradient(120% 105% at 50% 45%, transparent 38%, rgba(0,0,0,0.5) 100%);
-    animation:
-      glowScaleIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) both,
-      glowBreathe 9s ease-in-out 1.6s infinite;
-  }
-  @keyframes glowScaleIn {
-    from { transform: scale(0.55); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  @keyframes glowBreathe {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.82; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    body::before { animation: none; }
   }
 
   /* ─── Floating Pill Nav (Nuvio style) ─── */
@@ -124,7 +108,7 @@
 
   /* ─── Hero ─── */
   .hero {
-    text-align: center; padding: 4rem 0 3rem;
+    text-align: center; padding: 1.75rem 0 2.5rem;
   }
   .hero-eyebrow {
     font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em;
@@ -136,7 +120,7 @@
   }
   .hero p {
     font-size: 1rem; color: var(--ink-muted); line-height: 1.6;
-    max-width: 32rem; margin: 0 auto 2rem;
+    max-width: 32rem; margin: 0 auto 1.5rem;
   }
   .hero-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
 
@@ -487,7 +471,7 @@
     .sort-grid, .lang-grid, .prov-grid { grid-template-columns: 1fr; }
     .glass-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 1.5rem; }
-    .hero { padding: 2.5rem 0 2rem; }
+    .hero { padding: 1.25rem 0 2rem; }
   }
   @media (max-width: 67.5rem) {
     .nav-center { display: none; }
