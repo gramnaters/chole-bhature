@@ -366,6 +366,29 @@ app.get('/api/verify-rdkey', async (req, res) => {
     }
 });
 
+app.get('/api/health', async (req, res) => {
+    let tursoOk = false;
+    if (turso) { try { await turso.execute('SELECT 1'); tursoOk = true; } catch (e) {} }
+    const mem = process.memoryUsage();
+    let totalStreamsServed = 0;
+    for (const v of providerAnalytics.values()) totalStreamsServed += (v.fast||0)+(v.slow||0)+(v.dead||0);
+    res.json({
+        status: 'ok',
+        version: pkg.version,
+        uptime: Math.floor(process.uptime()),
+        uptimeHuman: `${Math.floor(process.uptime()/3600)}h ${Math.floor((process.uptime()%3600)/60)}m`,
+        memory: { heapUsed: Math.round(mem.heapUsed/1024/1024)+'MB', rss: Math.round(mem.rss/1024/1024)+'MB' },
+        tursoConnected: tursoOk,
+        streamCacheEntries: streamCache.size,
+        providersTracked: providerAnalytics.size,
+        totalStreamsServed,
+        timestamp: new Date().toISOString()
+    });
+});
+app.get('/analytics', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, must-revalidate');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.get('/api/analytics', (req, res) => {
     const stats = {};
     for (const [provider, data] of providerAnalytics.entries()) {
