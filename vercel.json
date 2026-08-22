@@ -14,5 +14,11 @@
       "src": "/(.*)",
       "dest": "index.js"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/provider-status",
+      "schedule": "*/30 * * * *"
+    }
   ]
 }

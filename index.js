@@ -3,6 +3,7 @@ const { addonBuilder, serveHTTP } = require('stremio-addon-sdk');
 const path = require('path');
 const providerLoader = require('./providerLoader');
 const { sortAndTagStreams } = require('./streamTester');
+const { probeAllProviders } = require('./probeStatus');
 const { setDohEnabled, setDohProvider, getDohConfig } = require('./dohResolver');
 const axios = require('axios');
 const fs = require('fs');
@@ -221,6 +222,7 @@ async function loadUserConfigs() {
 }
 
 loadUserConfigs();
+loadProviderStatus().catch(()=>{});
 
 // Provider Status Store — synthetic probe results (Turso + in-memory cache)
 const providerStatusCache = new Map();
@@ -432,6 +434,31 @@ app.get('/api/analytics', (req, res) => {
         stats[provider] = data;
     }
     res.json(stats);
+});
+
+app.get('/api/provider-status', (req, res) => {
+    const all = getAllProviderStatus();
+    const arr = Object.entries(all).map(([name, v]) => ({ name, ...v }));
+    arr.sort((a, b) => a.name.localeCompare(b.name));
+    res.json(arr);
+});
+
+app.get('/api/cron/provider-status', async (req, res) => {
+    if (process.env.CRON_SECRET) {
+        const hdr = req.headers['x-cron-secret'] || req.headers['x_cron_secret'] || '';
+        const auth = (req.headers['authorization'] || '').replace(/^Bearer\s+/i, '');
+        const q = req.query.secret || '';
+        if (hdr !== process.env.CRON_SECRET && auth !== process.env.CRON_SECRET && q !== process.env.CRON_SECRET) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+    }
+    try {
+        const result = await probeAllProviders();
+        res.json({ ok: true, ...result, timestamp: new Date().toISOString() });
+    } catch (e) {
+        console.error('[Cron] provider-status probe failed:', e.message);
+        res.status(500).json({ ok: false, error: e.message });
+    }
 });
 
 app.get('/api/admin/users', requireAdmin, async (req, res) => {
