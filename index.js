@@ -90,6 +90,25 @@ try {
     console.warn('[Config] Turso unavailable, using file storage only:', e.message);
 }
 
+function getClientIp(req){
+  const fwd = req.headers['x-forwarded-for'];
+  if(fwd) return fwd.split(',')[0].trim();
+  return req.headers['x-real-ip'] || req.ip || 'unknown';
+}
+function getToday(){ return new Date().toISOString().slice(0,10); }
+async function ensureRateLimitsTable(){
+  if(!turso) return;
+  await turso.execute(`CREATE TABLE IF NOT EXISTS rate_limits (ip TEXT, day TEXT, count INTEGER, PRIMARY KEY(ip, day))`);
+}
+async function checkRateLimit(ip){
+  const day=getToday();
+  const r=await turso.execute({sql:'SELECT count FROM rate_limits WHERE ip=? AND day=?', args:[ip,day]});
+  const c=r.rows[0]?.count||0;
+  if(c>=3) return false;
+  await turso.execute({sql:'INSERT INTO rate_limits(ip,day,count) VALUES(?,?,1) ON CONFLICT(ip,day) DO UPDATE SET count=count+1', args:[ip,day]});
+  return true;
+}
+
 // Optional: Upstash Redis for Real-Debrid L2 cache (ephemeral, fine to lose)
 let redis = null;
 try {
@@ -138,6 +157,7 @@ async function loadAllConfigsFromTurso() {
             }
         }
         console.log(`[Config] Loaded ${loaded} configurations from Turso.`);
+        await ensureRateLimitsTable();
     } catch (e) {
         console.error('[Config] Failed to load from Turso:', e.message);
     }
@@ -270,6 +290,8 @@ app.get('/c/:configId/configure', (req, res) => sendConfigPage(req, res, req.par
 // API to save configuration (Instant Sync)
 app.post('/api/config/save', async (req, res) => {
     try {
+        const ip=getClientIp(req);
+        if(turso && !(await checkRateLimit(ip))) return res.status(429).json({success:false, error:'Rate limit: 3 configs per day'});
         let { configId, config } = req.body;
         if (!configId) {
             configId = crypto.randomBytes(4).toString('hex');
