@@ -435,8 +435,27 @@
   }
   /* ─── Stat icons: always-on ambient animation (revertible: remove .stat-anim class or this block) ─── */
   .stat-anim .stat-icon svg { width: 1.5rem; height: 1.5rem; color: var(--ink); }
-  /* CircleGauge — ticks to 72° and back, like it's measuring */
-  .ic-gauge { animation: gaugeTick 5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+  /* CircleGauge — stat card ticks always; sort card responds on hover only */
+  .stat-anim .ic-gauge { animation: gaugeTick 5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+  .sort-card .ic-gauge { transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .sort-card:hover .ic-gauge { transform: rotate(72deg); }
+  /* Sparkles (Quality sort card) — hover: sparkle bounces + fills, stars blink */
+  .sort-card .ic-sparkles .sp-main { fill: none; }
+  .sort-card:hover .ic-sparkles .sp-main { animation: spHover 1s ease both; }
+  @keyframes spHover {
+    0% { transform: translateY(0); fill: rgba(0,0,0,0); }
+    30% { transform: translateY(-1px); }
+    55% { transform: translateY(0); }
+    100% { transform: translateY(0); fill: currentColor; }
+  }
+  .sort-card:hover .ic-sparkles .sp-star { animation: spBlink 2s cubic-bezier(0.34, 1, 0.64, 1) both; }
+  @keyframes spBlink {
+    0% { opacity: 0; }
+    16% { opacity: 1; }
+    33% { opacity: 0; }
+    83% { opacity: 0; }
+    100% { opacity: 1; }
+  }
   @keyframes gaugeTick {
     0%, 52% { transform: rotate(0deg); }
     74%, 86% { transform: rotate(72deg); }
@@ -445,7 +464,6 @@
   /* Blocks — replaced by Lottie puzzle (fallback svg hidden when lottie loads) */
   .ltz { display: none; }
   .stat-anim .stat-icon .ltz { width: 1.5rem; height: 1.5rem; }
-  .sort-card .icon .ltz { width: 1.25rem; height: 1.25rem; }
   .ltz.on { display: block; }
   svg.off { display: none; }
   /* GitHub — body draws itself in on load, tail wags forever */
@@ -484,6 +502,10 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .stat-anim .stat-icon svg { animation: none !important; transform: none !important; }
+    .sort-card .ic-gauge,
+    .sort-card .ic-sparkles .sp-main,
+    .sort-card .ic-sparkles .sp-star { animation: none !important; transition: none !important; transform: none !important; }
+    .sort-card:hover .ic-sparkles .sp-main { fill: currentColor; }
     .stat-anim .ic-github .body,
     .stat-anim .ic-github .tail { stroke-dashoffset: 0 !important; opacity: 1 !important; animation: none !important; }
   }
@@ -630,7 +652,7 @@
         </div>
         <div class="sort-card" data-sort="quality">
           <div class="dot"></div>
-          <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M13 19c0 .34.04.67.09 1H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1l2 4h3L8 4h2l2 4h3l-2-4h2l2 4h3l-2-4h4v9.81c-.88-.51-1.9-.81-3-.81c-3.31 0-6 2.69-6 6m10-1.11l-2.89-.25L19 15l-1.13 2.64l-2.87.25l2.18 1.88l-.68 2.81l2.5-1.49l2.45 1.49l-.65-2.81z"/></svg><div class="ltz" data-src="/lottie/shooting-stars.json"></div></div>
+          <div class="icon"><svg class="ic-sparkles" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="sp-main" d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path class="sp-star" d="M20 3v4"/><path class="sp-star" d="M22 5h-4"/><path class="sp-star" d="M4 17v2"/><path class="sp-star" d="M5 18H3"/></svg></div>
           <div><h4>Quality</h4><p>4K UHD first, then by speed</p></div>
         </div>
       </div>
