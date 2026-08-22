@@ -29,7 +29,7 @@
     --font: "Inter", system-ui, -apple-system, sans-serif;
   }
 
-  html { font-size: 16px; -webkit-font-smoothing: antialiased; background: var(--app-bg); color: var(--ink); }
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; background: var(--app-bg); color: var(--ink); color-scheme: dark; }
   html, body { max-width: 100vw; overflow-x: clip; }
   body { font-family: var(--font); line-height: 1.5; letter-spacing: -0.01em; background: transparent; }
 
@@ -286,6 +286,7 @@
   }
   .input:focus { border-color: var(--blue); }
   .input::placeholder { color: var(--ink-muted); }
+  select.input option { background: var(--surface-2); color: var(--ink); }
   select.input {
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     color-scheme: dark;
