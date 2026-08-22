@@ -109,6 +109,13 @@ async function checkRateLimit(ip){
   return true;
 }
 
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || process.env.ACCESS_TOKEN || '';
+function requireAdmin(req, res, next){
+  const token = req.headers['x-admin-token'] || '';
+  if(!ADMIN_TOKEN || token !== ADMIN_TOKEN) return res.status(401).json({error:'Unauthorized'});
+  next();
+}
+
 // Optional: Upstash Redis for Real-Debrid L2 cache (ephemeral, fine to lose)
 let redis = null;
 try {
@@ -365,6 +372,64 @@ app.get('/api/analytics', (req, res) => {
         stats[provider] = data;
     }
     res.json(stats);
+});
+
+app.get('/api/admin/users', requireAdmin, async (req, res) => {
+    try {
+        const users = [];
+        if (turso) {
+            const result = await turso.execute('SELECT configId, config FROM configs');
+            for (const row of result.rows) {
+                try {
+                    const cfg = JSON.parse(row.config);
+                    const urls = cfg.urls || cfg.repos || [];
+                    users.push({
+                        configId: row.configId,
+                        repoCount: Array.isArray(urls) ? urls.length : 0,
+                        disabledCount: Array.isArray(cfg.disabled) ? cfg.disabled.length : 0,
+                        sortBy: cfg.sortBy || null,
+                        dohProvider: cfg.dohProvider || null,
+                        updatedAt: null
+                    });
+                } catch (e) {}
+            }
+        } else {
+            for (const [configId, cfg] of userConfigs.entries()) {
+                const urls = cfg.urls || cfg.repos || [];
+                users.push({
+                    configId,
+                    repoCount: Array.isArray(urls) ? urls.length : 0,
+                    disabledCount: Array.isArray(cfg.disabled) ? cfg.disabled.length : 0,
+                    sortBy: cfg.sortBy || null,
+                    dohProvider: cfg.dohProvider || null,
+                    updatedAt: null
+                });
+            }
+        }
+        res.json({ users });
+    } catch (e) {
+        console.error('[Admin] GET /api/admin/users failed:', e.message);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+app.delete('/api/admin/users/:configId', requireAdmin, async (req, res) => {
+    const id = req.params.configId;
+    try {
+        userConfigs.delete(id);
+        persistUserConfigsToFile();
+        if (turso) {
+            await turso.execute({ sql: 'DELETE FROM configs WHERE configId = ?', args: [id] });
+        }
+        // clear any cached streams for this configId
+        for (const k of streamCache.keys()) {
+            if (k.includes(id)) streamCache.delete(k);
+        }
+        res.json({ success: true });
+    } catch (e) {
+        console.error('[Admin] DELETE /api/admin/users failed:', e.message);
+        res.status(500).json({ error: e.message });
+    }
 });
 
 // DoH Resolver Status

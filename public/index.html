@@ -636,6 +636,19 @@
     <section class="section" id="section-analytics" style="display:none;">
       <h2 class="section-head">Analytics</h2>
       <p class="section-sub">Provider performance and stream statistics.</p>
+      <!-- Admin User DB (admin-only) -->
+      <div id="admin-section" style="margin-bottom:2rem; padding:1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:0.875rem;">
+        <h3 style="font-size:0.9375rem;font-weight:600;margin-bottom:0.75rem;">Admin — User Records</h3>
+        <div id="admin-auth" style="display:flex;gap:0.625rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap;">
+          <input type="password" id="admin-token-input" class="input" placeholder="Admin token" style="max-width:20rem;flex:1;min-width:12rem;">
+          <button class="btn btn-primary btn-sm" id="admin-unlock-btn">Unlock</button>
+          <button class="btn btn-outline btn-sm" id="admin-logout-btn" style="display:none;">Lock</button>
+          <span id="admin-auth-msg" style="font-size:0.8125rem;color:var(--ink-muted);"></span>
+        </div>
+        <div id="admin-users-table-wrap" style="overflow-x:auto;">
+          <p style="color:var(--ink-muted);font-size:0.8125rem;">Enter admin token to view user records.</p>
+        </div>
+      </div>
       <div id="analytics-content">
         <p style="color:var(--ink-muted);font-size:0.875rem;">Loading analytics...</p>
       </div>
@@ -1136,8 +1149,110 @@
     });
   }
 
+  // ─── Admin User Records ───
+  function getAdminToken(){ return localStorage.getItem('admin_token') || ''; }
+  function setAdminToken(t){ if(t) localStorage.setItem('admin_token', t); else localStorage.removeItem('admin_token'); }
+  function updateAdminAuthUI(){
+    const token = getAdminToken();
+    const input = document.getElementById('admin-token-input');
+    const unlockBtn = document.getElementById('admin-unlock-btn');
+    const logoutBtn = document.getElementById('admin-logout-btn');
+    const msg = document.getElementById('admin-auth-msg');
+    if(input) input.value = token;
+    if(token){
+      if(unlockBtn) unlockBtn.textContent = 'Refresh';
+      if(logoutBtn) logoutBtn.style.display = '';
+      if(msg) msg.textContent = 'Unlocked — fetching users…';
+      if(msg) msg.style.color = 'var(--green)';
+    } else {
+      if(unlockBtn) unlockBtn.textContent = 'Unlock';
+      if(logoutBtn) logoutBtn.style.display = 'none';
+      if(msg) { msg.textContent = 'Enter admin token to view user records.'; msg.style.color = 'var(--ink-muted)'; }
+    }
+  }
+  async function loadAdminUsers(){
+    const wrap = document.getElementById('admin-users-table-wrap');
+    const msg = document.getElementById('admin-auth-msg');
+    const token = getAdminToken();
+    if(!token){
+      wrap.innerHTML = '<p style="color:var(--ink-muted);font-size:0.8125rem;">Enter admin token to view user records.</p>';
+      if(msg){ msg.textContent='Enter admin token to view user records.'; msg.style.color='var(--ink-muted)'; }
+      return;
+    }
+    wrap.innerHTML = '<p style="color:var(--ink-muted);font-size:0.8125rem;">Loading users…</p>';
+    try{
+      const res = await fetch('/api/admin/users', { headers: { 'X-Admin-Token': token } });
+      if(res.status===401){
+        wrap.innerHTML = '<p style="color:var(--red);font-size:0.8125rem;">Unauthorized — check admin token.</p>';
+        if(msg){ msg.textContent='Unauthorized — check token.'; msg.style.color='var(--red)'; }
+        return;
+      }
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json();
+      const users = data.users || [];
+      if(msg){ msg.textContent = users.length + ' user(s) found'; msg.style.color='var(--ink-muted)'; }
+      if(users.length===0){
+        wrap.innerHTML = '<p style="color:var(--ink-muted);font-size:0.8125rem;">No user records found.</p>';
+        return;
+      }
+      let html = '<table style="width:100%;border-collapse:collapse;font-size:0.8125rem;">';
+      html += '<thead><tr style="text-align:left;color:var(--ink-muted);border-bottom:1px solid var(--border);"><th style="padding:0.5rem 0.625rem;">Config ID</th><th style="padding:0.5rem 0.625rem;">Repos</th><th style="padding:0.5rem 0.625rem;">Disabled</th><th style="padding:0.5rem 0.625rem;">Sort</th><th style="padding:0.5rem 0.625rem;">DoH</th><th style="padding:0.5rem 0.625rem;"></th></tr></thead><tbody>';
+      users.forEach(u=>{
+        html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+          <td style="padding:0.5rem 0.625rem;"><a href="/c/${escapeHtml(u.configId)}/configure" style="color:var(--blue);text-decoration:none;word-break:break-all;">${escapeHtml(u.configId)}</a></td>
+          <td style="padding:0.5rem 0.625rem;">${u.repoCount}</td>
+          <td style="padding:0.5rem 0.625rem;">${u.disabledCount}</td>
+          <td style="padding:0.5rem 0.625rem;">${escapeHtml(u.sortBy||'-')}</td>
+          <td style="padding:0.5rem 0.625rem;">${escapeHtml(u.dohProvider||'-')}</td>
+          <td style="padding:0.5rem 0.625rem;text-align:right;"><button class="btn btn-outline btn-sm" style="color:var(--red);border-color:rgba(255,69,58,0.3);" data-del-id="${escapeHtml(u.configId)}">Delete</button></td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      wrap.innerHTML = html;
+      wrap.querySelectorAll('[data-del-id]').forEach(btn=>{
+        btn.addEventListener('click', async function(){
+          const id=this.dataset.delId;
+          if(!confirm('Delete user '+id+'? This cannot be undone.')) return;
+          this.textContent='…'; this.disabled=true;
+          try{
+            const r=await fetch('/api/admin/users/'+encodeURIComponent(id), { method:'DELETE', headers:{ 'X-Admin-Token': getAdminToken() } });
+            if(r.status===401){ alert('Unauthorized'); return; }
+            const j=await r.json();
+            if(j.success) loadAdminUsers();
+            else throw new Error(j.error||'Delete failed');
+          }catch(e){ alert('Delete failed: '+e.message); this.textContent='Delete'; this.disabled=false; }
+        });
+      });
+    }catch(e){
+      wrap.innerHTML = '<p style="color:var(--red);font-size:0.8125rem;">Failed to load users: '+escapeHtml(e.message)+'</p>';
+    }
+  }
+  function setupAdminUI(){
+    updateAdminAuthUI();
+    document.getElementById('admin-unlock-btn')?.addEventListener('click', ()=>{
+      const v=document.getElementById('admin-token-input').value.trim();
+      if(!v){ alert('Enter admin token'); return; }
+      setAdminToken(v);
+      updateAdminAuthUI();
+      loadAdminUsers();
+    });
+    document.getElementById('admin-logout-btn')?.addEventListener('click', ()=>{
+      setAdminToken('');
+      document.getElementById('admin-token-input').value='';
+      updateAdminAuthUI();
+      document.getElementById('admin-users-table-wrap').innerHTML='<p style="color:var(--ink-muted);font-size:0.8125rem;">Enter admin token to view user records.</p>';
+    });
+    document.getElementById('admin-token-input')?.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ document.getElementById('admin-unlock-btn').click(); } });
+    // if token already stored, preload when analytics opened
+    if(getAdminToken()) loadAdminUsers();
+  }
+  // init admin UI once DOM ready
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', setupAdminUI); else setupAdminUI();
+
   // ─── Analytics ───
   async function loadAnalytics() {
+    // also refresh admin users if token present
+    if(getAdminToken()) loadAdminUsers(); else updateAdminAuthUI();
     const container = document.getElementById('analytics-content');
     container.innerHTML = '<p style="color:var(--ink-muted);font-size:0.875rem;">Loading analytics...</p>';
     try {
