@@ -626,8 +626,8 @@ function createAddon(config) {
         const getForceRefreshStream = () => {
             if (!config.addonHost) return null;
             return {
-                name: '🔄 FORCE REFRESH',
-                title: 'Click here to clear the cache, then tap Stremio Refresh!',
+                name: '↻ Refresh',
+                title: 'Clear cache · Tap then Refresh in Stremio',
                 externalUrl: `${config.addonProtocol}://${config.addonHost}/${encodeURIComponent(JSON.stringify(config))}/clear-cache/${type}/${id}`
             };
         };
