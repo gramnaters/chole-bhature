@@ -433,6 +433,64 @@
   @media (prefers-reduced-motion: reduce) {
     .stat-card::before { animation: none; opacity: 0.35; }
   }
+  /* ─── Stat icon hover animations (revertible: remove .stat-anim class or this block) ─── */
+  .stat-anim .stat-icon svg { width: 1.5rem; height: 1.5rem; color: var(--ink); }
+  /* CircleGauge — rotates 72° on hover */
+  .stat-anim .ic-gauge { transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .stat-anim .stat-card:hover .ic-gauge { transform: rotate(72deg); }
+  /* Blocks — small block slides out on hover */
+  .stat-anim .ic-blocks .blk { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+  .stat-anim .stat-card:hover .ic-blocks .blk { transform: translate(-4px, 4px); }
+  /* SlidersHorizontal — knobs slide with spring overshoot */
+  .stat-anim .ic-sliders .knob { transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .stat-anim .stat-card:hover .ic-sliders .k1 { transform: translateX(-5px); }
+  .stat-anim .stat-card:hover .ic-sliders .k2 { transform: translateX(6px); }
+  .stat-anim .stat-card:hover .ic-sliders .k3 { transform: translateX(-8px); }
+  /* GitHub — body redraws, tail draws then wags infinitely */
+  .stat-anim .ic-github .body,
+  .stat-anim .ic-github .tail {
+    stroke-dasharray: 70;
+    stroke-dashoffset: 0;
+  }
+  .stat-anim .ic-github .body {
+    opacity: 1;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .stat-anim .ic-github .tail {
+    stroke-dasharray: 12;
+    transform-box: fill-box;
+    transform-origin: 100% 40%;
+  }
+  .stat-anim .stat-card:hover .ic-github .body { animation: ghBody 0.4s ease both; }
+  .stat-anim .stat-card:hover .ic-github .tail {
+    animation:
+      ghDraw 0.5s ease both,
+      ghWag 2.5s ease-in-out 0.5s infinite;
+  }
+  @keyframes ghBody {
+    0% { opacity: 0; stroke-dashoffset: 70; transform: scale(0.9); }
+    100% { opacity: 1; stroke-dashoffset: 0; transform: scale(1); }
+  }
+  @keyframes ghDraw {
+    from { stroke-dashoffset: 12; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes ghWag {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(-15deg); }
+    30% { transform: rotate(15deg); }
+    45% { transform: rotate(-10deg); }
+    60% { transform: rotate(10deg); }
+    80% { transform: rotate(-5deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stat-anim .stat-icon svg,
+    .stat-anim .ic-blocks .blk,
+    .stat-anim .ic-sliders .knob { animation: none !important; transition: none !important; transform: none !important; }
+    .stat-anim .ic-github .body,
+    .stat-anim .ic-github .tail { stroke-dashoffset: 0 !important; opacity: 1 !important; animation: none !important; }
+  }
   .stat-card:hover {
     transform: translateY(-3px) scale(1.015);
     box-shadow: 0 8px 24px rgba(41,151,255,0.08), 0 2px 8px rgba(0,0,0,0.12);
@@ -514,24 +572,24 @@
     </section>
 
     <!-- Stats -->
-    <div class="stats-grid" id="stats-grid" data-section="general">
+    <div class="stats-grid stat-anim" id="stats-grid" data-section="general">
       <div class="stat-card">
-        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M10.45 15.5q.625.625 1.575.588T13.4 15.4L19 7l-8.4 5.6q-.65.45-.712 1.362t.562 1.538M5.1 20q-.55 0-1.012-.238t-.738-.712q-.65-1.175-1-2.437T2 14q0-2.075.788-3.9t2.137-3.175T8.1 4.788T12 4q2.05 0 3.85.775T19 6.888t2.15 3.125t.825 3.837q.025 1.375-.312 2.688t-1.038 2.512q-.275.475-.737.713T18.874 20z"/></svg></div>
+        <div class="stat-icon"><svg class="ic-gauge" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.6 2.7a10 10 0 1 0 5.7 5.7"/><circle cx="12" cy="12" r="2"/><path d="M13.4 10.6 19 5"/></svg></div>
         <div class="stat-value">Speed</div>
         <div class="stat-label">Sort Mode</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M8 0h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m6.75 11.5c2.75 0 3.49-2.03 3.68-3.1c.91-.29 1.57-1.14 1.57-2.15C20 5 19 4 17.75 4S15.5 5 15.5 6.25c0 .94.57 1.75 1.39 2.08C16.67 9 16 10 14 10c-1.38 0-2.34.35-3 .84V6.87c.87-.31 1.5-1.14 1.5-2.12c0-1.25-1-2.25-2.25-2.25S8 3.5 8 4.75c0 .98.63 1.81 1.5 2.12v6.26c-.87.31-1.5 1.14-1.5 2.12c0 1.25 1 2.25 2.25 2.25s2.25-1 2.25-2.25c0-.93-.56-1.75-1.37-2.07c.28-.68 1.1-1.68 3.62-1.68m-4.5 3a.75.75 0 0 1 .75.75a.75.75 0 0 1-.75.75a.75.75 0 0 1-.75-.75a.75.75 0 0 1 .75-.75m0-10.5a.75.75 0 0 1 .75.75a.75.75 0 0 1-.75.75a.75.75 0 0 1-.75-.75a.75.75 0 0 1 .75-.75m7.5 1.5a.75.75 0 0 1 .75.75a.75.75 0 0 1-.75.75a.75.75 0 0 1-.75-.75a.75.75 0 0 1 .75-.75M16 22v2H4a2 2 0 0 1-2-2V6h2v16z"/></svg></div>
+        <div class="stat-icon"><svg class="ic-github" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="body" d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path class="tail" d="M9 18c-4.51 2-5-2-7-2"/></svg></div>
         <div class="stat-value">0</div>
         <div class="stat-label">Repositories</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M20 10h-1V7c0-1.65-1.35-3-3-3h-2l-1.5-2h-3L8 4H6C4.35 4 3 5.35 3 7v3H2v10h16v-1h2c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2m-8 8c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5"/><circle cx="18.5" cy="4.5" r="2.5"/></svg></div>
+        <div class="stat-icon"><svg class="ic-blocks" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"/><path class="blk" d="M14 3h7v7h-7z"/></svg></div>
         <div class="stat-value">0</div>
         <div class="stat-label">Scrapers</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/><path d="m10 17-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="rgba(255,255,255,0.9)"/></svg></div>
+        <div class="stat-icon"><svg class="ic-sliders" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="3" y1="20" x2="12" y2="20"/><line x1="16" y1="20" x2="21" y2="20"/><line class="knob k1" x1="14" y1="2" x2="14" y2="6"/><line class="knob k2" x1="8" y1="10" x2="8" y2="14"/><line class="knob k3" x1="16" y1="18" x2="16" y2="22"/></svg></div>
         <div class="stat-value">0 Active</div>
         <div class="stat-label">Stream Filters</div>
       </div>
