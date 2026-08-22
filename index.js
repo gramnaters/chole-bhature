@@ -222,6 +222,43 @@ async function loadUserConfigs() {
 
 loadUserConfigs();
 
+// Provider Status Store — synthetic probe results (Turso + in-memory cache)
+const providerStatusCache = new Map();
+async function ensureProviderStatusTable(){
+  if(!turso) return;
+  await turso.execute(`CREATE TABLE IF NOT EXISTS provider_status (name TEXT PRIMARY KEY, up INTEGER, streamsFound INTEGER, latencyMs INTEGER, titles TEXT, updatedAt INTEGER)`);
+}
+async function saveProviderStatus(name, s){
+  providerStatusCache.set(name, s);
+  if(turso) await turso.execute({sql:'INSERT OR REPLACE INTO provider_status(name,up,streamsFound,latencyMs,titles,updatedAt) VALUES(?,?,?,?,?,?)', args:[name, s.up?1:0, s.streamsFound, s.latencyMs, JSON.stringify(s.titles), s.updatedAt]});
+}
+async function loadProviderStatus(){
+  if(!turso) return;
+  await ensureProviderStatusTable();
+  try {
+    const result = await turso.execute('SELECT name, up, streamsFound, latencyMs, titles, updatedAt FROM provider_status');
+    for (const row of result.rows) {
+      try {
+        providerStatusCache.set(row.name, {
+          up: !!row.up,
+          streamsFound: row.streamsFound,
+          latencyMs: row.latencyMs,
+          titles: JSON.parse(row.titles || '[]'),
+          updatedAt: row.updatedAt
+        });
+      } catch (e) {}
+    }
+  } catch (e) {
+    console.error('[ProviderStatus] Failed to load from Turso:', e.message);
+  }
+}
+function getProviderStatus(name){
+  return providerStatusCache.get(name) || null;
+}
+function getAllProviderStatus(){
+  return Object.fromEntries(providerStatusCache);
+}
+
 // PWA Core Endpoints with explicit headers & CORS for WebAPK minting
 app.get('/sw.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
@@ -936,5 +973,11 @@ if (!process.env.VERCEL) {
 
 // Export the app for Vercel Serverless Functions
 module.exports = app;
+module.exports.providerStatusCache = providerStatusCache;
+module.exports.ensureProviderStatusTable = ensureProviderStatusTable;
+module.exports.saveProviderStatus = saveProviderStatus;
+module.exports.loadProviderStatus = loadProviderStatus;
+module.exports.getProviderStatus = getProviderStatus;
+module.exports.getAllProviderStatus = getAllProviderStatus;
 
 
