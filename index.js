@@ -448,13 +448,17 @@ app.get('/api/provider-status', (req, res) => {
 });
 
 app.get('/api/cron/provider-status', async (req, res) => {
-    if (process.env.CRON_SECRET) {
-        const hdr = req.headers['x-cron-secret'] || req.headers['x_cron_secret'] || '';
-        const auth = (req.headers['authorization'] || '').replace(/^Bearer\s+/i, '');
-        const q = req.query.secret || '';
-        if (hdr !== process.env.CRON_SECRET && auth !== process.env.CRON_SECRET && q !== process.env.CRON_SECRET) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
+    if (!process.env.CRON_SECRET) {
+        return res.status(403).json({ error: 'CRON_SECRET not configured' });
+    }
+    const headerSecret = String(req.headers['x-cron-secret'] || '');
+    const bearerSecret = String(req.headers['authorization'] || '').replace(/^Bearer\s+/i, '');
+    const provided = bearerSecret || headerSecret;
+    const providedBuf = Buffer.from(provided);
+    const secretBuf = Buffer.from(process.env.CRON_SECRET);
+    const authorized = providedBuf.length === secretBuf.length && crypto.timingSafeEqual(providedBuf, secretBuf);
+    if (!authorized) {
+        return res.status(401).json({ error: 'Unauthorized' });
     }
     try {
         const result = await probeAllProviders();
@@ -1004,6 +1008,10 @@ if (!process.env.VERCEL) {
 
 // Export the app for Vercel Serverless Functions
 module.exports = app;
+// 60s function ceiling so the 50s global probe cap has headroom (Pro plan).
+// Set here because a vercel.json "functions" key cannot be combined with the
+// "builds" block this project deploys with.
+module.exports.config = { maxDuration: 60 };
 module.exports.providerStatusCache = providerStatusCache;
 module.exports.ensureProviderStatusTable = ensureProviderStatusTable;
 module.exports.saveProviderStatus = saveProviderStatus;

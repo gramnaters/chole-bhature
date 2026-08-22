@@ -12,13 +12,15 @@ const DEFAULT_REPO_URLS = [
   'https://plugin.eclipsia.dpdns.org/x5rn8g7q/manifest.json',
 ];
 
-// 5 reference titles — TMDB IDs for stable probing
+// Reference titles — TMDB IDs for stable probing (movies + one series + one anime)
 const REFERENCE_TITLES = [
   { tmdbId: '872585', title: 'Oppenheimer', type: 'movie' },
   { tmdbId: '278', title: 'The Shawshank Redemption', type: 'movie' },
   { tmdbId: '155', title: 'The Dark Knight', type: 'movie' },
   { tmdbId: '27205', title: 'Inception', type: 'movie' },
   { tmdbId: '157336', title: 'Interstellar', type: 'movie' },
+  { tmdbId: '1399', title: 'Game of Thrones', type: 'series', season: 1, episode: 1 },
+  { tmdbId: '900667', title: 'One Piece Film: Red', type: 'anime' },
 ];
 
 const PER_PROVIDER_TIMEOUT_MS = 8000;
@@ -26,7 +28,25 @@ const GLOBAL_TIMEOUT_MS = 50000;
 const CONCURRENCY = 16;
 
 function timeoutPromise(ms, label) {
-  return new Promise((_, reject) => setTimeout(() => reject(new Error(label || 'Timeout')), ms));
+  let timerId;
+  const promise = new Promise((_, reject) => {
+    timerId = setTimeout(() => reject(new Error(label || 'Timeout')), ms);
+  });
+  promise.clear = () => clearTimeout(timerId);
+  return promise;
+}
+
+// Mirrors the stream-handler type normalization in index.js
+function normalizeRefType(ref) {
+  if (ref.type === 'series' || ref.type === 'tv') {
+    return { type: 'tv', season: ref.season ?? null, episode: ref.episode ?? null };
+  }
+  if (ref.type === 'anime') {
+    return (ref.season != null && ref.episode != null)
+      ? { type: 'tv', season: ref.season, episode: ref.episode }
+      : { type: 'movie', season: null, episode: null };
+  }
+  return { type: 'movie', season: null, episode: null };
 }
 
 async function probeProvider(provider) {
@@ -37,18 +57,19 @@ async function probeProvider(provider) {
   // Probe each reference title in parallel with per-title 8s race
   const titleResults = await Promise.allSettled(
     REFERENCE_TITLES.map(async (ref) => {
+      const norm = normalizeRefType(ref);
+      const t = timeoutPromise(PER_PROVIDER_TIMEOUT_MS, 'Scrape Timeout');
       try {
-        const scrapePromise = provider.getStreams(ref.tmdbId, ref.type, null, null, {});
-        const streams = await Promise.race([
-          scrapePromise,
-          timeoutPromise(PER_PROVIDER_TIMEOUT_MS, 'Scrape Timeout'),
-        ]);
+        const scrapePromise = provider.getStreams(ref.tmdbId, norm.type, norm.season, norm.episode, {});
+        const streams = await Promise.race([scrapePromise, t]);
         if (Array.isArray(streams) && streams.length > 0) {
           return { title: ref.title, count: streams.length };
         }
         return { title: ref.title, count: 0 };
       } catch (e) {
         return { title: ref.title, count: 0 };
+      } finally {
+        t.clear();
       }
     })
   );
@@ -107,6 +128,10 @@ async function probeAllProviders(opts = {}) {
   // 2. Probe with concurrency 16 and global 50s cap
   let up = 0;
   let down = 0;
+  // Providers actually probed and settled this run (name -> result). The
+  // response on global timeout is derived from this so it always reflects
+  // stored truth instead of fabricated "down" entries for unprobed providers.
+  const settledResults = new Map();
 
   async function runBatched() {
     for (let i = 0; i < providers.length; i += CONCURRENCY) {
@@ -115,15 +140,16 @@ async function probeAllProviders(opts = {}) {
         batch.map(async (provider) => {
           // Per-provider wall timeout 14s (spec global constraints) — wrap probeProvider
           // Inner per-title timeout is 8s via Promise.race above.
+          const start = Date.now();
+          const t = timeoutPromise(14000, 'Provider Timeout');
           try {
-            const res = await Promise.race([
-              probeProvider(provider),
-              timeoutPromise(14000, 'Provider Timeout'),
-            ]);
+            const res = await Promise.race([probeProvider(provider), t]);
             return { provider, res };
           } catch (e) {
-            // Timeout or error -> down
-            return { provider, res: { streamsFound: 0, latencyMs: 14000, up: false, titles: [], updatedAt: Date.now() } };
+            // Timeout or error -> down; report measured elapsed time
+            return { provider, res: { streamsFound: 0, latencyMs: Date.now() - start, up: false, titles: [], updatedAt: Date.now() } };
+          } finally {
+            t.clear();
           }
         })
       );
@@ -133,6 +159,7 @@ async function probeAllProviders(opts = {}) {
           const { provider, res } = r.value;
           if (res.up) up++;
           else down++;
+          settledResults.set(provider.name, res);
           if (saveProviderStatus) {
             try {
               await saveProviderStatus(provider.name, res);
@@ -145,18 +172,28 @@ async function probeAllProviders(opts = {}) {
     }
   }
 
-  // Global cap 50s
-  try {
-    await Promise.race([runBatched(), timeoutPromise(GLOBAL_TIMEOUT_MS, 'Global probe timeout')]);
-  } catch (e) {
-    if (e.message !== 'Global probe timeout') throw e;
-    // Global timeout hit — treat remaining as down (already counted what we probed)
-    const probedSoFar = up + down;
-    const remaining = providers.length - probedSoFar;
-    down += remaining > 0 ? remaining : 0;
+  // Global cap 50s. When it fires we stop waiting and return only what has
+  // already been probed/saved; the background batch keeps running and saving.
+  let aborted = false;
+  let fireAborted;
+  const abortedPromise = new Promise((resolve) => {
+    fireAborted = () => { aborted = true; resolve(); };
+  });
+  const globalTimer = setTimeout(fireAborted, GLOBAL_TIMEOUT_MS);
+
+  const batched = runBatched();
+  await Promise.race([batched, abortedPromise]);
+  clearTimeout(globalTimer);
+
+  if (!aborted) {
+    return { probed: providers.length, up, down };
   }
 
-  return { probed: providers.length, up, down };
+  let settledUp = 0;
+  for (const res of settledResults.values()) {
+    if (res.up) settledUp++;
+  }
+  return { probed: settledResults.size, up: settledUp, down: settledResults.size - settledUp };
 }
 
 module.exports = {
