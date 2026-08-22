@@ -93,8 +93,11 @@ try {
 
 function getClientIp(req){
   const fwd = req.headers['x-forwarded-for'];
-  if(fwd) return fwd.split(',')[0].trim();
-  return req.headers['x-real-ip'] || req.ip || 'unknown';
+  if(fwd){
+    const hops = String(fwd).split(',').map(h => h.trim()).filter(Boolean);
+    if(hops.length) return hops[hops.length-1];
+  }
+  return req.headers['x-real-ip'] || 'unknown';
 }
 function getToday(){ return new Date().toISOString().slice(0,10); }
 async function ensureRateLimitsTable(){
@@ -103,17 +106,40 @@ async function ensureRateLimitsTable(){
 }
 async function checkRateLimit(ip){
   const day=getToday();
+  // ATOMIC gate: a single conditional UPDATE increments only while under quota,
+  // so concurrent saves can no longer all slip through a SELECT-then-INSERT race.
+  // libsql exposes rowsAffected (older drivers: changes); 0 rows means either no
+  // row for today yet or quota already spent — disambiguate via INSERT below.
+  const upd=await turso.execute({sql:'UPDATE rate_limits SET count=count+1 WHERE ip=? AND day=? AND count<3', args:[ip,day]});
+  const affected=(typeof upd.rowsAffected==='number')?upd.rowsAffected:(upd.changes||0);
+  if(affected>0) return true;
+  try{
+    await turso.execute({sql:'INSERT INTO rate_limits(ip,day,count) VALUES(?,?,1)', args:[ip,day]});
+    return true;
+  }catch(e){
+    // PK conflict → a concurrent request created the row between UPDATE and INSERT.
+  }
   const r=await turso.execute({sql:'SELECT count FROM rate_limits WHERE ip=? AND day=?', args:[ip,day]});
-  const c=r.rows[0]?.count||0;
-  if(c>=3) return false;
-  await turso.execute({sql:'INSERT INTO rate_limits(ip,day,count) VALUES(?,?,1) ON CONFLICT(ip,day) DO UPDATE SET count=count+1', args:[ip,day]});
-  return true;
+  return (r.rows[0]?.count||0)<3;
+}
+// Refunds one consumed quota slot (used when the save itself failed after passing
+// the gate). Guarded by count>0 so the counter can never go negative.
+async function refundRateLimit(ip){
+  const day=getToday();
+  await turso.execute({sql:'UPDATE rate_limits SET count=count-1 WHERE ip=? AND day=? AND count>0', args:[ip,day]});
 }
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || process.env.ACCESS_TOKEN || '';
+// Timing-safe token compare: length check first so timingSafeEqual never throws
+// on unequal lengths (same pattern as the CRON_SECRET check further down).
+function adminTokenMatches(token){
+  const providedBuf=Buffer.from(String(token||''));
+  const secretBuf=Buffer.from(String(ADMIN_TOKEN));
+  return providedBuf.length===secretBuf.length && crypto.timingSafeEqual(providedBuf, secretBuf);
+}
 function requireAdmin(req, res, next){
   const token = req.headers['x-admin-token'] || '';
-  if(!ADMIN_TOKEN || token !== ADMIN_TOKEN) return res.status(401).json({error:'Unauthorized'});
+  if(!ADMIN_TOKEN || !adminTokenMatches(token)) return res.status(401).json({error:'Unauthorized'});
   next();
 }
 
@@ -165,9 +191,27 @@ async function loadAllConfigsFromTurso() {
             }
         }
         console.log(`[Config] Loaded ${loaded} configurations from Turso.`);
-        await ensureRateLimitsTable();
     } catch (e) {
         console.error('[Config] Failed to load from Turso:', e.message);
+    }
+}
+
+// Schema setup runs at startup INDEPENDENTLY of the configs read: a failure in
+// loadAllConfigsFromTurso must never prevent table/column creation (and vice versa).
+async function ensureStartupTables() {
+    if (!turso) return;
+    try {
+        await ensureRateLimitsTable();
+    } catch (e) {
+        console.error('[Config] Failed to create rate_limits table:', e.message);
+    }
+    try {
+        await turso.execute('ALTER TABLE configs ADD COLUMN updatedAt INTEGER');
+    } catch (e) {
+        // Best-effort migration; "duplicate column name" simply means it already exists.
+        if (!/duplicate column/i.test(e.message || '')) {
+            console.error('[Config] updatedAt column migration skipped:', e.message);
+        }
     }
 }
 
@@ -177,9 +221,10 @@ async function saveUserConfig(configId, configData) {
     if (!turso) {
         throw new Error('Turso not configured — config cannot be persisted. Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN.');
     }
+    const updatedAt = Date.now();
     await turso.execute({
-        sql: 'INSERT OR REPLACE INTO configs (configId, config) VALUES (?, ?)',
-        args: [configId, JSON.stringify(configData)]
+        sql: 'INSERT OR REPLACE INTO configs (configId, config, updatedAt) VALUES (?, ?, ?)',
+        args: [configId, JSON.stringify(configData), updatedAt]
     });
 }
 
@@ -218,6 +263,7 @@ function persistUserConfigsToFile() {
 
 async function loadUserConfigs() {
     loadUserConfigsFromFile(); // local dev / non-Vercel
+    ensureStartupTables(); // fire-and-forget: independent of the configs read below
     await loadAllConfigsFromTurso(); // durable copy on Vercel (overrides any stale file)
 }
 
@@ -336,15 +382,24 @@ app.get('/c/:configId/configure', (req, res) => sendConfigPage(req, res, req.par
 // API to save configuration (Instant Sync)
 app.post('/api/config/save', async (req, res) => {
     try {
-        const ip=getClientIp(req);
-        if(turso && !(await checkRateLimit(ip))) return res.status(429).json({success:false, error:'Rate limit: 3 configs per day'});
-        let { configId, config } = req.body;
-        if (!configId) {
-            configId = crypto.randomBytes(4).toString('hex');
+        // Validate BEFORE consuming quota: a malformed body must never burn a slot.
+        const { configId: requestedConfigId, config } = req.body || {};
+        if (!config || typeof config !== 'object') {
+            return res.status(400).json({ success: false, error: 'Missing or invalid "config" in body' });
         }
-        
-        await saveUserConfig(configId, config);
-        
+        const ip = getClientIp(req);
+        if(turso && !(await checkRateLimit(ip))) return res.status(429).json({success:false, error:'Rate limit: 3 configs per day'});
+        const configId = requestedConfigId || crypto.randomBytes(4).toString('hex');
+
+        try {
+            await saveUserConfig(configId, config);
+        } catch (saveErr) {
+            // The write failed after passing the gate — refund the consumed slot so
+            // failed saves don't eat into the user's 3/day quota.
+            if (turso) { try { await refundRateLimit(ip); } catch (e) {} }
+            throw saveErr;
+        }
+
         console.log(`[Config] Configuration saved & synced for configId: ${configId}`);
         res.json({ success: true, configId, config });
     } catch (err) {
@@ -471,9 +526,12 @@ app.get('/api/cron/provider-status', async (req, res) => {
 
 app.get('/api/admin/users', requireAdmin, async (req, res) => {
     try {
+        // providerCount is intentionally omitted from this payload: deriving it from
+        // cfg.urls/repos would just duplicate repoCount, and a LIVE scraper count
+        // requires fetching each repo manifest (expensive; not done inline here).
         const users = [];
         if (turso) {
-            const result = await turso.execute('SELECT configId, config FROM configs');
+            const result = await turso.execute('SELECT configId, config, updatedAt FROM configs');
             for (const row of result.rows) {
                 try {
                     const cfg = JSON.parse(row.config);
@@ -484,7 +542,7 @@ app.get('/api/admin/users', requireAdmin, async (req, res) => {
                         disabledCount: Array.isArray(cfg.disabled) ? cfg.disabled.length : 0,
                         sortBy: cfg.sortBy || null,
                         dohProvider: cfg.dohProvider || null,
-                        updatedAt: null
+                        updatedAt: row.updatedAt != null ? Number(row.updatedAt) : null
                     });
                 } catch (e) {}
             }
@@ -508,18 +566,27 @@ app.get('/api/admin/users', requireAdmin, async (req, res) => {
     }
 });
 
+// streamCache keys are `${type}_${contentId}_${cfgHash}` — invalidate only entries
+// whose content-id SEGMENT exactly equals configId. Substring matching (k.includes)
+// wrongly purged unrelated configs whose ids merely contained this id.
+function clearStreamCacheForConfig(configId) {
+    for (const k of streamCache.keys()) {
+        const hashAt = k.lastIndexOf('_cfg:');
+        const prefix = hashAt === -1 ? k : k.slice(0, hashAt);
+        if (prefix.endsWith(`_${configId}`)) streamCache.delete(k);
+    }
+}
+
 app.delete('/api/admin/users/:configId', requireAdmin, async (req, res) => {
     const id = req.params.configId;
     try {
-        userConfigs.delete(id);
-        persistUserConfigsToFile();
+        // Durable delete FIRST; only touch memory/file/cache once Turso confirmed it.
         if (turso) {
             await turso.execute({ sql: 'DELETE FROM configs WHERE configId = ?', args: [id] });
         }
-        // clear any cached streams for this configId
-        for (const k of streamCache.keys()) {
-            if (k.includes(id)) streamCache.delete(k);
-        }
+        userConfigs.delete(id);
+        persistUserConfigsToFile();
+        clearStreamCacheForConfig(id);
         res.json({ success: true });
     } catch (e) {
         console.error('[Admin] DELETE /api/admin/users failed:', e.message);
@@ -1018,5 +1085,11 @@ module.exports.saveProviderStatus = saveProviderStatus;
 module.exports.loadProviderStatus = loadProviderStatus;
 module.exports.getProviderStatus = getProviderStatus;
 module.exports.getAllProviderStatus = getAllProviderStatus;
+module.exports.getClientIp = getClientIp;
+module.exports.adminTokenMatches = adminTokenMatches;
+module.exports.checkRateLimit = checkRateLimit;
+module.exports.refundRateLimit = refundRateLimit;
+module.exports.clearStreamCacheForConfig = clearStreamCacheForConfig;
+module.exports.userConfigs = userConfigs;
 
 
