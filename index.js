@@ -428,6 +428,10 @@ app.get('/analytics', (req, res) => {
     res.setHeader('Cache-Control', 'no-store, must-revalidate');
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+app.get('/status', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, must-revalidate');
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.get('/api/analytics', (req, res) => {
     const stats = {};
     for (const [provider, data] of providerAnalytics.entries()) {
