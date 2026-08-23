@@ -635,7 +635,7 @@
       <p>Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.</p>
       <div class="hero-actions">
         <a href="https://nuvio-plugin-library.vercel.app/" target="_blank" rel="noopener" class="btn btn-primary">Get Plugins</a>
-        <a href="#sources" class="btn btn-primary">Manage sources</a>
+        <a href="#" class="btn btn-primary" onclick="event.preventDefault();document.querySelectorAll('.nav-link')[1].click();">Manage sources</a>
       </div>
     </section>
 
@@ -827,128 +827,6 @@
               <option value="adguard">AdGuard DNS</option>
               <option value="quad9">Quad9 (9.9.9.9)</option>
             </select>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Sources -->
-    <section class="section" id="sources" data-section="sources">
-      <h2 class="section-head">Installed Repositories</h2>
-      <p class="section-sub">Manage your scraper sources.</p>
-
-      <div class="input-row">
-        <input type="url" class="input" placeholder="Enter repository manifest URL" id="repo-url-input">
-        <button class="btn btn-primary" id="btn-add-repo">Add Repo</button>
-      </div>
-
-      <div class="repo-list">
-        <div class="repo">
-          <div>
-            <h4>All-in-One-Nuvio</h4>
-            <p class="url">raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio</p>
-            <span class="count">61 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-        <div class="repo">
-          <div>
-            <h4>Yoru's Repo</h4>
-            <p class="url">raw.githubusercontent.com/yoruix/nuvio-providers</p>
-            <span class="count">29 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-        <div class="repo">
-          <div>
-            <h4>Ray's Plugins</h4>
-            <p class="url">raw.githubusercontent.com/hihihihihiiray/plugins</p>
-            <span class="count">18 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-        <div class="repo">
-          <div>
-            <h4>Michat88 Repo</h4>
-            <p class="url">raw.githubusercontent.com/michat88/nuvio-providers</p>
-            <span class="count">30 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-        <div class="repo">
-          <div>
-            <h4>Asura Synthesis</h4>
-            <p class="url">raw.githubusercontent.com/PirateZoro9/asura-providers</p>
-            <span class="count">17 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-        <div class="repo">
-          <div>
-            <h4>Phisher's Repo</h4>
-            <p class="url">raw.githubusercontent.com/phisher98/phisher-nuvio-providers</p>
-            <span class="count">2 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-        <div class="repo">
-          <div>
-            <h4>Eclipsia</h4>
-            <p class="url">plugin.eclipsia.dpdns.org</p>
-            <span class="count">19 active scrapers</span>
-          </div>
-          <button class="x" title="Remove">✕</button>
-        </div>
-      </div>
-
-      <div style="margin-top:3rem;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
-          <div>
-            <h2 class="section-head" style="font-size:1.25rem; margin-bottom:0.125rem;">Scrapers &amp; Providers</h2>
-            <p class="section-sub" style="margin-bottom:0;" id="prov-summary">Loading scrapers...</p>
-          </div>
-          <div style="display:flex; gap:0.5rem;">
-            <button class="btn btn-primary btn-sm" id="btn-enable-all">Enable All</button>
-            <button class="btn btn-outline btn-sm" id="btn-disable-all">Disable All</button>
-          </div>
-        </div>
-
-        <div class="seg" role="group" aria-label="Filter scrapers">
-          <button type="button" class="active" data-pfilter="all">All</button>
-          <button type="button" data-pfilter="enabled">Enabled</button>
-          <button type="button" data-pfilter="disabled">Disabled</button>
-        </div>
-
-        <div class="prov-grid">
-          <div class="prov-card" data-provider="Castle">
-            <div class="p-icon">🏰</div>
-            <div class="p-info"><h4>Castle</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked data-provider-toggle="Castle"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
-          </div>
-          <div class="prov-card" data-provider="CinemaHD">
-            <div class="p-icon">🎬</div>
-            <div class="p-info"><h4>CinemaHD</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked data-provider-toggle="CinemaHD"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
-          </div>
-          <div class="prov-card" data-provider="Torrentio">
-            <div class="p-icon">🧲</div>
-            <div class="p-info"><h4>Torrentio</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked data-provider-toggle="Torrentio"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
-          </div>
-          <div class="prov-card" data-provider="MoonFlix">
-            <div class="p-icon">🌙</div>
-            <div class="p-info"><h4>MoonFlix</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked data-provider-toggle="MoonFlix"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
-          </div>
-          <div class="prov-card" data-provider="VidRock">
-            <div class="p-icon">🪨</div>
-            <div class="p-info"><h4>VidRock</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked data-provider-toggle="VidRock"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
-          </div>
-          <div class="prov-card" data-provider="AnimeSalt">
-            <div class="p-icon">🧂</div>
-            <div class="p-info"><h4>AnimeSalt</h4><p>movie · tv</p></div>
-            <label class="toggle"><input type="checkbox" checked data-provider-toggle="AnimeSalt"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
           </div>
         </div>
       </div>
