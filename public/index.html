@@ -1123,6 +1123,7 @@
           document.getElementById('section-analytics').style.display = 'none';
           if(isStatusPath()) history.pushState(null,'','/');
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
     window.addEventListener('popstate',()=>{
