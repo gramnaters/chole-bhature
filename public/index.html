@@ -1352,6 +1352,7 @@
           }
         });
       }
+      if (!repoList) return;
       const repoEl = document.createElement('div');
       repoEl.className = 'repo';
       repoEl.innerHTML = `
@@ -1366,7 +1367,7 @@
     });
 
     // Wire remove buttons
-    repoList.querySelectorAll('.x').forEach(btn => {
+    if (repoList) repoList.querySelectorAll('.x').forEach(btn => {
       btn.addEventListener('click', function() {
         const url = this.dataset.repoUrl;
         config.repos = config.repos.filter(u => u !== url);
