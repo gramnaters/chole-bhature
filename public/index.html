@@ -1329,7 +1329,7 @@
     config.repos = repoUrls;
 
     const repoList = document.querySelector('.repo-list');
-    repoList.innerHTML = '';
+    if (repoList) repoList.innerHTML = '';
 
     // Fetch all repos in parallel — loader waits for the slowest, not the sum.
     const results = await Promise.all(repoUrls.map(async (url) => {
