@@ -832,6 +832,40 @@
       </div>
     </section>
 
+    <!-- Sources -->
+    <section class="section" id="sources" data-section="sources">
+      <h2 class="section-head">Installed Repositories</h2>
+      <p class="section-sub">Manage your scraper sources.</p>
+
+      <div class="input-row">
+        <input type="url" class="input" placeholder="Enter repository manifest URL" id="repo-url-input">
+        <button class="btn btn-primary" id="btn-add-repo">Add Repo</button>
+      </div>
+
+      <div class="repo-list"></div>
+
+      <div style="margin-top:3rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.75rem;">
+          <div>
+            <h2 class="section-head" style="font-size:1.25rem; margin-bottom:0.125rem;">Scrapers &amp; Providers</h2>
+            <p class="section-sub" style="margin-bottom:0;" id="prov-summary">Loading scrapers...</p>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn btn-primary btn-sm" id="btn-enable-all">Enable All</button>
+            <button class="btn btn-outline btn-sm" id="btn-disable-all">Disable All</button>
+          </div>
+        </div>
+
+        <div class="seg" role="group" aria-label="Filter scrapers">
+          <button type="button" class="active" data-pfilter="all">All</button>
+          <button type="button" data-pfilter="enabled">Enabled</button>
+          <button type="button" data-pfilter="disabled">Disabled</button>
+        </div>
+
+        <div class="prov-grid"></div>
+      </div>
+    </section>
+
   </div>
 </div>
 
