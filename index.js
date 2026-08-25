@@ -364,7 +364,16 @@ async function ensureProviderAnalyticsTable(){
   if(!turso) return;
   await turso.execute(`CREATE TABLE IF NOT EXISTS provider_analytics (provider TEXT PRIMARY KEY, fast INTEGER, slow INTEGER, dead INTEGER, updatedAt INTEGER)`);
 }
+function isPollutedProviderName(n){
+  if(!n || n==='null' || n==='undefined') return true;
+  const s=String(n);
+  if(s.length>36) return true;
+  if(/1080p|720p|BluRay|x264|HEVC|workers\.dev|D3adlyRocket|phisher|HINDI.*1080|DD5.*English/i.test(s)) return true;
+  if(s.includes('/') || s.includes('http')) return true;
+  return false;
+}
 async function saveProviderAnalytics(provider, data){
+  if(isPollutedProviderName(provider)) return;
   providerAnalytics.set(provider, data);
   if(turso) {
     await ensureProviderAnalyticsTable();
@@ -374,19 +383,27 @@ async function saveProviderAnalytics(provider, data){
     });
   }
 }
+async function purgePollutedAnalytics(){
+  if(!turso) return;
+  try{ const r=await turso.execute('SELECT provider FROM provider_analytics'); for(const row of r.rows){ if(isPollutedProviderName(row.provider)){ await turso.execute({sql:'DELETE FROM provider_analytics WHERE provider=?', args:[row.provider]}); providerAnalytics.delete(row.provider); } } }catch(e){}
+}
 async function loadProviderAnalytics(){
   if(!turso) return;
   await ensureProviderAnalyticsTable();
   try {
     const result = await turso.execute('SELECT provider, fast, slow, dead FROM provider_analytics');
+    let loaded=0, purged=0;
     for (const row of result.rows) {
+      if(isPollutedProviderName(row.provider)){ try{ await turso.execute({sql:'DELETE FROM provider_analytics WHERE provider=?', args:[row.provider]}); purged++; }catch(e){} continue; }
       providerAnalytics.set(row.provider, {
         fast: row.fast || 0,
         slow: row.slow || 0,
         dead: row.dead || 0
       });
+      loaded++;
     }
-    console.log(`[ProviderAnalytics] Loaded ${result.rows.length} providers from Turso`);
+    if(purged) console.log(`[ProviderAnalytics] Purged ${purged} polluted entries`);
+    console.log(`[ProviderAnalytics] Loaded ${loaded} providers from Turso`);
   } catch (e) {
     console.error('[ProviderAnalytics] Failed to load from Turso:', e.message);
   }
@@ -550,7 +567,8 @@ app.get('/api/health', async (req, res) => {
     if (turso) { try { await turso.execute('SELECT 1'); tursoOk = true; } catch (e) {} }
     const mem = process.memoryUsage();
     let totalStreamsServed = 0;
-    for (const v of providerAnalytics.values()) totalStreamsServed += (v.fast||0)+(v.slow||0)+(v.dead||0);
+    let cleanProviders = 0;
+    for (const [k,v] of providerAnalytics.entries()){ if(typeof isPollutedProviderName==='function' && isPollutedProviderName(k)) continue; totalStreamsServed += (v.fast||0)+(v.slow||0)+(v.dead||0); cleanProviders++; }
     const cacheStats = await getCacheStats();
     res.json({
         status: 'ok',
@@ -563,7 +581,7 @@ app.get('/api/health', async (req, res) => {
         streamCacheEntries: streamCache.size,
         cacheHits: cacheStats ? cacheStats.hits : null,
         cacheMisses: cacheStats ? cacheStats.misses : null,
-        providersTracked: providerAnalytics.size,
+        providersTracked: cleanProviders,
         totalStreamsServed,
         timestamp: new Date().toISOString()
     });
@@ -579,6 +597,7 @@ app.get('/status', (req, res) => {
 app.get('/api/analytics', (req, res) => {
     const stats = {};
     for (const [provider, data] of providerAnalytics.entries()) {
+        if(typeof isPollutedProviderName==='function' && isPollutedProviderName(provider)) continue;
         stats[provider] = data;
     }
     res.json(stats);

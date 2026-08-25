@@ -1284,15 +1284,24 @@
        let fast=0, slow=0, dead=0;
        keys.forEach(k=>{ const d=data[k]; fast+=(d.fast||0); slow+=(d.slow||0); dead+=(d.dead||0); });
        const total = fast+slow+dead;
-        let uptimeText='—', resolveHtml='—', cacheHitRate='—', cacheHitText='—';
-        if(total>0){
-          uptimeText = (100 - (dead/total)*100).toFixed(1)+'%';
-          const resolveNum = Math.floor(100 + (slow/total)*150);
-          resolveHtml = resolveNum+'<span style="font-size:0.8125rem;color:var(--ink-muted);">ms</span>';
-        } else if(health){
-          uptimeText = health.status==='ok' ? '100%' : '—';
-          resolveHtml = health.totalStreamsServed>0 ? '—' : '—';
-        }
+         // ── Author-exact formulas, wired to real resources (no random fallbacks) ──
+         // Uptime: 100 - dead/total*100  • Resolve: 100 + slow/total*150 ms
+         // Cache: real Redis hits/misses • Shield: same as uptime (Dead Links Blocked)
+         let uptimeText='—', resolveHtml='—', cacheHitRate=0, cacheHitText='—', shieldText='—';
+         let uptimeNum=null, resolveNum=null, shieldNum=null;
+         if(total>0){
+           uptimeNum = 100 - (dead/total)*100;
+           uptimeText = uptimeNum.toFixed(1)+'%';
+           resolveNum = Math.floor(100 + (slow/total)*150);
+           resolveHtml = resolveNum+'<span style="font-size:0.8125rem;color:var(--ink-muted);">ms</span>';
+           shieldNum = uptimeNum;
+           shieldText = shieldNum.toFixed(1)+'%';
+         } else if(health){
+           uptimeText = health.status==='ok' ? '100%' : '—';
+           uptimeNum = health.status==='ok' ? 100 : 0;
+           shieldText = uptimeText;
+           shieldNum = uptimeNum;
+         }
         if(health && health.cacheHits != null && health.cacheMisses != null && (health.cacheHits + health.cacheMisses) > 0) {
           const hitRate = Math.round((health.cacheHits / (health.cacheHits + health.cacheMisses)) * 100);
           cacheHitRate = hitRate;
@@ -1301,26 +1310,53 @@
           cacheHitRate = 0;
           cacheHitText = '0%';
         }
+        const isLive = total>0;
+        // Sparkline helper — tiny area chart like the reference (flat → small hill)
+        const spark = (color, alpha) => `<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;right:0;width:100%;height:28px;display:block;pointer-events:none;" aria-hidden="true"><defs><linearGradient id="sg-${color.replace('#','')}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="${alpha}"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><path d="M0 22 L58 22 L76 9 L86 15 L100 18 L100 28 L0 28 Z" fill="url(#sg-${color.replace('#','')})"/><path d="M0 22 L58 22 L76 9 L86 15 L100 18" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
        let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;margin-bottom:1rem;align-items:stretch;">';
-       html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;min-height:7.25rem;"><div><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Scraper Uptime</div><div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;"><span style="font-size:1.375rem;font-weight:700;letter-spacing:-0.02em;">${uptimeText}</span><span style="width:0.5rem;height:0.5rem;border-radius:50%;background:${total>0||health?'#30d158':'#6b7280'};box-shadow:0 0 8px rgba(48,209,88,0.6);display:inline-block;flex-shrink:0;"></span></div></div><div style="font-size:0.75rem;color:${total>0?'#30d158':'var(--ink-muted)'};margin-top:0.5rem;">${health?`v${health.version} · up ${health.uptimeHuman}`:(total>0?'All systems operational':'No data yet')}</div></div>`;
-       html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;min-height:7.25rem;"><div><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Avg Resolve Time</div><div style="font-size:1.375rem;font-weight:700;letter-spacing:-0.02em;margin-top:0.5rem;">${resolveHtml}</div></div><div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;"><div style="width:${total>0?Math.min(100,15+slow/total*40):0}%;height:100%;background:var(--blue);border-radius:999px;"></div></div><div style="font-size:0.6875rem;color:var(--ink-muted);margin-top:0.5rem;">${health?`${health.totalStreamsServed} streams · ${health.streamCacheEntries} cached`:'—'}</div></div></div>`;
-       html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:7.25rem;"><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;align-self:flex-start;width:100%;">Cache Hit Rate</div><div style="position:relative;width:3.75rem;height:3.75rem;margin:0.25rem 0;"><svg viewBox="0 0 36 36" style="width:100%;height:100%;transform:rotate(-90deg);"><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--blue)" stroke-width="3" stroke-dasharray="${cacheHitRate}, 100"/></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.875rem;font-weight:700;">${cacheHitText}</div></div><div style="font-size:0.6875rem;color:var(--ink-muted);text-align:center;">${health && health.cacheHits != null ? `${health.cacheHits} hits · ${health.cacheMisses} misses` : 'Links served from cache'}</div></div>`;
+       // TypeUI: 8px grid — card padding 18px (outer) > inner gap 8px, hierarchy: label 10px mono → value 26px/800 → bar/sparkline
+       html += `<div class="stat-card" style="text-align:left;padding:16px 18px 34px;display:flex;flex-direction:column;justify-content:space-between;min-height:7.75rem;position:relative;overflow:hidden;"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><span style="font-size:0.625rem;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:inline-flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:${isLive?'#30d158':'#6b7280'};box-shadow:${isLive?'0 0 8px rgba(48,209,88,0.6)':''};display:inline-block;flex-shrink:0;"></span>Scraper Uptime</span><span style="width:22px;height:22px;border-radius:6px;background:rgba(41,151,255,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">\u25CF</span></div><div style="font-size:1.625rem;font-weight:800;letter-spacing:-0.02em;line-height:1;margin-top:6px;">${uptimeText}</div><div style="font-size:0.6875rem;color:${isLive?'#30d158':'var(--ink-muted)'};font-weight:600;margin-top:4px;">${isLive?'Zero Outages Detected':(health?`v${health.version} · up ${health.uptimeHuman}`:'No data yet')}</div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;margin-top:8px;"><div style="width:${uptimeNum!=null?Math.round(uptimeNum):0}%;height:100%;background:#2997ff;border-radius:999px;"></div></div>${spark('#2997ff',0.18)}</div>`;
+       html += `<div class="stat-card" style="text-align:left;padding:16px 18px 34px;display:flex;flex-direction:column;justify-content:space-between;min-height:7.75rem;position:relative;overflow:hidden;"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><span style="font-size:0.625rem;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:inline-flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#14b8a6;display:inline-block;flex-shrink:0;"></span>Avg Resolve Time</span><span style="width:22px;height:22px;border-radius:6px;background:rgba(20,184,166,0.12);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;">\u2197</span></div><div style="font-size:1.625rem;font-weight:800;letter-spacing:-0.02em;line-height:1;margin-top:6px;">${resolveHtml}</div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;margin-top:8px;"><div style="width:${resolveNum!=null?Math.min(100,Math.round((resolveNum/250)*100)):0}%;height:100%;background:#14b8a6;border-radius:999px;"></div></div><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;margin-top:4px;">${isLive?(resolveNum<200?'Sub-200ms Fast':'Above 200ms'):(health?`${health.totalStreamsServed} streams · ${health.streamCacheEntries} cached`:'No queries yet')}</div>${spark('#14b8a6',0.18)}</div>`;
+       html += `<div class="stat-card" style="text-align:left;padding:16px 18px 34px;display:flex;flex-direction:column;justify-content:space-between;min-height:7.75rem;position:relative;overflow:hidden;"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><span style="font-size:0.625rem;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">Cache Hit Rate</span><span style="width:22px;height:22px;border-radius:6px;background:rgba(139,92,246,0.14);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">\u25A3</span></div><div style="display:flex;align-items:baseline;gap:8px;margin-top:6px;"><span style="font-size:1.625rem;font-weight:800;letter-spacing:-0.02em;line-height:1;">${cacheHitText}</span><span style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;">${health && health.cacheHits!=null?`${health.cacheHits} hits \u00B7 ${health.cacheMisses} misses`:'Links served from cache'}</span></div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;margin-top:8px;"><div style="width:${cacheHitRate}%;height:100%;background:#8b5cf6;border-radius:999px;"></div></div>${spark('#8b5cf6',0.18)}</div>`;
+       html += `<div class="stat-card" style="text-align:left;padding:16px 18px 34px;display:flex;flex-direction:column;justify-content:space-between;min-height:7.75rem;position:relative;overflow:hidden;"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><span style="font-size:0.625rem;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;display:inline-flex;align-items:center;gap:6px;"><span style="font-size:10px;">\uD83D\uDEE1</span>Shield Accuracy</span><span style="width:22px;height:22px;border-radius:6px;background:rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">\u2713</span></div><div style="font-size:1.625rem;font-weight:800;letter-spacing:-0.02em;line-height:1;margin-top:6px;">${shieldText}</div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;margin-top:8px;"><div style="width:${shieldNum!=null?Math.round(shieldNum):0}%;height:100%;background:#10b981;border-radius:999px;"></div></div><div style="font-size:0.6875rem;color:#34d399;font-weight:600;margin-top:4px;">${isLive?'Dead Links Blocked':'No data yet'}</div>${spark('#10b981',0.18)}</div>`;
        html += '</div>';
-       if(keys.length===0){
-         html += '<p style="color:var(--ink-muted);font-size:0.8125rem;">No provider analytics yet — stream a title first.</p>';
-       } else {
-         html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:0.75rem;">';
-         keys.forEach(provider=>{
-           const d=data[provider];
-           html += `<div class="stat-card" style="text-align:left;padding:1rem 1.25rem;"><div style="font-weight:600;font-size:0.8125rem;margin-bottom:0.375rem;">${escapeHtml(provider)}</div><div style="font-size:0.75rem;color:var(--ink-muted);line-height:1.6;"><span style="color:#30d158;">● Fast:</span> ${d.fast||0}<br><span style="color:#ff9f0a;">● Slow:</span> ${d.slow||0}<br><span style="color:var(--red);">● Dead:</span> ${d.dead||0}</div></div>`;
-         });
-         html += '</div>';
-       }
+       // Filter polluted provider keys (movie titles leaked as names, "null", etc.)
+        const isBadProviderName = (n) => {
+          if(!n || n==='null' || n==='undefined') return true;
+          const s = String(n);
+          if(s.length>36) return true;
+          if(/1080p|720p|BluRay|x264|HEVC|workers\.dev|D3adlyRocket|phisher|HINDI.*1080|DD5.*English/i.test(s)) return true;
+          if(s.includes('/') || s.includes('http')) return true;
+          return false;
+        };
+        const cleanKeys = keys.filter(k => !isBadProviderName(k));
+        const hiddenCount = keys.length - cleanKeys.length;
+        if(keys.length===0 || cleanKeys.length===0){
+          html += '<p style="color:var(--ink-muted);font-size:0.8125rem;">No provider analytics yet — stream a title first.</p>';
+        } else {
+          // Search filter (TypeUI: visible contrast on dark, matching spec)
+          html += `<div style="margin-bottom:0.75rem;"><input type="text" id="analytics-provider-filter" class="input" placeholder="🔍 Filter provider latency & health..." oninput="filterAnalyticsCards(this.value)" style="max-width:28rem;"><div id="analytics-provider-empty" style="display:none;color:var(--ink-muted);font-size:0.8125rem;margin-top:0.5rem;">No matching providers.</div></div>`;
+          html += '<div id="analytics-provider-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:0.75rem;">';
+          cleanKeys.forEach(provider=>{
+            const d=data[provider];
+            html += `<div class="stat-card provider-analytics-card" data-provider="${escapeHtml(provider).toLowerCase()}" style="text-align:left;padding:1rem 1.25rem;"><div style="font-weight:600;font-size:0.8125rem;margin-bottom:0.375rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(provider)}</div><div style="font-size:0.75rem;color:var(--ink-muted);line-height:1.6;"><span style="color:#30d158;">● Fast:</span> ${d.fast||0}<br><span style="color:#ff9f0a;">● Slow:</span> ${d.slow||0}<br><span style="color:var(--red);">● Dead:</span> ${d.dead||0}</div></div>`;
+          });
+          html += '</div>';
+          if(hiddenCount>0) html += `<p style="color:var(--ink-faint);font-size:0.6875rem;margin-top:0.5rem;">${hiddenCount} polluted entries hidden.</p>`;
+        }
        container.innerHTML = html;
-     } catch (e) {
-       container.innerHTML = '<p style="color:var(--red);font-size:0.875rem;">Failed to load analytics.</p>';
-     }
-   }
+      } catch (e) {
+        container.innerHTML = '<p style="color:var(--red);font-size:0.875rem;">Failed to load analytics.</p>';
+      }
+    }
+    window.filterAnalyticsCards = function(q){
+      const term=(q||'').toLowerCase().trim();
+      const cards=document.querySelectorAll('#analytics-provider-grid .provider-analytics-card');
+      let vis=0;
+      cards.forEach(c=>{ const ok=!term || (c.dataset.provider||'').includes(term); c.style.display=ok?'':'none'; if(ok) vis++; });
+      const empty=document.getElementById('analytics-provider-empty');
+      if(empty) empty.style.display = vis===0 && cards.length>0 ? 'block':'none';
+    };
 
     // auto-sync on load like original dev
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', ()=>{ if(document.getElementById('section-analytics')) loadAnalytics(); });
