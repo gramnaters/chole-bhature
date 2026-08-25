@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation [ref=e3]:
+    - link [ref=e4] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=e5]
+      - text: Chole Bhature
+    - generic [ref=e6]:
+      - link "General" [ref=e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=e8] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=e9] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "Status" [level=2] [ref=e15]
+        - paragraph [ref=e16]: Live provider health from synthetic probes (daily cadence).
+      - button "Refresh metrics" [ref=e17] [cursor=pointer]
+    - generic [ref=e22]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]: Scraper Uptime
+            - generic [ref=e53]: 100%
+          - generic [ref=e56]: v3.4.0 · up 0h 1m
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]: Avg Resolve Time
+            - generic [ref=e60]: —
+          - generic [ref=e61]: 0 streams · 0 cached
+        - generic [ref=e64]:
+          - generic [ref=e65]: Cache Hit Rate
+          - generic [ref=e66]: 0%
+          - generic [ref=e71]: Links served from cache
+      - paragraph [ref=e72]: No provider analytics yet — stream a title first.
+  - generic [ref=e26]:
+    - generic [ref=e27]: "ID: 533enzby"
+    - button "Save & Sync" [ref=e29] [cursor=pointer]

@@ -1,0 +1,37 @@
+- generic [active] [ref=f8e1]:
+  - navigation [ref=f8e2]:
+    - link [ref=f8e3] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f8e4]
+      - text: Chole Bhature
+    - generic [ref=f8e5]:
+      - link "General" [ref=f8e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f8e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f8e8] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f8e11]:
+    - generic [ref=f8e13]:
+      - heading "Status" [level=2] [ref=f8e14]
+      - paragraph [ref=f8e15]: Live provider health from synthetic probes (daily cadence).
+    - generic [ref=f8e16]:
+      - generic [ref=f8e24]:
+        - generic [ref=f8e25]:
+          - generic [ref=f8e26]:
+            - generic [ref=f8e27]: Scraper Uptime
+            - generic [ref=f8e28]: 100%
+          - generic [ref=f8e31]: v3.4.0 · up 0h 2m
+        - generic [ref=f8e32]:
+          - generic [ref=f8e33]:
+            - generic [ref=f8e34]: Avg Resolve Time
+            - generic [ref=f8e35]: —
+          - generic [ref=f8e36]: 0 streams · 0 cached
+        - generic [ref=f8e39]:
+          - generic [ref=f8e40]: Cache Hit Rate
+          - generic [ref=f8e41]: —
+          - generic [ref=f8e46]: Links served from cache
+      - button "↻ Refresh Health Metrics" [ref=f8e47] [cursor=pointer]
+  - generic [ref=f8e20]:
+    - generic [ref=f8e21]: "ID: 533enzby"
+    - button "Save & Sync" [ref=f8e23] [cursor=pointer]

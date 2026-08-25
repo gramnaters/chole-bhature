@@ -1,0 +1,7 @@
+[     524ms] TypeError: (intermediate value)(...) is not a function
+    at https://chole-bhature.vercel.app/analytics:1373:7
+    at https://chole-bhature.vercel.app/analytics:1686:3
+[     539ms] ReferenceError: loadAnalytics is not defined
+    at HTMLDocument.openAnalytics (https://chole-bhature.vercel.app/analytics:1292:9)
+[     543ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://chole-bhature.vercel.app/analytics:0
+[     544ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://chole-bhature.vercel.app/analytics:0

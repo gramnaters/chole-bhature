@@ -1,0 +1,409 @@
+- generic [ref=f23e1]:
+  - link "Skip to content" [ref=f23e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation [ref=f23e3]:
+    - link [ref=f23e4] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f23e5]
+      - text: Chole Bhature
+    - generic [ref=f23e6]:
+      - link "General" [ref=f23e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [active] [ref=f23e8] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f23e9] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f23e263]:
+    - heading "Installed Repositories" [level=2] [ref=f23e264]
+    - paragraph [ref=f23e265]: Manage your scraper sources.
+    - generic [ref=f23e266]:
+      - textbox "Enter repository manifest URL" [ref=f23e267]
+      - button "Add Repo" [ref=f23e268] [cursor=pointer]
+    - generic [ref=f23e308]:
+      - generic [ref=f23e309]:
+        - heading "All-in-One-Nuvio" [level=4] [ref=f23e310]
+        - paragraph [ref=f23e311]: raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio/refs/heads/main/manifest.json
+        - generic [ref=f23e312]: 61 active scrapers
+      - button "✕" [ref=f23e313] [cursor=pointer]
+    - generic [ref=f23e269]:
+      - generic [ref=f23e270]:
+        - generic [ref=f23e271]:
+          - heading "Scrapers & Providers" [level=2] [ref=f23e272]
+          - paragraph [ref=f23e273]: 61 scrapers from 1 repository
+        - generic [ref=f23e274]:
+          - button "Enable All" [ref=f23e275] [cursor=pointer]
+          - button "Disable All" [ref=f23e276] [cursor=pointer]
+      - group "Filter scrapers" [ref=f23e277]:
+        - button "All" [ref=f23e278] [cursor=pointer]
+        - button "Enabled" [ref=f23e279] [cursor=pointer]
+        - button "Disabled" [ref=f23e280] [cursor=pointer]
+      - generic [ref=f23e314]:
+        - generic [ref=f23e315] [cursor=pointer]:
+          - generic [ref=f23e317]:
+            - heading "AllAnime" [level=4] [ref=f23e318]
+            - paragraph [ref=f23e319]: movie · tv
+          - generic [ref=f23e320]:
+            - checkbox [checked]
+        - generic [ref=f23e322] [cursor=pointer]:
+          - generic [ref=f23e324]:
+            - heading "4KHDHub" [level=4] [ref=f23e325]
+            - paragraph [ref=f23e326]: movie · tv
+          - generic [ref=f23e327]:
+            - checkbox [checked]
+        - generic [ref=f23e329] [cursor=pointer]:
+          - generic [ref=f23e331]:
+            - heading "1Shows" [level=4] [ref=f23e332]
+            - paragraph [ref=f23e333]: movie · tv
+          - generic [ref=f23e334]:
+            - checkbox [checked]
+        - generic [ref=f23e336] [cursor=pointer]:
+          - generic [ref=f23e338]:
+            - heading "All-Wish" [level=4] [ref=f23e339]
+            - paragraph [ref=f23e340]: movie · tv
+          - generic [ref=f23e341]:
+            - checkbox [checked]
+        - generic [ref=f23e343] [cursor=pointer]:
+          - generic [ref=f23e345]:
+            - heading "AnimeKai" [level=4] [ref=f23e346]
+            - paragraph [ref=f23e347]: movie · tv
+          - generic [ref=f23e348]:
+            - checkbox [checked]
+        - generic [ref=f23e350] [cursor=pointer]:
+          - generic [ref=f23e352]:
+            - heading "AnikotoTV" [level=4] [ref=f23e353]
+            - paragraph [ref=f23e354]: movie · tv · anime
+          - generic [ref=f23e355]:
+            - checkbox [checked]
+        - generic [ref=f23e357] [cursor=pointer]:
+          - generic [ref=f23e359]:
+            - heading "AniDB" [level=4] [ref=f23e360]
+            - paragraph [ref=f23e361]: movie · tv
+          - generic [ref=f23e362]:
+            - checkbox [checked]
+        - generic [ref=f23e364] [cursor=pointer]:
+          - generic [ref=f23e366]:
+            - heading "AnimePahe" [level=4] [ref=f23e367]
+            - paragraph [ref=f23e368]: movie · tv
+          - generic [ref=f23e369]:
+            - checkbox [checked]
+        - generic [ref=f23e371] [cursor=pointer]:
+          - generic [ref=f23e373]:
+            - heading "AnimeSalt" [level=4] [ref=f23e374]
+            - paragraph [ref=f23e375]: movie · tv
+          - generic [ref=f23e376]:
+            - checkbox [checked]
+        - generic [ref=f23e378] [cursor=pointer]:
+          - generic [ref=f23e380]:
+            - heading "Animetsu" [level=4] [ref=f23e381]
+            - paragraph [ref=f23e382]: movie · tv · anime
+          - generic [ref=f23e383]:
+            - checkbox [checked]
+        - generic [ref=f23e385] [cursor=pointer]:
+          - generic [ref=f23e387]:
+            - heading "AnimeWorld" [level=4] [ref=f23e388]
+            - paragraph [ref=f23e389]: movie · tv
+          - generic [ref=f23e390]:
+            - checkbox [checked]
+        - generic [ref=f23e392] [cursor=pointer]:
+          - generic [ref=f23e394]:
+            - heading "Anime-Sama" [level=4] [ref=f23e395]
+            - paragraph [ref=f23e396]: movie · tv
+          - generic [ref=f23e397]:
+            - checkbox [checked]
+        - generic [ref=f23e399] [cursor=pointer]:
+          - generic [ref=f23e401]:
+            - heading "AllMovieLand" [level=4] [ref=f23e402]
+            - paragraph [ref=f23e403]: movie · tv
+          - generic [ref=f23e404]:
+            - checkbox [checked]
+        - generic [ref=f23e406] [cursor=pointer]:
+          - generic [ref=f23e408]:
+            - heading "AnimeZeY" [level=4] [ref=f23e409]
+            - paragraph [ref=f23e410]: movie · tv
+          - generic [ref=f23e411]:
+            - checkbox [checked]
+        - generic [ref=f23e413] [cursor=pointer]:
+          - generic [ref=f23e415]:
+            - heading "DesiFlix" [level=4] [ref=f23e416]
+            - paragraph [ref=f23e417]: movie · tv
+          - generic [ref=f23e418]:
+            - checkbox [checked]
+        - generic [ref=f23e420] [cursor=pointer]:
+          - generic [ref=f23e422]:
+            - heading "Castle" [level=4] [ref=f23e423]
+            - paragraph [ref=f23e424]: movie · tv
+          - generic [ref=f23e425]:
+            - checkbox [checked]
+        - generic [ref=f23e427] [cursor=pointer]:
+          - generic [ref=f23e429]:
+            - heading "Cineby" [level=4] [ref=f23e430]
+            - paragraph [ref=f23e431]: movie · tv
+          - generic [ref=f23e432]:
+            - checkbox [checked]
+        - generic [ref=f23e434] [cursor=pointer]:
+          - generic [ref=f23e436]:
+            - heading "CineFreak" [level=4] [ref=f23e437]
+            - paragraph [ref=f23e438]: movie · tv
+          - generic [ref=f23e439]:
+            - checkbox [checked]
+        - generic [ref=f23e441] [cursor=pointer]:
+          - generic [ref=f23e443]:
+            - heading "MoonFlix" [level=4] [ref=f23e444]
+            - paragraph [ref=f23e445]: movie · tv
+          - generic [ref=f23e446]:
+            - checkbox [checked]
+        - generic [ref=f23e448] [cursor=pointer]:
+          - generic [ref=f23e450]:
+            - heading "CinemaCity" [level=4] [ref=f23e451]
+            - paragraph [ref=f23e452]: movie · tv
+          - generic [ref=f23e453]:
+            - checkbox [checked]
+        - generic [ref=f23e455] [cursor=pointer]:
+          - generic [ref=f23e457]:
+            - heading "CTGMovies" [level=4] [ref=f23e458]
+            - paragraph [ref=f23e459]: movie · tv
+          - generic [ref=f23e460]:
+            - checkbox [checked]
+        - generic [ref=f23e462] [cursor=pointer]:
+          - generic [ref=f23e464]:
+            - heading "Dahmermovies" [level=4] [ref=f23e465]
+            - paragraph [ref=f23e466]: movie · tv
+          - generic [ref=f23e467]:
+            - checkbox [checked]
+        - generic [ref=f23e469] [cursor=pointer]:
+          - generic [ref=f23e471]:
+            - heading "Dahmermovies-TV" [level=4] [ref=f23e472]
+            - paragraph [ref=f23e473]: movie · tv
+          - generic [ref=f23e474]:
+            - checkbox [checked]
+        - generic [ref=f23e476] [cursor=pointer]:
+          - generic [ref=f23e478]:
+            - heading "DooFlix" [level=4] [ref=f23e479]
+            - paragraph [ref=f23e480]: movie · tv
+          - generic [ref=f23e481]:
+            - checkbox [checked]
+        - generic [ref=f23e483] [cursor=pointer]:
+          - generic [ref=f23e485]:
+            - heading "Einthustan" [level=4] [ref=f23e486]
+            - paragraph [ref=f23e487]: movie · tv
+          - generic [ref=f23e488]:
+            - checkbox [checked]
+        - generic [ref=f23e490] [cursor=pointer]:
+          - generic [ref=f23e492]:
+            - heading "FibWatch" [level=4] [ref=f23e493]
+            - paragraph [ref=f23e494]: movie · tv
+          - generic [ref=f23e495]:
+            - checkbox [checked]
+        - generic [ref=f23e497] [cursor=pointer]:
+          - generic [ref=f23e499]:
+            - heading "Goated" [level=4] [ref=f23e500]
+            - paragraph [ref=f23e501]: movie · tv
+          - generic [ref=f23e502]:
+            - checkbox [checked]
+        - generic [ref=f23e504] [cursor=pointer]:
+          - generic [ref=f23e506]:
+            - heading "GramCinema" [level=4] [ref=f23e507]
+            - paragraph [ref=f23e508]: movie · tv
+          - generic [ref=f23e509]:
+            - checkbox [checked]
+        - generic [ref=f23e511] [cursor=pointer]:
+          - generic [ref=f23e513]:
+            - heading "HDGharTV" [level=4] [ref=f23e514]
+            - paragraph [ref=f23e515]: movie · tv
+          - generic [ref=f23e516]:
+            - checkbox [checked]
+        - generic [ref=f23e518] [cursor=pointer]:
+          - generic [ref=f23e520]:
+            - heading "HDHub4u" [level=4] [ref=f23e521]
+            - paragraph [ref=f23e522]: movie · tv
+          - generic [ref=f23e523]:
+            - checkbox [checked]
+        - generic [ref=f23e525] [cursor=pointer]:
+          - generic [ref=f23e527]:
+            - heading "HiAnime" [level=4] [ref=f23e528]
+            - paragraph [ref=f23e529]: movie · tv
+          - generic [ref=f23e530]:
+            - checkbox [checked]
+        - generic [ref=f23e532] [cursor=pointer]:
+          - generic [ref=f23e534]:
+            - heading "HindMoviez" [level=4] [ref=f23e535]
+            - paragraph [ref=f23e536]: movie · tv
+          - generic [ref=f23e537]:
+            - checkbox [checked]
+        - generic [ref=f23e539] [cursor=pointer]:
+          - generic [ref=f23e541]:
+            - heading "Kurage" [level=4] [ref=f23e542]
+            - paragraph [ref=f23e543]: movie · tv
+          - generic [ref=f23e544]:
+            - checkbox [checked]
+        - generic [ref=f23e546] [cursor=pointer]:
+          - generic [ref=f23e548]:
+            - heading "MovieBox" [level=4] [ref=f23e549]
+            - paragraph [ref=f23e550]: movie · tv
+          - generic [ref=f23e551]:
+            - checkbox [checked]
+        - generic [ref=f23e553] [cursor=pointer]:
+          - generic [ref=f23e555]:
+            - heading "MovieBlast" [level=4] [ref=f23e556]
+            - paragraph [ref=f23e557]: movie · tv
+          - generic [ref=f23e558]:
+            - checkbox [checked]
+        - generic [ref=f23e560] [cursor=pointer]:
+          - generic [ref=f23e562]:
+            - heading "MoviesDrive" [level=4] [ref=f23e563]
+            - paragraph [ref=f23e564]: movie · tv
+          - generic [ref=f23e565]:
+            - checkbox [checked]
+        - generic [ref=f23e567] [cursor=pointer]:
+          - generic [ref=f23e569]:
+            - heading "MoviesHunt" [level=4] [ref=f23e570]
+            - paragraph [ref=f23e571]: movie
+          - generic [ref=f23e572]:
+            - checkbox [checked]
+        - generic [ref=f23e574] [cursor=pointer]:
+          - generic [ref=f23e576]:
+            - heading "Movies4u" [level=4] [ref=f23e577]
+            - paragraph [ref=f23e578]: movie
+          - generic [ref=f23e579]:
+            - checkbox [checked]
+        - generic [ref=f23e581] [cursor=pointer]:
+          - generic [ref=f23e583]:
+            - heading "Movix VF" [level=4] [ref=f23e584]
+            - paragraph [ref=f23e585]: movie · tv
+          - generic [ref=f23e586]:
+            - checkbox [checked]
+        - generic [ref=f23e588] [cursor=pointer]:
+          - generic [ref=f23e590]:
+            - heading "Nakios" [level=4] [ref=f23e591]
+            - paragraph [ref=f23e592]: movie · tv
+          - generic [ref=f23e593]:
+            - checkbox [checked]
+        - generic [ref=f23e595] [cursor=pointer]:
+          - generic [ref=f23e597]:
+            - heading "NetMirror" [level=4] [ref=f23e598]
+            - paragraph [ref=f23e599]: movie · tv
+          - generic [ref=f23e600]:
+            - checkbox [checked]
+        - generic [ref=f23e602] [cursor=pointer]:
+          - generic [ref=f23e604]:
+            - heading "PersianStremio" [level=4] [ref=f23e605]
+            - paragraph [ref=f23e606]: movie · tv
+          - generic [ref=f23e607]:
+            - checkbox [checked]
+        - generic [ref=f23e609] [cursor=pointer]:
+          - generic [ref=f23e611]:
+            - heading "Peachify" [level=4] [ref=f23e612]
+            - paragraph [ref=f23e613]: movie · tv
+          - generic [ref=f23e614]:
+            - checkbox [checked]
+        - generic [ref=f23e616] [cursor=pointer]:
+          - generic [ref=f23e618]:
+            - heading "PlayIMDb" [level=4] [ref=f23e619]
+            - paragraph [ref=f23e620]: movie · tv
+          - generic [ref=f23e621]:
+            - checkbox [checked]
+        - generic [ref=f23e623] [cursor=pointer]:
+          - generic [ref=f23e625]:
+            - heading "Purstream" [level=4] [ref=f23e626]
+            - paragraph [ref=f23e627]: movie · tv
+          - generic [ref=f23e628]:
+            - checkbox [checked]
+        - generic [ref=f23e630] [cursor=pointer]:
+          - generic [ref=f23e632]:
+            - heading "ShowBox" [level=4] [ref=f23e633]
+            - paragraph [ref=f23e634]: movie · tv
+          - generic [ref=f23e635]:
+            - checkbox [checked]
+        - generic [ref=f23e637] [cursor=pointer]:
+          - generic [ref=f23e639]:
+            - heading "TopCartoons" [level=4] [ref=f23e640]
+            - paragraph [ref=f23e641]: movie · tv
+          - generic [ref=f23e642]:
+            - checkbox [checked]
+        - generic [ref=f23e644] [cursor=pointer]:
+          - generic [ref=f23e646]:
+            - heading "Torrentio" [level=4] [ref=f23e647]
+            - paragraph [ref=f23e648]: movie · tv
+          - generic [ref=f23e649]:
+            - checkbox [checked]
+        - generic [ref=f23e651] [cursor=pointer]:
+          - generic [ref=f23e653]:
+            - heading "VidRock" [level=4] [ref=f23e654]
+            - paragraph [ref=f23e655]: movie · tv
+          - generic [ref=f23e656]:
+            - checkbox [checked]
+        - generic [ref=f23e658] [cursor=pointer]:
+          - generic [ref=f23e660]:
+            - heading "UHDMovies" [level=4] [ref=f23e661]
+            - paragraph [ref=f23e662]: movie · tv
+          - generic [ref=f23e663]:
+            - checkbox [checked]
+        - generic [ref=f23e665] [cursor=pointer]:
+          - generic [ref=f23e667]:
+            - heading "VegaMovies" [level=4] [ref=f23e668]
+            - paragraph [ref=f23e669]: movie · tv
+          - generic [ref=f23e670]:
+            - checkbox [checked]
+        - generic [ref=f23e672] [cursor=pointer]:
+          - generic [ref=f23e674]:
+            - heading "VidLink" [level=4] [ref=f23e675]
+            - paragraph [ref=f23e676]: movie · tv
+          - generic [ref=f23e677]:
+            - checkbox [checked]
+        - generic [ref=f23e679] [cursor=pointer]:
+          - generic [ref=f23e681]:
+            - heading "VidEasy" [level=4] [ref=f23e682]
+            - paragraph [ref=f23e683]: movie · tv
+          - generic [ref=f23e684]:
+            - checkbox [checked]
+        - generic [ref=f23e686] [cursor=pointer]:
+          - generic [ref=f23e688]:
+            - heading "VidSrc" [level=4] [ref=f23e689]
+            - paragraph [ref=f23e690]: movie · tv
+          - generic [ref=f23e691]:
+            - checkbox [checked]
+        - generic [ref=f23e693] [cursor=pointer]:
+          - generic [ref=f23e695]:
+            - heading "VixSrc" [level=4] [ref=f23e696]
+            - paragraph [ref=f23e697]: movie · tv
+          - generic [ref=f23e698]:
+            - checkbox [checked]
+        - generic [ref=f23e700] [cursor=pointer]:
+          - generic [ref=f23e702]:
+            - heading "VidFast" [level=4] [ref=f23e703]
+            - paragraph [ref=f23e704]: movie · tv
+          - generic [ref=f23e705]:
+            - checkbox [checked]
+        - generic [ref=f23e707] [cursor=pointer]:
+          - generic [ref=f23e709]:
+            - heading "VidLove" [level=4] [ref=f23e710]
+            - paragraph [ref=f23e711]: movie · tv
+          - generic [ref=f23e712]:
+            - checkbox [checked]
+        - generic [ref=f23e714] [cursor=pointer]:
+          - generic [ref=f23e716]:
+            - heading "XPass" [level=4] [ref=f23e717]
+            - paragraph [ref=f23e718]: movie · tv
+          - generic [ref=f23e719]:
+            - checkbox [checked]
+        - generic [ref=f23e721] [cursor=pointer]:
+          - generic [ref=f23e723]:
+            - heading "ZinkMovies" [level=4] [ref=f23e724]
+            - paragraph [ref=f23e725]: movie · tv
+          - generic [ref=f23e726]:
+            - checkbox [checked]
+        - generic [ref=f23e728] [cursor=pointer]:
+          - generic [ref=f23e730]:
+            - heading "OnlyKDrama" [level=4] [ref=f23e731]
+            - paragraph [ref=f23e732]: movie · tv
+          - generic [ref=f23e733]:
+            - checkbox [checked]
+        - generic [ref=f23e735] [cursor=pointer]:
+          - generic [ref=f23e737]:
+            - heading "Kisskh" [level=4] [ref=f23e738]
+            - paragraph [ref=f23e739]: movie · tv
+          - generic [ref=f23e740]:
+            - checkbox [checked]
+  - generic [ref=f23e281]:
+    - generic [ref=f23e282]: "ID: 533enzby"
+    - button "Save & Sync" [ref=f23e284] [cursor=pointer]

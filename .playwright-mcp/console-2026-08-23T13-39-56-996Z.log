@@ -1,0 +1,60 @@
+[     308ms] [LOG] %c
+▲
+
+    ____                               _ __
+   / __ \________  ____ _____ ___     (_) /_
+  / / / / ___/ _ \/ __ `/ __ `__ \   / / __/
+ / /_/ / /  /  __/ /_/ / / / / / /  / / /__
+/_____/_/   \___/\__,_/_/ /_/ /_/  /_/\__( )
+   _____ __    _          _ __           |/
+  / ___// /_  (_)___     (_) /_
+  \__ \/ __ \/ / __ \   / / __/
+ ___/ / / / / / /_/ /  / / /_
+/____/_/ /_/_/ .___/  /_/\__/
+            /_/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:78
+[    1902ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at r5 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48005)
+    at iz (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:102145)
+    at sY (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145154)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:144999
+    at sX (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145007)
+    at sj (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:140168)
+    at ck (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175002)
+    at cv (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:172905)
+    at cb (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:173262)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175061
+[    1919ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at r5 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48005)
+    at iz (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:102145)
+    at sY (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145154)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:144999
+    at sX (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145007)
+    at sj (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:140168)
+    at ck (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175002)
+    at cv (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:172905)
+    at cb (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:173262)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175061
+[    1989ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at r5 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48005)
+    at iz (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:102145)
+    at sY (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145154)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:144999
+    at sX (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145007)
+    at sj (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:140168)
+    at ck (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175002)
+    at cv (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:172905)
+    at cb (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:173262)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175061
+[    2381ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:18
+[    2680ms] [ERROR] Failed to load resource: the server responded with a status of 429 () @ https://o205439.ingest.sentry.io/api/1323670/envelope/?sentry_key=d00780d432ac4ccf882f60dd02062e14&sentry_version=7&sentry_client=sentry.javascript.browser%2F7.111.0:0
+[    5099ms] [WARNING] WebSocket connection to 'wss://api.knock.app/ws/v1/websocket?user_token=eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1QlRTWHUySnBkUzVWdWh6dFVWMEYycHQiLCJpYXQiOjE3ODc0OTI0MDEsImV4cCI6MTc4NzU3ODgwMSwiZXhwbGljaXRfZ3JhbnRzIjp0cnVlLCJncmFudHMiOnsiaHR0cHM6Ly9hcGkua25vY2suYXBwL3YxL3VzZXJzL3VCVFNYdTJKcGRTNVZ1aHp0VVYwRjJwdCI6eyJ1c2VyL3JlYWQiOlt7fV19LCJodHRwczovL2FwaS5rbm9jay5hcHAvdjEvdGVuYW50cy90ZWFtX3Zrd2p0cW42THZ1N25IeU81a0Q4SzRCTiI6eyJ1c2VyL2ZlZWRfcmVhZCI6W3t9XSwidXNlci9mZWVkX3dyaXRlIjpbe31dLCJwcmVmZXJlbmNlcy9yZWFkIjpbe31dLCJwcmVmZXJlbmNlcy93cml0ZSI...j93x0hmTQvLm4oe5lmtCCw4W68FBgHiyTmR32BLqXMyoZTWgx6MyBktepO-TkVf8Q1j5iXgtIMflvHIgfhiXUsF91PJy6h9d53wFnKuXAUsL5IQVhtO7ySZBPXGeY33RHbHtmj7RSdXOTTSebHZ4lCefng70cX0NPxayXAK00fA5wUUqQant69l4aE78RiVRJhS3OfnqdV43geA0hvdo9cxCi-jSeR0d6up7ZE47JgddSgGroz52HRUYwMn7y0kwDXqhrF2I3MZ_37IuqI2MzmOMtZRS99FwCv8f1VOwHCxJO2u9ZdZS20nEH58BZ1B_lImoWIqkfy7mo6XqzVt3cImJ_DvWdnBFNLwcBO6y7KBJKe2qh0eruL1j2B9L5b_UWi2M_IRwL6q0hf8lD8s3llgR-ThelFEFyBC-Xpb0uKWGC5pg4--sXujVWAInM&api_key=pk_VDWdIz7Adykm_AlBfKxLCY6G7cD89PNsG7roK1gvQ9E&vsn=2.0.0' failed: WebSocket is closed before the connection is established. @ https://vercel.com/_next/static/immutable/chunks/0n_8x7iaf-925.js:1
+[    5100ms] [WARNING] WebSocket connection to 'wss://api.knock.app/ws/v1/websocket?user_token=eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1QlRTWHUySnBkUzVWdWh6dFVWMEYycHQiLCJpYXQiOjE3ODc0OTI0MDEsImV4cCI6MTc4NzU3ODgwMSwiZXhwbGljaXRfZ3JhbnRzIjp0cnVlLCJncmFudHMiOnsiaHR0cHM6Ly9hcGkua25vY2suYXBwL3YxL3VzZXJzL3VCVFNYdTJKcGRTNVZ1aHp0VVYwRjJwdCI6eyJ1c2VyL3JlYWQiOlt7fV19LCJodHRwczovL2FwaS5rbm9jay5hcHAvdjEvdGVuYW50cy90ZWFtX3Zrd2p0cW42THZ1N25IeU81a0Q4SzRCTiI6eyJ1c2VyL2ZlZWRfcmVhZCI6W3t9XSwidXNlci9mZWVkX3dyaXRlIjpbe31dLCJwcmVmZXJlbmNlcy9yZWFkIjpbe31dLCJwcmVmZXJlbmNlcy93cml0ZSI...j93x0hmTQvLm4oe5lmtCCw4W68FBgHiyTmR32BLqXMyoZTWgx6MyBktepO-TkVf8Q1j5iXgtIMflvHIgfhiXUsF91PJy6h9d53wFnKuXAUsL5IQVhtO7ySZBPXGeY33RHbHtmj7RSdXOTTSebHZ4lCefng70cX0NPxayXAK00fA5wUUqQant69l4aE78RiVRJhS3OfnqdV43geA0hvdo9cxCi-jSeR0d6up7ZE47JgddSgGroz52HRUYwMn7y0kwDXqhrF2I3MZ_37IuqI2MzmOMtZRS99FwCv8f1VOwHCxJO2u9ZdZS20nEH58BZ1B_lImoWIqkfy7mo6XqzVt3cImJ_DvWdnBFNLwcBO6y7KBJKe2qh0eruL1j2B9L5b_UWi2M_IRwL6q0hf8lD8s3llgR-ThelFEFyBC-Xpb0uKWGC5pg4--sXujVWAInM&api_key=pk_VDWdIz7Adykm_AlBfKxLCY6G7cD89PNsG7roK1gvQ9E&vsn=2.0.0' failed: WebSocket is closed before the connection is established. @ https://vercel.com/_next/static/immutable/chunks/0n_8x7iaf-925.js:1

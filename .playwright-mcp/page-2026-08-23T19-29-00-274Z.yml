@@ -1,0 +1,177 @@
+- generic [active] [ref=f21e1]:
+  - link "Skip to content" [ref=f21e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation [ref=f21e3]:
+    - link [ref=f21e4] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f21e5]
+      - text: Chole Bhature
+    - generic [ref=f21e6]:
+      - link "General" [ref=f21e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f21e8] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f21e9] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f21e11]:
+    - generic [ref=f21e12]:
+      - paragraph [ref=f21e13]: v3.4.0
+      - generic [ref=f21e14]: High-Performance Stream Meta-Sorter & Priority Engine
+      - heading "Configure your stream engine" [level=1] [ref=f21e15]
+      - paragraph [ref=f21e16]: Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.
+      - generic [ref=f21e17]:
+        - link "Get Plugins" [ref=f21e18] [cursor=pointer]:
+          - /url: https://nuvio-plugin-library.vercel.app/
+        - link "Manage sources" [ref=f21e19] [cursor=pointer]:
+          - /url: "#"
+    - generic [ref=f21e20]:
+      - generic [ref=f21e21]:
+        - generic [ref=f21e27]: Speed
+        - generic [ref=f21e28]: Sort Mode
+      - generic [ref=f21e29]:
+        - generic [ref=f21e34]: "0"
+        - generic [ref=f21e35]: Repositories
+      - generic [ref=f21e36]:
+        - generic [ref=f21e41]: "0"
+        - generic [ref=f21e42]: Scrapers
+      - generic [ref=f21e43]:
+        - generic [ref=f21e46]: 0 Active
+        - generic [ref=f21e47]: Stream Filters
+    - generic [ref=f21e48]:
+      - generic [ref=f21e49]:
+        - generic [ref=f21e50]: "1"
+        - heading "Configure Your Setup" [level=4] [ref=f21e51]
+        - paragraph [ref=f21e52]: Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.
+      - generic [ref=f21e53]:
+        - generic [ref=f21e54]: "2"
+        - heading "Add Repositories" [level=4] [ref=f21e55]
+        - paragraph [ref=f21e56]: Visit the Sources tab to load community scrapers or add your own custom repository URL.
+      - generic [ref=f21e57]:
+        - generic [ref=f21e58]: "3"
+        - heading "Install Addon" [level=4] [ref=f21e59]
+        - paragraph [ref=f21e60]: Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.
+    - generic [ref=f21e61]:
+      - heading "About the Addon" [level=3] [ref=f21e62]
+      - paragraph [ref=f21e65]: Chole Bhature is a high-performance stream meta-sorter designed to drastically improve your viewing experience. It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.
+      - generic [ref=f21e66]:
+        - link "Install Addon" [ref=f21e67] [cursor=pointer]:
+          - /url: "#"
+        - link "GitHub" [ref=f21e68] [cursor=pointer]:
+          - /url: https://github.com/SA7ANI/chole-bhature
+    - generic [ref=f21e69]:
+      - heading "Sort Mode" [level=2] [ref=f21e70]
+      - paragraph [ref=f21e71]: Choose how your streams are ranked.
+      - generic [ref=f21e72]:
+        - generic [ref=f21e80] [cursor=pointer]:
+          - heading "Speed" [level=4] [ref=f21e81]
+          - paragraph [ref=f21e82]: Fastest responding streams first
+        - generic [ref=f21e88] [cursor=pointer]:
+          - heading "Quality" [level=4] [ref=f21e89]
+          - paragraph [ref=f21e90]: 4K UHD first, then by speed
+    - generic [ref=f21e91]:
+      - heading "Auto-Hide Filters" [level=2] [ref=f21e92]
+      - paragraph [ref=f21e93]: Strip broken or unwanted streams from results.
+      - generic [ref=f21e94]:
+        - generic [ref=f21e95]:
+          - generic [ref=f21e101]:
+            - heading "Dead Links" [level=3] [ref=f21e102]
+            - paragraph [ref=f21e103]: Filter out completely offline or broken streams
+          - generic [ref=f21e104] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f21e106]:
+          - generic [ref=f21e115]:
+            - heading "Slow Links" [level=3] [ref=f21e116]
+            - paragraph [ref=f21e117]: Filter out streams taking longer than 1.5s to respond
+          - generic [ref=f21e118] [cursor=pointer]:
+            - checkbox
+        - generic [ref=f21e120]:
+          - generic [ref=f21e127]:
+            - heading "CAM & TeleSync" [level=3] [ref=f21e128]
+            - paragraph [ref=f21e129]: Filter out low-quality theater recordings
+          - generic [ref=f21e130] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f21e132]:
+          - generic [ref=f21e138]:
+            - heading "Auto-Quarantine New" [level=3] [ref=f21e139]:
+              - text: Auto-Quarantine
+              - generic [ref=f21e140]: New
+            - paragraph [ref=f21e141]: Isolate failing scrapers for 30 min after 3 consecutive failures
+          - generic [ref=f21e142] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f21e144]:
+          - generic [ref=f21e150]:
+            - heading "Deduplication" [level=3] [ref=f21e151]
+            - paragraph [ref=f21e152]: Merge identical streams across providers
+          - generic [ref=f21e153] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f21e155]:
+          - generic [ref=f21e162]:
+            - heading "Seeder Badges" [level=3] [ref=f21e163]
+            - paragraph [ref=f21e164]: Show live torrent seeder count
+          - generic [ref=f21e165] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f21e167]:
+          - generic [ref=f21e173]:
+            - heading "True-Probing (FFprobe) Heavy" [level=3] [ref=f21e174]:
+              - text: True-Probing (FFprobe)
+              - generic [ref=f21e175]: Heavy
+            - paragraph [ref=f21e176]: Runs FFprobe on every stream to verify actual video container/quality
+          - generic [ref=f21e177] [cursor=pointer]:
+            - checkbox
+    - generic [ref=f21e179]:
+      - heading "Preferred Languages" [level=2] [ref=f21e180]
+      - paragraph [ref=f21e181]: Streams with these languages float to the top.
+      - generic [ref=f21e182]:
+        - generic [ref=f21e184] [cursor=pointer]:
+          - heading "Hindi" [level=4] [ref=f21e185]
+          - paragraph [ref=f21e186]: Default priority
+        - generic [ref=f21e189] [cursor=pointer]:
+          - heading "Dual-Audio" [level=4] [ref=f21e190]
+          - paragraph [ref=f21e191]: Mixed language tracks
+        - generic [ref=f21e194] [cursor=pointer]:
+          - heading "Tamil" [level=4] [ref=f21e195]
+          - paragraph [ref=f21e196]: South Indian
+        - generic [ref=f21e199] [cursor=pointer]:
+          - heading "Telugu" [level=4] [ref=f21e200]
+          - paragraph [ref=f21e201]: South Indian
+        - generic [ref=f21e204] [cursor=pointer]:
+          - heading "Malayalam" [level=4] [ref=f21e205]
+          - paragraph [ref=f21e206]: South Indian
+        - generic [ref=f21e209] [cursor=pointer]:
+          - heading "Kannada" [level=4] [ref=f21e210]
+          - paragraph [ref=f21e211]: South Indian
+        - generic [ref=f21e214] [cursor=pointer]:
+          - heading "Marathi" [level=4] [ref=f21e215]
+          - paragraph [ref=f21e216]: West Indian
+        - generic [ref=f21e219] [cursor=pointer]:
+          - heading "Bengali" [level=4] [ref=f21e220]
+          - paragraph [ref=f21e221]: East Indian
+        - generic [ref=f21e224] [cursor=pointer]:
+          - heading "Anime/Jap" [level=4] [ref=f21e225]
+          - paragraph [ref=f21e226]: Japanese dub & sub
+        - generic [ref=f21e229] [cursor=pointer]:
+          - heading "English" [level=4] [ref=f21e230]
+          - paragraph [ref=f21e231]: Default global
+    - generic [ref=f21e233]:
+      - heading "Premium Features" [level=2] [ref=f21e234]
+      - paragraph [ref=f21e235]: Optional integrations for enhanced streaming.
+      - generic [ref=f21e236]:
+        - generic [ref=f21e237] [cursor=pointer]:
+          - heading "Real-Debrid" [level=4] [ref=f21e242]
+          - paragraph [ref=f21e243]: Instant cached CDN links
+          - textbox "API Key" [ref=f21e245]
+        - generic [ref=f21e246] [cursor=pointer]:
+          - heading "Mini-Debrid" [level=4] [ref=f21e250]
+          - paragraph [ref=f21e251]: Torrent-to-HTTP streaming
+          - textbox "Access Token" [ref=f21e253]
+        - generic [ref=f21e254] [cursor=pointer]:
+          - heading "DNS-over-HTTPS" [level=4] [ref=f21e259]
+          - paragraph [ref=f21e260]: Bypass ISP censorship
+          - combobox [ref=f21e262]:
+            - option "Cloudflare (1.1.1.1)" [selected]
+            - option "Google DNS (8.8.8.8)"
+            - option "AdGuard DNS"
+            - option "Quad9 (9.9.9.9)"
+  - generic [ref=f21e263]:
+    - generic [ref=f21e264]: "ID: Loading…"
+    - button "Save & Sync" [ref=f21e266] [cursor=pointer]

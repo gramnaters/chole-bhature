@@ -1,0 +1,96 @@
+[     351ms] [LOG] %c
+▲
+
+__  __                                     _            __
+\ \/ /___  __  __   _________ _____       (_)_  _______/ /_
+ \  / __ \/ / / /  / ___/ __ `/ __ \     / / / / / ___/ __/
+ / / /_/ / /_/ /  / /__/ /_/ / / / /    / / /_/ (__  ) /_
+/_/\____/\__,_/   \___/\__,_/_/ /_/  __/ /\__,_/____/\__/
+         __    _          __  __    /___/
+   _____/ /_  (_)___     / /_/ /_  (_)___  ____ ______
+  / ___/ __ \/ / __ \   / __/ __ \/ / __ \/ __ `/ ___/
+ (__  ) / / / / /_/ /  / /_/ / / / / / / / /_/ (__  )
+/____/_/ /_/_/ .___/   \__/_/ /_/_/_/ /_/\__, /____/
+            /_/                         /____/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:78
+[    1192ms] [WARNING] iso_swr: SSR fetch failed for "/api/v2/teams/gramnaters" {error: iso_swr_fetch_error, message: Not authorized} @ https://vercel.com/gramnaters/chole-bhature/deployments:96
+[    1192ms] [WARNING] iso_swr: SSR fetch failed for "/api/v9/projects/chole-bhature?latestDeployments=0&rollbackInfo=true&teamId=gramnaters" {error: iso_swr_fetch_error, message: Not authorized} @ https://vercel.com/gramnaters/chole-bhature/deployments:96
+[    1193ms] [WARNING] iso_swr: SSR fetch failed for "/v1/dashboard/projects/chole-bhature?teamId=gramnaters" {error: iso_swr_fetch_error, message: Not authorized} @ https://vercel.com/gramnaters/chole-bhature/deployments:96
+[    1430ms] [WARNING] iso_swr[warn] [client] fallback error for key: "/api/v2/teams/gramnaters" {error: iso_swr_fetch_error, message: Not authorized} @ https://vercel.com/_next/static/immutable/chunks/0mmfkgkt_bpnq.js:1
+[    1445ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at r5 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48005)
+    at iz (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:102145)
+    at sY (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145154)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:144999
+    at sX (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145007)
+    at sj (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:140168)
+    at ck (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175002)
+    at cv (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:172905)
+    at cb (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:173262)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175061
+[    1455ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at r5 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48005)
+    at iz (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:102145)
+    at sY (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145154)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:144999
+    at sX (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145007)
+    at sj (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:140168)
+    at ck (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175002)
+    at cv (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:172905)
+    at cb (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:173262)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175061
+[    1461ms] [WARNING] iso_swr[warn] [client] fallback error for key: "/v1/dashboard/projects/chole-bhature?teamId=gramnaters" {error: iso_swr_fetch_error, message: Not authorized} @ https://vercel.com/_next/static/immutable/chunks/0mmfkgkt_bpnq.js:1
+[    1482ms] [WARNING] iso_swr[warn] [client] fallback error for key: "/api/v9/projects/chole-bhature?latestDeployments=0&rollbackInfo=true&teamId=gramnaters" {error: iso_swr_fetch_error, message: Not authorized} @ https://vercel.com/_next/static/immutable/chunks/0mmfkgkt_bpnq.js:1
+[    1913ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/v1/dashboard/projects/chole-bhature?teamId=gramnaters:0
+[    1914ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/v2/teams/gramnaters:0
+[    1915ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/v9/projects/chole-bhature?latestDeployments=0&rollbackInfo=true&teamId=gramnaters:0
+[    1929ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:18
+[    1998ms] [LOG] Ignored request error CustomFetchError: Not authorized
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[    1998ms] [LOG] Ignored request error CustomFetchError: Not authorized
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[    2007ms] [ERROR] Failed to load resource: the server responded with a status of 429 () @ https://o205439.ingest.sentry.io/api/1323670/envelope/?sentry_key=d00780d432ac4ccf882f60dd02062e14&sentry_version=7&sentry_client=sentry.javascript.browser%2F7.111.0:0
+[    2187ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/user/permissions?projectIdOrName=chole-bhature&slug=gramnaters:0
+[    2193ms] [LOG] Ignored request error CustomFetchError: Not authorized
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[    2202ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/dash-tips?teamId=gramnaters:0
+[    2203ms] [LOG] Ignored request error CustomFetchError: You don't have permission to access this resource.
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async o.revalidateOnFocus (https://vercel.com/_next/static/immutable/chunks/1p796ukbqlqic.js:2:2231)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[    2364ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/v2/teams/gramnaters:0
+[    2364ms] [LOG] Ignored request error CustomFetchError: Not authorized
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[    2373ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/v2/dashboard/projects?favorites=1&limit=25&teamId=gramnaters:0
+[    2383ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/recents?hydrateLimit=30&limit=7&teamId=gramnaters&type=preview:0
+[    2653ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/v2/teams/gramnaters:0
+[    2654ms] [LOG] Ignored request error CustomFetchError: Not authorized
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[    7214ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/gramnaters/chole-bhature/deployments:0
+[    7215ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/gramnaters/chole-bhature/deployments:0
+[    7481ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/user/permissions?projectIdOrName=chole-bhature&slug=gramnaters:0
+[    7482ms] [LOG] Ignored request error CustomFetchError: Not authorized
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[   10493ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/gramnaters/chole-bhature/deployments:0
+[   10493ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/gramnaters/chole-bhature/deployments:0
+[   12564ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://vercel.com/api/dash-tips?teamId=gramnaters:0
+[   12565ms] [LOG] Ignored request error CustomFetchError: You don't have permission to access this resource.
+    at d (https://vercel.com/_next/static/immutable/chunks/3j35_i733oqo_.js:2:36411)
+    at async o.revalidateOnFocus (https://vercel.com/_next/static/immutable/chunks/1p796ukbqlqic.js:2:2231)
+    at async https://vercel.com/_next/static/immutable/chunks/01e5mn454ss76.js:2:11824 @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:16
+[   15770ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/gramnaters/chole-bhature/deployments:0
+[   15770ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/gramnaters/chole-bhature/deployments:0

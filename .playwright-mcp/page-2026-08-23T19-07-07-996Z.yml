@@ -1,0 +1,560 @@
+- generic [ref=f18e1]:
+  - navigation [ref=f18e2]:
+    - link [ref=f18e3] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f18e4]
+      - text: Chole Bhature
+    - generic [ref=f18e5]:
+      - link "General" [active] [ref=f18e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f18e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f18e8] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f18e10]:
+    - generic [ref=f18e11]:
+      - paragraph [ref=f18e12]: v3.4.0
+      - generic [ref=f18e13]: High-Performance Stream Meta-Sorter & Priority Engine
+      - heading "Configure your stream engine" [level=1] [ref=f18e14]
+      - paragraph [ref=f18e15]: Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.
+      - generic [ref=f18e16]:
+        - link "Get Plugins" [ref=f18e17] [cursor=pointer]:
+          - /url: https://nuvio-plugin-library.vercel.app/
+        - link "Manage sources" [ref=f18e18] [cursor=pointer]:
+          - /url: "#sources"
+    - generic [ref=f18e19]:
+      - generic [ref=f18e20]:
+        - generic [ref=f18e26]: Speed
+        - generic [ref=f18e27]: Sort Mode
+      - generic [ref=f18e28]:
+        - generic [ref=f18e31]: "1"
+        - generic [ref=f18e32]: Stream Filters
+    - generic [ref=f18e33]:
+      - generic [ref=f18e34]:
+        - generic [ref=f18e35]: "1"
+        - heading "Configure Your Setup" [level=4] [ref=f18e36]
+        - paragraph [ref=f18e37]: Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.
+      - generic [ref=f18e38]:
+        - generic [ref=f18e39]: "2"
+        - heading "Add Repositories" [level=4] [ref=f18e40]
+        - paragraph [ref=f18e41]: Visit the Sources tab to load community scrapers or add your own custom repository URL.
+      - generic [ref=f18e42]:
+        - generic [ref=f18e43]: "3"
+        - heading "Install Addon" [level=4] [ref=f18e44]
+        - paragraph [ref=f18e45]: Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.
+    - generic [ref=f18e46]:
+      - heading "ℹ️ About the Addon" [level=3] [ref=f18e47]
+      - paragraph [ref=f18e48]: Chole Bhature is a high-performance stream meta-sorter designed to drastically improve your viewing experience. It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.
+      - generic [ref=f18e49]:
+        - link "Install Addon" [ref=f18e50] [cursor=pointer]:
+          - /url: "#"
+        - link "GitHub" [ref=f18e51] [cursor=pointer]:
+          - /url: https://github.com/SA7ANI/chole-bhature
+    - generic [ref=f18e52]:
+      - heading "Sort Mode" [level=2] [ref=f18e53]
+      - paragraph [ref=f18e54]: Choose how your streams are ranked.
+      - generic [ref=f18e55]:
+        - generic [ref=f18e63] [cursor=pointer]:
+          - heading "Speed" [level=4] [ref=f18e64]
+          - paragraph [ref=f18e65]: Fastest responding streams first
+        - generic [ref=f18e71] [cursor=pointer]:
+          - heading "Quality" [level=4] [ref=f18e72]
+          - paragraph [ref=f18e73]: 4K UHD first, then by speed
+    - generic [ref=f18e74]:
+      - heading "Auto-Hide Filters" [level=2] [ref=f18e75]
+      - paragraph [ref=f18e76]: Strip broken or unwanted streams from results.
+      - generic [ref=f18e77]:
+        - generic [ref=f18e78]:
+          - generic [ref=f18e84]:
+            - heading "Dead Links" [level=3] [ref=f18e85]
+            - paragraph [ref=f18e86]: Filter out completely offline or broken streams
+          - generic [ref=f18e87] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f18e89]:
+          - generic [ref=f18e98]:
+            - heading "Slow Links" [level=3] [ref=f18e99]
+            - paragraph [ref=f18e100]: Filter out streams taking longer than 1.5s to respond
+          - generic [ref=f18e101] [cursor=pointer]:
+            - checkbox
+        - generic [ref=f18e103]:
+          - generic [ref=f18e110]:
+            - heading "CAM & TeleSync" [level=3] [ref=f18e111]
+            - paragraph [ref=f18e112]: Filter out low-quality theater recordings
+          - generic [ref=f18e113] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f18e115]:
+          - generic [ref=f18e121]:
+            - heading "Auto-Quarantine New" [level=3] [ref=f18e122]:
+              - text: Auto-Quarantine
+              - generic [ref=f18e123]: New
+            - paragraph [ref=f18e124]: Isolate failing scrapers for 30 min after 3 consecutive failures
+          - generic [ref=f18e125] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f18e127]:
+          - generic [ref=f18e133]:
+            - heading "Deduplication" [level=3] [ref=f18e134]
+            - paragraph [ref=f18e135]: Merge identical streams across providers
+          - generic [ref=f18e136] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f18e138]:
+          - generic [ref=f18e145]:
+            - heading "Seeder Badges" [level=3] [ref=f18e146]
+            - paragraph [ref=f18e147]: Show live torrent seeder count
+          - generic [ref=f18e148] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f18e150]:
+          - generic [ref=f18e156]:
+            - heading "True-Probing (FFprobe) Heavy" [level=3] [ref=f18e157]:
+              - text: True-Probing (FFprobe)
+              - generic [ref=f18e158]: Heavy
+            - paragraph [ref=f18e159]: Runs FFprobe on every stream to verify actual video container/quality
+          - generic [ref=f18e160] [cursor=pointer]:
+            - checkbox
+    - generic [ref=f18e162]:
+      - heading "Preferred Languages" [level=2] [ref=f18e163]
+      - paragraph [ref=f18e164]: Streams with these languages float to the top.
+      - generic [ref=f18e165]:
+        - generic [ref=f18e167] [cursor=pointer]:
+          - heading "Hindi" [level=4] [ref=f18e168]
+          - paragraph [ref=f18e169]: Default priority
+        - generic [ref=f18e172] [cursor=pointer]:
+          - heading "Dual-Audio" [level=4] [ref=f18e173]
+          - paragraph [ref=f18e174]: Mixed language tracks
+        - generic [ref=f18e177] [cursor=pointer]:
+          - heading "Tamil" [level=4] [ref=f18e178]
+          - paragraph [ref=f18e179]: South Indian
+        - generic [ref=f18e182] [cursor=pointer]:
+          - heading "Telugu" [level=4] [ref=f18e183]
+          - paragraph [ref=f18e184]: South Indian
+        - generic [ref=f18e187] [cursor=pointer]:
+          - heading "Malayalam" [level=4] [ref=f18e188]
+          - paragraph [ref=f18e189]: South Indian
+        - generic [ref=f18e192] [cursor=pointer]:
+          - heading "Kannada" [level=4] [ref=f18e193]
+          - paragraph [ref=f18e194]: South Indian
+        - generic [ref=f18e197] [cursor=pointer]:
+          - heading "Marathi" [level=4] [ref=f18e198]
+          - paragraph [ref=f18e199]: West Indian
+        - generic [ref=f18e202] [cursor=pointer]:
+          - heading "Bengali" [level=4] [ref=f18e203]
+          - paragraph [ref=f18e204]: East Indian
+        - generic [ref=f18e207] [cursor=pointer]:
+          - heading "Anime/Jap" [level=4] [ref=f18e208]
+          - paragraph [ref=f18e209]: Japanese dub & sub
+        - generic [ref=f18e212] [cursor=pointer]:
+          - heading "English" [level=4] [ref=f18e213]
+          - paragraph [ref=f18e214]: Default global
+    - generic [ref=f18e216]:
+      - heading "Premium Features" [level=2] [ref=f18e217]
+      - paragraph [ref=f18e218]: Optional integrations for enhanced streaming.
+      - generic [ref=f18e219]:
+        - generic [ref=f18e220]:
+          - heading "Real-Debrid" [level=4] [ref=f18e225]
+          - paragraph [ref=f18e226]: Instant cached CDN links
+          - textbox "API Key" [ref=f18e228]
+        - generic [ref=f18e229]:
+          - heading "Mini-Debrid" [level=4] [ref=f18e233]
+          - paragraph [ref=f18e234]: Torrent-to-HTTP streaming
+          - textbox "Access Token" [ref=f18e236]
+        - generic [ref=f18e237]:
+          - heading "DNS-over-HTTPS" [level=4] [ref=f18e242]
+          - paragraph [ref=f18e243]: Bypass ISP censorship
+          - combobox [ref=f18e245]:
+            - option "Cloudflare (1.1.1.1)" [selected]
+            - option "Google DNS (8.8.8.8)"
+            - option "AdGuard DNS"
+            - option "Quad9 (9.9.9.9)"
+    - generic [ref=f18e246]:
+      - heading "Installed Repositories" [level=2] [ref=f18e247]
+      - paragraph [ref=f18e248]: Manage your scraper sources.
+      - generic [ref=f18e249]:
+        - textbox "Enter repository manifest URL" [ref=f18e250]
+        - button "Add Repo" [ref=f18e251] [cursor=pointer]
+      - generic [ref=f18e396]:
+        - generic [ref=f18e397]:
+          - heading "All-in-One-Nuvio" [level=4] [ref=f18e398]
+          - paragraph [ref=f18e399]: raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio/refs/heads/main/manifest.json
+          - generic [ref=f18e400]: 61 active scrapers
+        - button "✕" [ref=f18e401] [cursor=pointer]
+      - generic [ref=f18e295]:
+        - generic [ref=f18e296]:
+          - generic [ref=f18e297]:
+            - heading "Scrapers & Providers" [level=2] [ref=f18e298]
+            - paragraph [ref=f18e299]: 61 scrapers from 1 repository
+          - generic [ref=f18e300]:
+            - button "Enable All" [ref=f18e301] [cursor=pointer]
+            - button "Disable All" [ref=f18e302] [cursor=pointer]
+        - group "Filter scrapers" [ref=f18e303]:
+          - button "All" [ref=f18e304] [cursor=pointer]
+          - button "Enabled" [ref=f18e305] [cursor=pointer]
+          - button "Disabled" [ref=f18e306] [cursor=pointer]
+        - generic [ref=f18e307]:
+          - generic [ref=f18e402]:
+            - generic [ref=f18e404]:
+              - heading "AllAnime" [level=4] [ref=f18e405]
+              - paragraph [ref=f18e406]: movie · tv
+            - generic [ref=f18e407] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e409]:
+            - generic [ref=f18e411]:
+              - heading "4KHDHub" [level=4] [ref=f18e412]
+              - paragraph [ref=f18e413]: movie · tv
+            - generic [ref=f18e414] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e416]:
+            - generic [ref=f18e418]:
+              - heading "1Shows" [level=4] [ref=f18e419]
+              - paragraph [ref=f18e420]: movie · tv
+            - generic [ref=f18e421] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e423]:
+            - generic [ref=f18e425]:
+              - heading "All-Wish" [level=4] [ref=f18e426]
+              - paragraph [ref=f18e427]: movie · tv
+            - generic [ref=f18e428] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e430]:
+            - generic [ref=f18e432]:
+              - heading "AnimeKai" [level=4] [ref=f18e433]
+              - paragraph [ref=f18e434]: movie · tv
+            - generic [ref=f18e435] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e437]:
+            - generic [ref=f18e439]:
+              - heading "AnikotoTV" [level=4] [ref=f18e440]
+              - paragraph [ref=f18e441]: movie · tv · anime
+            - generic [ref=f18e442] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e444]:
+            - generic [ref=f18e446]:
+              - heading "AniDB" [level=4] [ref=f18e447]
+              - paragraph [ref=f18e448]: movie · tv
+            - generic [ref=f18e449] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e451]:
+            - generic [ref=f18e453]:
+              - heading "AnimePahe" [level=4] [ref=f18e454]
+              - paragraph [ref=f18e455]: movie · tv
+            - generic [ref=f18e456] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e458]:
+            - generic [ref=f18e460]:
+              - heading "AnimeSalt" [level=4] [ref=f18e461]
+              - paragraph [ref=f18e462]: movie · tv
+            - generic [ref=f18e463] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e465]:
+            - generic [ref=f18e467]:
+              - heading "Animetsu" [level=4] [ref=f18e468]
+              - paragraph [ref=f18e469]: movie · tv · anime
+            - generic [ref=f18e470] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e472]:
+            - generic [ref=f18e474]:
+              - heading "AnimeWorld" [level=4] [ref=f18e475]
+              - paragraph [ref=f18e476]: movie · tv
+            - generic [ref=f18e477] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e479]:
+            - generic [ref=f18e481]:
+              - heading "Anime-Sama" [level=4] [ref=f18e482]
+              - paragraph [ref=f18e483]: movie · tv
+            - generic [ref=f18e484] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e486]:
+            - generic [ref=f18e488]:
+              - heading "AllMovieLand" [level=4] [ref=f18e489]
+              - paragraph [ref=f18e490]: movie · tv
+            - generic [ref=f18e491] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e493]:
+            - generic [ref=f18e495]:
+              - heading "AnimeZeY" [level=4] [ref=f18e496]
+              - paragraph [ref=f18e497]: movie · tv
+            - generic [ref=f18e498] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e500]:
+            - generic [ref=f18e502]:
+              - heading "DesiFlix" [level=4] [ref=f18e503]
+              - paragraph [ref=f18e504]: movie · tv
+            - generic [ref=f18e505] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e507]:
+            - generic [ref=f18e509]:
+              - heading "Castle" [level=4] [ref=f18e510]
+              - paragraph [ref=f18e511]: movie · tv
+            - generic [ref=f18e512] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e514]:
+            - generic [ref=f18e516]:
+              - heading "Cineby" [level=4] [ref=f18e517]
+              - paragraph [ref=f18e518]: movie · tv
+            - generic [ref=f18e519] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e521]:
+            - generic [ref=f18e523]:
+              - heading "CineFreak" [level=4] [ref=f18e524]
+              - paragraph [ref=f18e525]: movie · tv
+            - generic [ref=f18e526] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e528]:
+            - generic [ref=f18e530]:
+              - heading "MoonFlix" [level=4] [ref=f18e531]
+              - paragraph [ref=f18e532]: movie · tv
+            - generic [ref=f18e533] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e535]:
+            - generic [ref=f18e537]:
+              - heading "CinemaCity" [level=4] [ref=f18e538]
+              - paragraph [ref=f18e539]: movie · tv
+            - generic [ref=f18e540] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e542]:
+            - generic [ref=f18e544]:
+              - heading "CTGMovies" [level=4] [ref=f18e545]
+              - paragraph [ref=f18e546]: movie · tv
+            - generic [ref=f18e547] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e549]:
+            - generic [ref=f18e551]:
+              - heading "Dahmermovies" [level=4] [ref=f18e552]
+              - paragraph [ref=f18e553]: movie · tv
+            - generic [ref=f18e554] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e556]:
+            - generic [ref=f18e558]:
+              - heading "Dahmermovies-TV" [level=4] [ref=f18e559]
+              - paragraph [ref=f18e560]: movie · tv
+            - generic [ref=f18e561] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e563]:
+            - generic [ref=f18e565]:
+              - heading "DooFlix" [level=4] [ref=f18e566]
+              - paragraph [ref=f18e567]: movie · tv
+            - generic [ref=f18e568] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e570]:
+            - generic [ref=f18e572]:
+              - heading "Einthustan" [level=4] [ref=f18e573]
+              - paragraph [ref=f18e574]: movie · tv
+            - generic [ref=f18e575] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e577]:
+            - generic [ref=f18e579]:
+              - heading "FibWatch" [level=4] [ref=f18e580]
+              - paragraph [ref=f18e581]: movie · tv
+            - generic [ref=f18e582] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e584]:
+            - generic [ref=f18e586]:
+              - heading "Goated" [level=4] [ref=f18e587]
+              - paragraph [ref=f18e588]: movie · tv
+            - generic [ref=f18e589] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e591]:
+            - generic [ref=f18e593]:
+              - heading "GramCinema" [level=4] [ref=f18e594]
+              - paragraph [ref=f18e595]: movie · tv
+            - generic [ref=f18e596] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e598]:
+            - generic [ref=f18e600]:
+              - heading "HDGharTV" [level=4] [ref=f18e601]
+              - paragraph [ref=f18e602]: movie · tv
+            - generic [ref=f18e603] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e605]:
+            - generic [ref=f18e607]:
+              - heading "HDHub4u" [level=4] [ref=f18e608]
+              - paragraph [ref=f18e609]: movie · tv
+            - generic [ref=f18e610] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e612]:
+            - generic [ref=f18e614]:
+              - heading "HiAnime" [level=4] [ref=f18e615]
+              - paragraph [ref=f18e616]: movie · tv
+            - generic [ref=f18e617] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e619]:
+            - generic [ref=f18e621]:
+              - heading "HindMoviez" [level=4] [ref=f18e622]
+              - paragraph [ref=f18e623]: movie · tv
+            - generic [ref=f18e624] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e626]:
+            - generic [ref=f18e628]:
+              - heading "Kurage" [level=4] [ref=f18e629]
+              - paragraph [ref=f18e630]: movie · tv
+            - generic [ref=f18e631] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e633]:
+            - generic [ref=f18e635]:
+              - heading "MovieBox" [level=4] [ref=f18e636]
+              - paragraph [ref=f18e637]: movie · tv
+            - generic [ref=f18e638] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e640]:
+            - generic [ref=f18e642]:
+              - heading "MovieBlast" [level=4] [ref=f18e643]
+              - paragraph [ref=f18e644]: movie · tv
+            - generic [ref=f18e645] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e647]:
+            - generic [ref=f18e649]:
+              - heading "MoviesDrive" [level=4] [ref=f18e650]
+              - paragraph [ref=f18e651]: movie · tv
+            - generic [ref=f18e652] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e654]:
+            - generic [ref=f18e656]:
+              - heading "MoviesHunt" [level=4] [ref=f18e657]
+              - paragraph [ref=f18e658]: movie
+            - generic [ref=f18e659] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e661]:
+            - generic [ref=f18e663]:
+              - heading "Movies4u" [level=4] [ref=f18e664]
+              - paragraph [ref=f18e665]: movie
+            - generic [ref=f18e666] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e668]:
+            - generic [ref=f18e670]:
+              - heading "Movix VF" [level=4] [ref=f18e671]
+              - paragraph [ref=f18e672]: movie · tv
+            - generic [ref=f18e673] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e675]:
+            - generic [ref=f18e677]:
+              - heading "Nakios" [level=4] [ref=f18e678]
+              - paragraph [ref=f18e679]: movie · tv
+            - generic [ref=f18e680] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e682]:
+            - generic [ref=f18e684]:
+              - heading "NetMirror" [level=4] [ref=f18e685]
+              - paragraph [ref=f18e686]: movie · tv
+            - generic [ref=f18e687] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e689]:
+            - generic [ref=f18e691]:
+              - heading "PersianStremio" [level=4] [ref=f18e692]
+              - paragraph [ref=f18e693]: movie · tv
+            - generic [ref=f18e694] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e696]:
+            - generic [ref=f18e698]:
+              - heading "Peachify" [level=4] [ref=f18e699]
+              - paragraph [ref=f18e700]: movie · tv
+            - generic [ref=f18e701] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e703]:
+            - generic [ref=f18e705]:
+              - heading "PlayIMDb" [level=4] [ref=f18e706]
+              - paragraph [ref=f18e707]: movie · tv
+            - generic [ref=f18e708] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e710]:
+            - generic [ref=f18e712]:
+              - heading "Purstream" [level=4] [ref=f18e713]
+              - paragraph [ref=f18e714]: movie · tv
+            - generic [ref=f18e715] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e717]:
+            - generic [ref=f18e719]:
+              - heading "ShowBox" [level=4] [ref=f18e720]
+              - paragraph [ref=f18e721]: movie · tv
+            - generic [ref=f18e722] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e724]:
+            - generic [ref=f18e726]:
+              - heading "TopCartoons" [level=4] [ref=f18e727]
+              - paragraph [ref=f18e728]: movie · tv
+            - generic [ref=f18e729] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e731]:
+            - generic [ref=f18e733]:
+              - heading "Torrentio" [level=4] [ref=f18e734]
+              - paragraph [ref=f18e735]: movie · tv
+            - generic [ref=f18e736] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e738]:
+            - generic [ref=f18e740]:
+              - heading "VidRock" [level=4] [ref=f18e741]
+              - paragraph [ref=f18e742]: movie · tv
+            - generic [ref=f18e743] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e745]:
+            - generic [ref=f18e747]:
+              - heading "UHDMovies" [level=4] [ref=f18e748]
+              - paragraph [ref=f18e749]: movie · tv
+            - generic [ref=f18e750] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e752]:
+            - generic [ref=f18e754]:
+              - heading "VegaMovies" [level=4] [ref=f18e755]
+              - paragraph [ref=f18e756]: movie · tv
+            - generic [ref=f18e757] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e759]:
+            - generic [ref=f18e761]:
+              - heading "VidLink" [level=4] [ref=f18e762]
+              - paragraph [ref=f18e763]: movie · tv
+            - generic [ref=f18e764] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e766]:
+            - generic [ref=f18e768]:
+              - heading "VidEasy" [level=4] [ref=f18e769]
+              - paragraph [ref=f18e770]: movie · tv
+            - generic [ref=f18e771] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e773]:
+            - generic [ref=f18e775]:
+              - heading "VidSrc" [level=4] [ref=f18e776]
+              - paragraph [ref=f18e777]: movie · tv
+            - generic [ref=f18e778] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e780]:
+            - generic [ref=f18e782]:
+              - heading "VixSrc" [level=4] [ref=f18e783]
+              - paragraph [ref=f18e784]: movie · tv
+            - generic [ref=f18e785] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e787]:
+            - generic [ref=f18e789]:
+              - heading "VidFast" [level=4] [ref=f18e790]
+              - paragraph [ref=f18e791]: movie · tv
+            - generic [ref=f18e792] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e794]:
+            - generic [ref=f18e796]:
+              - heading "VidLove" [level=4] [ref=f18e797]
+              - paragraph [ref=f18e798]: movie · tv
+            - generic [ref=f18e799] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e801]:
+            - generic [ref=f18e803]:
+              - heading "XPass" [level=4] [ref=f18e804]
+              - paragraph [ref=f18e805]: movie · tv
+            - generic [ref=f18e806] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e808]:
+            - generic [ref=f18e810]:
+              - heading "ZinkMovies" [level=4] [ref=f18e811]
+              - paragraph [ref=f18e812]: movie · tv
+            - generic [ref=f18e813] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e815]:
+            - generic [ref=f18e817]:
+              - heading "OnlyKDrama" [level=4] [ref=f18e818]
+              - paragraph [ref=f18e819]: movie · tv
+            - generic [ref=f18e820] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f18e822]:
+            - generic [ref=f18e824]:
+              - heading "Kisskh" [level=4] [ref=f18e825]
+              - paragraph [ref=f18e826]: movie · tv
+            - generic [ref=f18e827] [cursor=pointer]:
+              - checkbox [checked]
+  - generic [ref=f18e350]:
+    - generic [ref=f18e351]: "ID: 533enzby"
+    - button "Save & Sync" [ref=f18e353] [cursor=pointer]

@@ -1,0 +1,150 @@
+- generic [ref=f31e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f31e3]:
+    - generic [ref=f31e6]:
+      - generic [ref=f31e200]:
+        - generic [ref=f31e201]:
+          - button "Open sidebar" [ref=f31e203] [cursor=pointer]
+          - generic [ref=f31e209]:
+            - link "chole-bhature" [ref=f31e210] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature
+            - button [ref=f31e214] [cursor=pointer]
+            - link "Back to team view" [ref=f31e220] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects
+        - navigation "Breadcrumb" [ref=f31e224]:
+          - generic [ref=f31e225]: Overview
+        - button "Vercel Agent is available on Pro" [ref=f31e230] [cursor=pointer]
+      - generic [ref=f31e245]:
+        - generic [ref=f31e249]:
+          - generic [ref=f31e250]:
+            - generic [ref=f31e251]:
+              - heading "Production Deployment" [level=3] [ref=f31e252]
+              - generic [ref=f31e254]:
+                - link "Repository" [ref=f31e255] [cursor=pointer]:
+                  - /url: https://github.com/gramnaters/chole-bhature
+                - button "Rollback" [ref=f31e261] [cursor=pointer]
+                - generic [ref=f31e268]:
+                  - link "Visit" [ref=f31e269] [cursor=pointer]:
+                    - /url: https://chole-bhature.vercel.app
+                  - button "Visit with" [ref=f31e271] [cursor=pointer]
+                - button "Project Menu" [expanded] [ref=f31e276] [cursor=pointer]
+            - generic [ref=f31e282]:
+              - link "Visit Deployment" [ref=f31e285] [cursor=pointer]:
+                - /url: https://chole-bhature.vercel.app
+              - generic [ref=f31e290]:
+                - generic [ref=f31e291]:
+                  - generic [ref=f31e293]:
+                    - term [ref=f31e294]: Deployment
+                    - definition [ref=f31e295]:
+                      - link "chole-bhature-fpakeiwkx-devonwhite1020-1830s-projects.vercel.app" [ref=f31e297] [cursor=pointer]:
+                        - /url: /devonwhite1020-1830s-projects/chole-bhature/3b7Ajk84Wxsu26oiMNAYDRLuZzpV
+                  - link [ref=f31e299] [cursor=pointer]:
+                    - /url: /devonwhite1020-1830s-projects/chole-bhature/speed-insights
+                    - progressbar [ref=f31e301]
+                - generic [ref=f31e310]:
+                  - term [ref=f31e311]:
+                    - generic [ref=f31e313]:
+                      - text: Domains
+                      - button "Add a domain" [ref=f31e314] [cursor=pointer]
+                  - definition [ref=f31e317]:
+                    - link "chole-bhature.vercel.app" [ref=f31e321] [cursor=pointer]:
+                      - /url: https://chole-bhature.vercel.app
+                - generic [ref=f31e325]:
+                  - generic [ref=f31e326]:
+                    - term [ref=f31e327]: Status
+                    - definition [ref=f31e328]:
+                      - generic "This deployment is ready." [ref=f31e331]: Ready
+                  - generic [ref=f31e337]:
+                    - term [ref=f31e338]: Created
+                    - definition [ref=f31e339]:
+                      - generic [ref=f31e341] [cursor=pointer]:
+                        - paragraph [ref=f31e342]: 20h ago by devonwhite1020-1830
+                        - img "devonwhite1020-1830 Avatar" [ref=f31e343]:
+                          - img "devonwhite1020-1830 Avatar" [ref=f31e344]
+                - generic [ref=f31e346]:
+                  - term [ref=f31e347]: Source
+                  - definition [ref=f31e348]:
+                    - generic [ref=f31e350]:
+                      - link [ref=f31e354] [cursor=pointer]:
+                        - /url: https://github.com/gramnaters/chole-bhature/tree/main
+                        - code [ref=f31e355]: main
+                      - 'link "b76d412 analytics: remove System Health card, restore 3-card original (Cache H…" [ref=f31e360] [cursor=pointer]':
+                        - /url: https://github.com/gramnaters/chole-bhature/commit/b76d4129a584862ad00cfc070c4836750481e61b
+                        - code [ref=f31e361]: b76d412
+                        - 'generic "analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes /analytics with popstate" [ref=f31e362]': "analytics: remove System Health card, restore 3-card original (Cache H…"
+            - button "Deployment Settings 3 Recommendations" [ref=f31e365] [cursor=pointer]:
+              - generic [ref=f31e369]:
+                - generic [ref=f31e370]: Deployment Settings
+                - generic [ref=f31e371]: 3 Recommendations
+          - generic [ref=f31e379]:
+            - generic [ref=f31e380]: To update your Production Deployment, push to the main branch.
+            - generic [ref=f31e383]:
+              - link "Deployments" [ref=f31e384] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/deployments?environment=production
+              - link "Learn more" [ref=f31e389] [cursor=pointer]:
+                - /url: /docs/git#production-branch
+        - generic [ref=f31e395]:
+          - generic [ref=f31e596]:
+            - generic [ref=f31e597]:
+              - generic [ref=f31e598]:
+                - paragraph [ref=f31e599]:
+                  - strong [ref=f31e600]: Firewall
+                - time [ref=f31e601]: 24h
+              - link "Go to page" [ref=f31e602] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/firewall?range=1d
+              - link [ref=f31e606] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/firewall?range=1d
+            - generic [ref=f31e607]:
+              - paragraph [ref=f31e609]: Active · All systems normal
+              - paragraph [ref=f31e618]: No recent events
+          - generic [ref=f31e411]:
+            - generic [ref=f31e412]:
+              - generic [ref=f31e413]:
+                - paragraph [ref=f31e414]:
+                  - strong [ref=f31e415]: Observability
+                - time [ref=f31e416]: 6h
+              - link "Go to page" [ref=f31e417] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/observability?period=6h
+              - link [ref=f31e421] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/observability?period=6h
+            - generic [ref=f31e423]:
+              - generic [ref=f31e424]:
+                - generic [ref=f31e425]: Edge Requests
+                - generic [ref=f31e426]: "126"
+              - generic [ref=f31e433]:
+                - generic [ref=f31e434]: Function Invocations
+                - generic [ref=f31e435]: "127"
+              - generic [ref=f31e442]:
+                - generic [ref=f31e443]: Error Rate
+                - generic [ref=f31e444]: 0%
+          - generic [ref=f31e451]:
+            - generic [ref=f31e452]:
+              - generic [ref=f31e453]:
+                - paragraph [ref=f31e454]:
+                  - strong [ref=f31e455]: Analytics
+                - time [ref=f31e456]: 1w
+              - link "Go to page" [ref=f31e457] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/analytics
+              - link [ref=f31e461] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/chole-bhature/analytics
+            - generic [ref=f31e463]:
+              - paragraph [ref=f31e465]: No data
+              - generic [ref=f31e470]:
+                - generic [ref=f31e471]: "0"
+                - text: online
+        - generic [ref=f31e629]:
+          - paragraph [ref=f31e633]: Active Branches
+          - generic [ref=f31e637]:
+            - heading "No Active Branches" [level=3] [ref=f31e638]
+            - paragraph [ref=f31e640]: Commit using our Git connections.
+  - alert [ref=f31e199]: chole-bhature - Overview – Vercel
+  - menu "Project Menu" [active] [ref=f31e643]:
+    - menuitem "Add Favorite" [ref=f31e644] [cursor=pointer]
+    - menuitem "View Logs" [disabled]
+    - menuitem "Manage Domains" [ref=f31e656] [cursor=pointer]
+    - menuitem "Transfer Project" [ref=f31e658] [cursor=pointer]
+    - menuitem "Settings" [ref=f31e660] [cursor=pointer]
+    - separator [ref=f31e662]
+    - menuitem "Import Directory" [ref=f31e663] [cursor=pointer]
+    - menuitem "View Git Repository" [ref=f31e665] [cursor=pointer]

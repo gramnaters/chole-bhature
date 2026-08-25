@@ -1,0 +1,87 @@
+- generic [active] [ref=f31e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f31e3]:
+    - generic [ref=f31e6]:
+      - generic [ref=f31e7]:
+        - generic [ref=f31e8]:
+          - button "Open sidebar" [ref=f31e10] [cursor=pointer]
+          - button "All projects" [ref=f31e17] [cursor=pointer]
+        - navigation "Breadcrumb" [ref=f31e22]:
+          - generic [ref=f31e23]: Overview
+        - button "Vercel Agent is available on Pro" [ref=f31e28] [cursor=pointer]
+      - generic [ref=f31e44]:
+        - generic [ref=f31e46]:
+          - generic [ref=f31e47]:
+            - searchbox "Search" [ref=f31e48]
+            - generic [ref=f31e54]:
+              - generic [ref=f31e55]: Press slash to focus search
+              - generic [ref=f31e56]: /
+          - button "Filter and Sort Projects" [ref=f31e58] [cursor=pointer]
+          - button "Add New" [ref=f31e63] [cursor=pointer]
+        - generic [ref=f31e69]:
+          - generic [ref=f31e72]:
+            - generic [ref=f31e73]:
+              - link "Alerts" [ref=f31e75] [cursor=pointer]:
+                - /url: /devonwhite1020-1830s-projects/~/observability/alerts
+              - generic [ref=f31e80]:
+                - generic [ref=f31e81]:
+                  - generic [ref=f31e82]: Get alerted for anomalies
+                  - generic [ref=f31e83]: Automatically monitor your projects for anomalies and get notified.
+                - button "Upgrade to Pro" [ref=f31e84] [cursor=pointer]
+            - generic [ref=f31e87]:
+              - generic [ref=f31e88]: Recent Previews
+              - list [ref=f31e90]:
+                - generic [ref=f31e91]: Preview deployments that you have recently visited or created will appear here.
+          - generic [ref=f31e100]:
+            - generic [ref=f31e101]: Projects
+            - list [ref=f31e103]:
+              - listitem [ref=f31e104]:
+                - link [ref=f31e105] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature
+                - generic [ref=f31e106]:
+                  - button "Project Menu" [ref=f31e107] [cursor=pointer]
+                  - generic [ref=f31e112]:
+                    - link "chole-bhature" [ref=f31e114] [cursor=pointer]:
+                      - /url: /devonwhite1020-1830s-projects/chole-bhature
+                    - link "chole-bhature.vercel.app" [ref=f31e117] [cursor=pointer]:
+                      - /url: https://chole-bhature.vercel.app
+                  - generic [ref=f31e119]:
+                    - link [ref=f31e120] [cursor=pointer]:
+                      - /url: /devonwhite1020-1830s-projects/chole-bhature/speed-insights
+                      - progressbar [ref=f31e122]
+                    - button "Select widget" [ref=f31e131] [cursor=pointer]
+                - generic [ref=f31e137]:
+                  - 'link "analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes /analytics with popstate" [ref=f31e138] [cursor=pointer]':
+                    - /url: /devonwhite1020-1830s-projects/chole-bhature/3b7Ajk84Wxsu26oiMNAYDRLuZzpV
+                  - generic [ref=f31e143]:
+                    - img "github" [ref=f31e144]
+                    - link "gramnaters/chole-bhature" [ref=f31e146] [cursor=pointer]:
+                      - /url: /devonwhite1020-1830s-projects?repo=https%3A%2F%2Fgithub.com%2Fgramnaters%2Fchole-bhature
+                    - text: ·
+                    - generic [ref=f31e148]: 20h ago
+              - listitem [ref=f31e151]:
+                - link [ref=f31e152] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/animeworldindia
+                - generic [ref=f31e153]:
+                  - button "Project Menu" [ref=f31e154] [cursor=pointer]
+                  - generic [ref=f31e159]:
+                    - link "animeworldindia" [ref=f31e161] [cursor=pointer]:
+                      - /url: /devonwhite1020-1830s-projects/animeworldindia
+                    - link "animeworldindia-seven.vercel.app" [ref=f31e164] [cursor=pointer]:
+                      - /url: https://animeworldindia-seven.vercel.app
+                  - generic [ref=f31e166]:
+                    - link [ref=f31e167] [cursor=pointer]:
+                      - /url: /devonwhite1020-1830s-projects/animeworldindia#production-checklist
+                      - progressbar [ref=f31e169]
+                    - button "Select widget" [ref=f31e177] [cursor=pointer]
+                - generic [ref=f31e183]:
+                  - 'link "debug: add logging to trace empty streams on Vercel" [ref=f31e184] [cursor=pointer]':
+                    - /url: /devonwhite1020-1830s-projects/animeworldindia/EN3Qvp4URrUz1aq2nMCwQHnBLLDv
+                  - generic [ref=f31e189]:
+                    - img "github" [ref=f31e190]
+                    - link "gramnaters/animeworldindia" [ref=f31e192] [cursor=pointer]:
+                      - /url: /devonwhite1020-1830s-projects?repo=https%3A%2F%2Fgithub.com%2Fgramnaters%2Fanimeworldindia
+                    - text: ·
+                    - generic [ref=f31e194]: Aug 9
+  - alert [ref=f31e199]

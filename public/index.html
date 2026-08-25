@@ -581,9 +581,6 @@
   .btn-icon:focus-visible { outline:2px solid var(--blue);outline-offset:2px; }
   .btn-icon.spinning svg { animation: spin 0.8s linear infinite; }
 
-  /* Settings & Sources hidden by default — shown via tab JS */
-  [data-section="settings"], [data-section="sources"] { display: none; }
-
   @media (max-width: 67.5rem) {
     .nav-center { display: none; }
     .nav-center.open {
@@ -1279,6 +1276,11 @@
         document.getElementById('section-analytics').style.display='none';
       }
     });
+    // Initial: hide non-General tabs on first load
+    if(!isStatusPath()){
+      document.querySelectorAll('[data-section="settings"], [data-section="sources"]').forEach(s=> s.style.display='none');
+      const aSec=document.getElementById('section-analytics'); if(aSec) aSec.style.display='none';
+    }
   }
 
   // ─── Admin User Records ───

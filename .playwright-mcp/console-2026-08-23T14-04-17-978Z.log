@@ -1,0 +1,84 @@
+[     169ms] [LOG] %c
+▲
+
+    ________   _ __ _          ____           __
+   /  _/ __/  (_) /( )_____   / __/___ ______/ /_
+   / // /_   / / __/// ___/  / /_/ __ `/ ___/ __/
+ _/ // __/  / / /_  (__  )  / __/ /_/ (__  ) /_
+/___/_/    /_/\__/ /____/  /_/  \__,_/____/\__/
+    _ __ _                         _    __                    __
+   (_) /( )_____   ____  ____     | |  / /__  _____________  / /
+  / / __/// ___/  / __ \/ __ \    | | / / _ \/ ___/ ___/ _ \/ /
+ / / /_  (__  )  / /_/ / / / /    | |/ /  __/ /  / /__/  __/ /
+/_/\__/ /____/   \____/_/ /_/     |___/\___/_/   \___/\___/_/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:78
+[    1161ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at r5 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48005)
+    at r8 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:48898)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:148810
+    at s0 (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:154280)
+    at sY (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145215)
+    at https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:144999
+    at sX (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:145007)
+    at sj (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:140168)
+    at ck (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:175002)
+    at cv (https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:109:172905)
+[    1203ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:18
+[    5387ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=JTHQ-KGGM:0
+[    5388ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=JTHQ-KGGM:0
+[   16627ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=JTHQ-KGGM:0
+[   16627ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=JTHQ-KGGM:0
+[   36687ms] [LOG] Error @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/a-4-a/c.js?i=0&v=3&h=vercel.com:0
+[   39477ms] [LOG] Error @ :2
+[   39505ms] [LOG] Error @ :2
+[   39506ms] [LOG] Error @ :2
+[   39692ms] [WARNING] Unable to create a text session because the service is not running. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39834ms] [WARNING] Unable to create a text session because the service is not running. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39890ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=JTHQ-KGGM:0
+[   39890ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/oauth/device?user_code=JTHQ-KGGM:0
+[   39891ms] [WARNING] Unable to create a text session because the service is not running. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39892ms] [WARNING] Unable to create a text session because the service is not running. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39893ms] [WARNING] The requested language options are not supported. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39893ms] [ERROR] Unsupported Summarizer API languages were specified, and the request was aborted. API calls must only specify supported languages to ensure successful processing and guarantee output characteristics. Please only specify supported language codes: [de, en, es, fr, ja] @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39894ms] [WARNING] The requested language options are not supported. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39894ms] [WARNING] The requested language options are not supported. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39894ms] [WARNING] The requested language options are not supported. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39894ms] [WARNING] Unable to create a text session because the service is not running. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39894ms] [WARNING] The requested language options are not supported. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   39895ms] [WARNING] The requested language options are not supported. @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/fp?x-kpsdk-v=j-1.2.711:0
+[   40019ms] [LOG] Error @ :2
+[   40816ms] [LOG] Error @ https://vercel.com/149e9513-01fa-4fb0-aad4-566afd725d1b/2d206a39-8ed7-437e-a3be-862e0f06eea3/a-4-a/c.js?i=0&v=3&h=vercel.com:0
+[   44456ms] [LOG] %c
+▲
+
+    ____                               _ __
+   / __ \________  ____ _____ ___     (_) /_
+  / / / / ___/ _ \/ __ `/ __ `__ \   / / __/
+ / /_/ / /  /  __/ /_/ / / / / / /  / / /__
+/_____/_/   \___/\__,_/_/ /_/ /_/  /_/\__( )
+   _____ __    _          _ __           |/
+  / ___// /_  (_)___     (_) /_
+  \__ \/ __ \/ / __ \   / / __/
+ ___/ / / / / / /_/ /  / / /_
+/____/_/ /_/_/ .___/  /_/\__/
+            /_/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:78
+[   45509ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:18
+[   47659ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/gramnaters/chole-bhature/settings/hooks:0
+[   49396ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://github.com/gramnaters/chole-bhature/settings/hooks:0

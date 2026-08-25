@@ -9,3 +9,6 @@ realdebrid.json
 cf_tunnel.json
 cf_out.log
 cf_err.log
+
+.vercel
+.env*

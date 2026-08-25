@@ -1,0 +1,29 @@
+- generic [active] [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - link [ref=f1e3] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f1e4]
+      - text: Chole Bhature
+    - generic [ref=f1e5]:
+      - link "General" [ref=f1e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f1e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f1e8] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f1e11]:
+    - generic [ref=f1e13]:
+      - heading "Status" [level=2] [ref=f1e14]
+      - paragraph [ref=f1e15]: Live provider health from synthetic probes (daily cadence).
+    - generic [ref=f1e16]:
+      - heading "Admin — User Records" [level=3] [ref=f1e17]
+      - generic [ref=f1e18]:
+        - textbox "Admin token" [ref=f1e19]: 56lfiv5b
+        - button "Refresh" [ref=f1e20] [cursor=pointer]
+        - button "Lock" [ref=f1e21] [cursor=pointer]
+        - generic [ref=f1e22]: Unlocked — fetching users…
+      - paragraph [ref=f1e24]: Loading users…
+    - paragraph [ref=f1e26]: Loading analytics...
+  - generic [ref=f1e27]:
+    - generic [ref=f1e28]: "ID: Loading…"
+    - button "Save & Sync" [ref=f1e30] [cursor=pointer]

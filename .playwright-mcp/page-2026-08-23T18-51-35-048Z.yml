@@ -1,0 +1,273 @@
+- generic [active] [ref=f11e1]:
+  - navigation [ref=f11e2]:
+    - link [ref=f11e3] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f11e4]
+      - text: Chole Bhature
+    - generic [ref=f11e5]:
+      - link "General" [ref=f11e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f11e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f11e8] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f11e10]:
+    - generic [ref=f11e11]:
+      - paragraph [ref=f11e12]: v3.4.0
+      - generic [ref=f11e13]: High-Performance Stream Meta-Sorter & Priority Engine
+      - heading "Configure your stream engine" [level=1] [ref=f11e14]
+      - paragraph [ref=f11e15]: Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.
+      - generic [ref=f11e16]:
+        - link "Get Plugins" [ref=f11e17] [cursor=pointer]:
+          - /url: https://nuvio-plugin-library.vercel.app/
+        - link "Manage sources" [ref=f11e18] [cursor=pointer]:
+          - /url: "#sources"
+    - generic [ref=f11e19]:
+      - generic [ref=f11e20]:
+        - generic [ref=f11e26]: Speed
+        - generic [ref=f11e27]: Sort Mode
+      - generic [ref=f11e28]:
+        - generic [ref=f11e31]: 0 Active
+        - generic [ref=f11e32]: Stream Filters
+    - generic [ref=f11e33]:
+      - generic [ref=f11e34]:
+        - generic [ref=f11e35]: "1"
+        - heading "Configure Your Setup" [level=4] [ref=f11e36]
+        - paragraph [ref=f11e37]: Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.
+      - generic [ref=f11e38]:
+        - generic [ref=f11e39]: "2"
+        - heading "Add Repositories" [level=4] [ref=f11e40]
+        - paragraph [ref=f11e41]: Visit the Sources tab to load community scrapers or add your own custom repository URL.
+      - generic [ref=f11e42]:
+        - generic [ref=f11e43]: "3"
+        - heading "Install Addon" [level=4] [ref=f11e44]
+        - paragraph [ref=f11e45]: Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.
+    - generic [ref=f11e46]:
+      - heading "ℹ️ About the Addon" [level=3] [ref=f11e47]
+      - paragraph [ref=f11e48]: Chole Bhature is a high-performance stream meta-sorter designed to drastically improve your viewing experience. It dynamically curates, cleans, and prioritizes links from multiple sources into a single optimized feed, removing dead, slow, or duplicate streams automatically.
+      - generic [ref=f11e49]:
+        - link "Install Addon" [ref=f11e50] [cursor=pointer]:
+          - /url: "#"
+        - link "GitHub" [ref=f11e51] [cursor=pointer]:
+          - /url: https://github.com/SA7ANI/chole-bhature
+    - generic [ref=f11e52]:
+      - heading "Sort Mode" [level=2] [ref=f11e53]
+      - paragraph [ref=f11e54]: Choose how your streams are ranked.
+      - generic [ref=f11e55]:
+        - generic [ref=f11e63] [cursor=pointer]:
+          - heading "Speed" [level=4] [ref=f11e64]
+          - paragraph [ref=f11e65]: Fastest responding streams first
+        - generic [ref=f11e71] [cursor=pointer]:
+          - heading "Quality" [level=4] [ref=f11e72]
+          - paragraph [ref=f11e73]: 4K UHD first, then by speed
+    - generic [ref=f11e74]:
+      - heading "Auto-Hide Filters" [level=2] [ref=f11e75]
+      - paragraph [ref=f11e76]: Strip broken or unwanted streams from results.
+      - generic [ref=f11e77]:
+        - generic [ref=f11e78]:
+          - generic [ref=f11e84]:
+            - heading "Dead Links" [level=3] [ref=f11e85]
+            - paragraph [ref=f11e86]: Filter out completely offline or broken streams
+          - generic [ref=f11e87] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f11e89]:
+          - generic [ref=f11e98]:
+            - heading "Slow Links" [level=3] [ref=f11e99]
+            - paragraph [ref=f11e100]: Filter out streams taking longer than 1.5s to respond
+          - generic [ref=f11e101] [cursor=pointer]:
+            - checkbox
+        - generic [ref=f11e103]:
+          - generic [ref=f11e110]:
+            - heading "CAM & TeleSync" [level=3] [ref=f11e111]
+            - paragraph [ref=f11e112]: Filter out low-quality theater recordings
+          - generic [ref=f11e113] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f11e115]:
+          - generic [ref=f11e121]:
+            - heading "Auto-Quarantine New" [level=3] [ref=f11e122]:
+              - text: Auto-Quarantine
+              - generic [ref=f11e123]: New
+            - paragraph [ref=f11e124]: Isolate failing scrapers for 30 min after 3 consecutive failures
+          - generic [ref=f11e125] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f11e127]:
+          - generic [ref=f11e133]:
+            - heading "Deduplication" [level=3] [ref=f11e134]
+            - paragraph [ref=f11e135]: Merge identical streams across providers
+          - generic [ref=f11e136] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f11e138]:
+          - generic [ref=f11e145]:
+            - heading "Seeder Badges" [level=3] [ref=f11e146]
+            - paragraph [ref=f11e147]: Show live torrent seeder count
+          - generic [ref=f11e148] [cursor=pointer]:
+            - checkbox [checked]
+        - generic [ref=f11e150]:
+          - generic [ref=f11e156]:
+            - heading "True-Probing (FFprobe) Heavy" [level=3] [ref=f11e157]:
+              - text: True-Probing (FFprobe)
+              - generic [ref=f11e158]: Heavy
+            - paragraph [ref=f11e159]: Runs FFprobe on every stream to verify actual video container/quality
+          - generic [ref=f11e160] [cursor=pointer]:
+            - checkbox
+    - generic [ref=f11e162]:
+      - heading "Preferred Languages" [level=2] [ref=f11e163]
+      - paragraph [ref=f11e164]: Streams with these languages float to the top.
+      - generic [ref=f11e165]:
+        - generic [ref=f11e167] [cursor=pointer]:
+          - heading "Hindi" [level=4] [ref=f11e168]
+          - paragraph [ref=f11e169]: Default priority
+        - generic [ref=f11e172] [cursor=pointer]:
+          - heading "Dual-Audio" [level=4] [ref=f11e173]
+          - paragraph [ref=f11e174]: Mixed language tracks
+        - generic [ref=f11e177] [cursor=pointer]:
+          - heading "Tamil" [level=4] [ref=f11e178]
+          - paragraph [ref=f11e179]: South Indian
+        - generic [ref=f11e182] [cursor=pointer]:
+          - heading "Telugu" [level=4] [ref=f11e183]
+          - paragraph [ref=f11e184]: South Indian
+        - generic [ref=f11e187] [cursor=pointer]:
+          - heading "Malayalam" [level=4] [ref=f11e188]
+          - paragraph [ref=f11e189]: South Indian
+        - generic [ref=f11e192] [cursor=pointer]:
+          - heading "Kannada" [level=4] [ref=f11e193]
+          - paragraph [ref=f11e194]: South Indian
+        - generic [ref=f11e197] [cursor=pointer]:
+          - heading "Marathi" [level=4] [ref=f11e198]
+          - paragraph [ref=f11e199]: West Indian
+        - generic [ref=f11e202] [cursor=pointer]:
+          - heading "Bengali" [level=4] [ref=f11e203]
+          - paragraph [ref=f11e204]: East Indian
+        - generic [ref=f11e207] [cursor=pointer]:
+          - heading "Anime/Jap" [level=4] [ref=f11e208]
+          - paragraph [ref=f11e209]: Japanese dub & sub
+        - generic [ref=f11e212] [cursor=pointer]:
+          - heading "English" [level=4] [ref=f11e213]
+          - paragraph [ref=f11e214]: Default global
+    - generic [ref=f11e216]:
+      - heading "Premium Features" [level=2] [ref=f11e217]
+      - paragraph [ref=f11e218]: Optional integrations for enhanced streaming.
+      - generic [ref=f11e219]:
+        - generic [ref=f11e220]:
+          - heading "Real-Debrid" [level=4] [ref=f11e225]
+          - paragraph [ref=f11e226]: Instant cached CDN links
+          - textbox "API Key" [ref=f11e228]
+        - generic [ref=f11e229]:
+          - heading "Mini-Debrid" [level=4] [ref=f11e233]
+          - paragraph [ref=f11e234]: Torrent-to-HTTP streaming
+          - textbox "Access Token" [ref=f11e236]
+        - generic [ref=f11e237]:
+          - heading "DNS-over-HTTPS" [level=4] [ref=f11e242]
+          - paragraph [ref=f11e243]: Bypass ISP censorship
+          - combobox [ref=f11e245]:
+            - option "Cloudflare (1.1.1.1)" [selected]
+            - option "Google DNS (8.8.8.8)"
+            - option "AdGuard DNS"
+            - option "Quad9 (9.9.9.9)"
+    - generic [ref=f11e246]:
+      - heading "Installed Repositories" [level=2] [ref=f11e247]
+      - paragraph [ref=f11e248]: Manage your scraper sources.
+      - generic [ref=f11e249]:
+        - textbox "Enter repository manifest URL" [ref=f11e250]
+        - button "Add Repo" [ref=f11e251] [cursor=pointer]
+      - generic [ref=f11e252]:
+        - generic [ref=f11e253]:
+          - generic [ref=f11e254]:
+            - heading "All-in-One-Nuvio" [level=4] [ref=f11e255]
+            - paragraph [ref=f11e256]: raw.githubusercontent.com/D3adlyRocket/All-in-One-Nuvio
+            - generic [ref=f11e257]: 61 active scrapers
+          - button "✕" [ref=f11e258] [cursor=pointer]
+        - generic [ref=f11e259]:
+          - generic [ref=f11e260]:
+            - heading "Yoru's Repo" [level=4] [ref=f11e261]
+            - paragraph [ref=f11e262]: raw.githubusercontent.com/yoruix/nuvio-providers
+            - generic [ref=f11e263]: 29 active scrapers
+          - button "✕" [ref=f11e264] [cursor=pointer]
+        - generic [ref=f11e265]:
+          - generic [ref=f11e266]:
+            - heading "Ray's Plugins" [level=4] [ref=f11e267]
+            - paragraph [ref=f11e268]: raw.githubusercontent.com/hihihihihiiray/plugins
+            - generic [ref=f11e269]: 18 active scrapers
+          - button "✕" [ref=f11e270] [cursor=pointer]
+        - generic [ref=f11e271]:
+          - generic [ref=f11e272]:
+            - heading "Michat88 Repo" [level=4] [ref=f11e273]
+            - paragraph [ref=f11e274]: raw.githubusercontent.com/michat88/nuvio-providers
+            - generic [ref=f11e275]: 30 active scrapers
+          - button "✕" [ref=f11e276] [cursor=pointer]
+        - generic [ref=f11e277]:
+          - generic [ref=f11e278]:
+            - heading "Asura Synthesis" [level=4] [ref=f11e279]
+            - paragraph [ref=f11e280]: raw.githubusercontent.com/PirateZoro9/asura-providers
+            - generic [ref=f11e281]: 17 active scrapers
+          - button "✕" [ref=f11e282] [cursor=pointer]
+        - generic [ref=f11e283]:
+          - generic [ref=f11e284]:
+            - heading "Phisher's Repo" [level=4] [ref=f11e285]
+            - paragraph [ref=f11e286]: raw.githubusercontent.com/phisher98/phisher-nuvio-providers
+            - generic [ref=f11e287]: 2 active scrapers
+          - button "✕" [ref=f11e288] [cursor=pointer]
+        - generic [ref=f11e289]:
+          - generic [ref=f11e290]:
+            - heading "Eclipsia" [level=4] [ref=f11e291]
+            - paragraph [ref=f11e292]: plugin.eclipsia.dpdns.org
+            - generic [ref=f11e293]: 19 active scrapers
+          - button "✕" [ref=f11e294] [cursor=pointer]
+      - generic [ref=f11e295]:
+        - generic [ref=f11e296]:
+          - generic [ref=f11e297]:
+            - heading "Scrapers & Providers" [level=2] [ref=f11e298]
+            - paragraph [ref=f11e299]: Loading scrapers...
+          - generic [ref=f11e300]:
+            - button "Enable All" [ref=f11e301] [cursor=pointer]
+            - button "Disable All" [ref=f11e302] [cursor=pointer]
+        - group "Filter scrapers" [ref=f11e303]:
+          - button "All" [ref=f11e304] [cursor=pointer]
+          - button "Enabled" [ref=f11e305] [cursor=pointer]
+          - button "Disabled" [ref=f11e306] [cursor=pointer]
+        - generic [ref=f11e307]:
+          - generic [ref=f11e308]:
+            - generic [ref=f11e309]: 🏰
+            - generic [ref=f11e310]:
+              - heading "Castle" [level=4] [ref=f11e311]
+              - paragraph [ref=f11e312]: movie · tv
+            - generic [ref=f11e313] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f11e315]:
+            - generic [ref=f11e316]: 🎬
+            - generic [ref=f11e317]:
+              - heading "CinemaHD" [level=4] [ref=f11e318]
+              - paragraph [ref=f11e319]: movie · tv
+            - generic [ref=f11e320] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f11e322]:
+            - generic [ref=f11e323]: 🧲
+            - generic [ref=f11e324]:
+              - heading "Torrentio" [level=4] [ref=f11e325]
+              - paragraph [ref=f11e326]: movie · tv
+            - generic [ref=f11e327] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f11e329]:
+            - generic [ref=f11e330]: 🌙
+            - generic [ref=f11e331]:
+              - heading "MoonFlix" [level=4] [ref=f11e332]
+              - paragraph [ref=f11e333]: movie · tv
+            - generic [ref=f11e334] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f11e336]:
+            - generic [ref=f11e337]: 🪨
+            - generic [ref=f11e338]:
+              - heading "VidRock" [level=4] [ref=f11e339]
+              - paragraph [ref=f11e340]: movie · tv
+            - generic [ref=f11e341] [cursor=pointer]:
+              - checkbox [checked]
+          - generic [ref=f11e343]:
+            - generic [ref=f11e344]: 🧂
+            - generic [ref=f11e345]:
+              - heading "AnimeSalt" [level=4] [ref=f11e346]
+              - paragraph [ref=f11e347]: movie · tv
+            - generic [ref=f11e348] [cursor=pointer]:
+              - checkbox [checked]
+  - generic [ref=f11e350]:
+    - generic [ref=f11e351]: "ID: Loading…"
+    - button "Save & Sync" [ref=f11e353] [cursor=pointer]

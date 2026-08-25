@@ -1,0 +1,21 @@
+- generic [active] [ref=f7e1]:
+  - navigation [ref=f7e2]:
+    - link [ref=f7e3] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f7e4]
+      - text: Chole Bhature
+    - generic [ref=f7e5]:
+      - link "General" [ref=f7e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f7e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f7e8] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f7e11]:
+    - generic [ref=f7e13]:
+      - heading "Status" [level=2] [ref=f7e14]
+      - paragraph [ref=f7e15]: Live provider health from synthetic probes (daily cadence).
+    - generic [ref=f7e16]: Loading analytics...
+  - generic [ref=f7e20]:
+    - generic [ref=f7e21]: "ID: Loading…"
+    - button "Save & Sync" [ref=f7e23] [cursor=pointer]

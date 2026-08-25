@@ -1,0 +1,568 @@
+- generic [ref=f45e2]:
+  - generic [ref=f45e3]:
+    - link "Skip to content" [ref=f45e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=f45e9]:
+      - heading "Navigation Menu" [level=2] [ref=f45e10]
+      - generic [ref=f45e12]:
+        - button "Toggle navigation" [ref=f45e14] [cursor=pointer]
+        - link "Homepage" [ref=f45e18] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f45e21]:
+          - link "Sign in" [ref=f45e22] [cursor=pointer]:
+            - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fgramnaters%2Fchole-bhature%2Fcommits%2Fmain
+          - button "Appearance settings" [ref=f45e25] [cursor=pointer]
+  - main [ref=f45e32]:
+    - generic [ref=f45e33]:
+      - generic [ref=f45e35]:
+        - generic [ref=f45e36]:
+          - link "gramnaters" [ref=f45e40] [cursor=pointer]:
+            - /url: /gramnaters
+          - generic [ref=f45e41]: /
+          - strong [ref=f45e42]:
+            - link "chole-bhature" [ref=f45e43] [cursor=pointer]:
+              - /url: /gramnaters/chole-bhature
+          - generic [ref=f45e44]: Public
+        - generic [ref=f45e45]:
+          - text: forked from
+          - link "SA7ANI/chole-bhature" [ref=f45e46] [cursor=pointer]:
+            - /url: /SA7ANI/chole-bhature
+      - navigation "Repository" [ref=f45e47]:
+        - list [ref=f45e48]:
+          - listitem [ref=f45e49]:
+            - link "Code" [ref=f45e50] [cursor=pointer]:
+              - /url: /gramnaters/chole-bhature
+          - listitem [ref=f45e54]:
+            - link "Pull requests" [ref=f45e55] [cursor=pointer]:
+              - /url: /gramnaters/chole-bhature/pulls
+          - listitem [ref=f45e59]:
+            - link "Actions" [ref=f45e60] [cursor=pointer]:
+              - /url: /gramnaters/chole-bhature/actions
+          - listitem [ref=f45e64]:
+            - link "Projects" [ref=f45e65] [cursor=pointer]:
+              - /url: /gramnaters/chole-bhature/projects
+          - listitem [ref=f45e69]
+          - listitem [ref=f45e70]
+        - button "Additional navigation options" [ref=f45e74] [cursor=pointer]
+    - generic [ref=f45e80]:
+      - heading "Commits" [level=1] [ref=f45e84]
+      - generic [ref=f45e89]:
+        - generic [ref=f45e90]:
+          - heading "Branch selector" [level=2] [ref=f45e91]
+          - button "main branch" [ref=f45e92] [cursor=pointer]:
+            - generic [ref=f45e93]: main
+          - generic [ref=f45e97]:
+            - heading "User selector" [level=2] [ref=f45e98]
+            - button "All users" [ref=f45e100] [cursor=pointer]
+            - heading "Datepicker" [level=2] [ref=f45e108]
+            - button "All time" [ref=f45e109] [cursor=pointer]
+        - generic [ref=f45e112]:
+          - heading "Commit history" [level=2] [ref=f45e113]
+          - generic [ref=f45e114]:
+            - generic [ref=f45e120]:
+              - heading "Commits on Aug 23, 2026" [level=3] [ref=f45e121]
+              - list "Commits on Aug 23, 2026" [ref=f45e124]:
+                - listitem "More information available below." [ref=f45e125]:
+                  - heading [level=4] [ref=f45e127]:
+                    - 'link "chore: trigger Vercel redeploy with fresh webhook" [ref=f45e128] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/5acd73c511bd3977e6984b5042c223b7ca40421e
+                  - generic [ref=f45e133]:
+                    - generic [ref=f45e134]:
+                      - link [ref=f45e135] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e136]
+                      - link "commits by gramnaters" [ref=f45e137] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e138]: committed
+            - generic [ref=f45e144]:
+              - heading "Commits on Aug 22, 2026" [level=3] [ref=f45e145]
+              - list "Commits on Aug 22, 2026" [ref=f45e148]:
+                - listitem "More information available below." [ref=f45e149]:
+                  - heading [level=4] [ref=f45e151]:
+                    - 'link "fix: atomic rate limit gate, trusted IP hop, timing-safe admin, review fixes" [ref=f45e152] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/ec8c5d1e4200c50c82b2af864fb5f1156e4d5c2e
+                  - generic [ref=f45e157]:
+                    - generic [ref=f45e158]:
+                      - link [ref=f45e159] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e160]
+                      - link "commits by gramnaters" [ref=f45e161] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e162]: committed
+                - listitem "More information available below." [ref=f45e163]:
+                  - heading [level=4] [ref=f45e165]:
+                    - 'link "fix: status parity final review fixes (anime probes, api test, cron hardening, timeout hygiene)" [ref=f45e166] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/cf3c75a9d83cdd7ac1e20bca1a32e1158d84da28
+                  - generic [ref=f45e171]:
+                    - generic [ref=f45e172]:
+                      - link [ref=f45e173] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e174]
+                      - link "commits by gramnaters" [ref=f45e175] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e176]: committed
+                - listitem "More information available below." [ref=f45e177]:
+                  - heading [level=4] [ref=f45e179]:
+                    - 'link "feat: Status tab UI with probe summary, filters and provider rows" [ref=f45e180] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/7ca803e8a3e4249c2858923b7716bd17341a777e
+                  - generic [ref=f45e185]:
+                    - generic [ref=f45e186]:
+                      - link [ref=f45e187] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e188]
+                      - link "commits by gramnaters" [ref=f45e189] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e190]: committed
+                - listitem "More information available below." [ref=f45e191]:
+                  - generic [ref=f45e192]:
+                    - heading [level=4] [ref=f45e193]:
+                      - 'link "feat: synthetic probe runner + cron + API" [ref=f45e194] [cursor=pointer]':
+                        - /url: /gramnaters/chole-bhature/commit/712fbd38744ae4547f2f27d1d5eff225045139f4
+                    - button "Show description for 712fbd3" [ref=f45e195] [cursor=pointer]
+                  - generic [ref=f45e202]:
+                    - generic [ref=f45e203]:
+                      - link [ref=f45e204] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e205]
+                      - link "commits by gramnaters" [ref=f45e206] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e207]: committed
+                - listitem "More information available below." [ref=f45e208]:
+                  - heading [level=4] [ref=f45e210]:
+                    - 'link "feat: provider_status store" [ref=f45e211] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/d5b090e58dfcd60d870937d142f0d39b95ab5069
+                  - generic [ref=f45e216]:
+                    - generic [ref=f45e217]:
+                      - link [ref=f45e218] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e219]
+                      - link "commits by gramnaters" [ref=f45e220] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e221]: committed
+                - listitem "More information available below." [ref=f45e222]:
+                  - heading [level=4] [ref=f45e224]:
+                    - 'link "analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes /analytics with popstate" [ref=f45e225] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/b76d4129a584862ad00cfc070c4836750481e61b
+                  - generic [ref=f45e230]:
+                    - generic [ref=f45e231]:
+                      - link [ref=f45e232] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e233]
+                      - link "commits by gramnaters" [ref=f45e234] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e235]: committed
+                - listitem "More information available below." [ref=f45e236]:
+                  - heading [level=4] [ref=f45e238]:
+                    - 'link "fix: analytics grid TypeUI layout - restore Cache Hit Rate card, equal heights, 4-card system health" [ref=f45e239] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/055f2f86a46c121e0bcf416169b15f091928a159
+                  - generic [ref=f45e244]:
+                    - generic [ref=f45e245]:
+                      - link [ref=f45e246] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e247]
+                      - link "commits by gramnaters" [ref=f45e248] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e249]: committed
+                - listitem "More information available below." [ref=f45e250]:
+                  - heading [level=4] [ref=f45e252]:
+                    - 'link "feat: /analytics route + /api/health, analytics now shows health metrics even with no stream data" [ref=f45e253] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/b9b03898c781d6fc3fb0e1b00064953aa6f28e9d
+                  - generic [ref=f45e258]:
+                    - generic [ref=f45e259]:
+                      - link [ref=f45e260] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e261]
+                      - link "commits by gramnaters" [ref=f45e262] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e263]: committed
+                - listitem "More information available below." [ref=f45e264]:
+                  - heading [level=4] [ref=f45e266]:
+                    - 'link "fix: restore original analytics health metrics (uptime/resolve/cache) from fast/slow/dead" [ref=f45e267] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/abfab2405a854666d1a4bd8aae44e14bf33fa3d0
+                  - generic [ref=f45e272]:
+                    - generic [ref=f45e273]:
+                      - link [ref=f45e274] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e275]
+                      - link "commits by gramnaters" [ref=f45e276] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e277]: committed
+                - listitem "More information available below." [ref=f45e278]:
+                  - heading [level=4] [ref=f45e280]:
+                    - 'link "fix: dark DoH select dropdown" [ref=f45e281] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/617d0ae1e7120239693d0f718e665e76f94bb4bb
+                  - generic [ref=f45e286]:
+                    - generic [ref=f45e287]:
+                      - link [ref=f45e288] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e289]
+                      - link "commits by gramnaters" [ref=f45e290] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e291]: committed
+                - listitem "More information available below." [ref=f45e292]:
+                  - heading [level=4] [ref=f45e294]:
+                    - 'link "style: minimalistic FORCE REFRESH stream" [ref=f45e295] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/23f6296be1500b2005e576bd836d3fd8fe02d35a
+                  - generic [ref=f45e300]:
+                    - generic [ref=f45e301]:
+                      - link [ref=f45e302] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e303]
+                      - link "commits by gramnaters" [ref=f45e304] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e305]: committed
+                - listitem "More information available below." [ref=f45e306]:
+                  - heading [level=4] [ref=f45e308]:
+                    - 'link "feat: admin user DB in analytics" [ref=f45e309] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/f8b891d5b002a9b8e5318cd7af23858f57e3016b
+                  - generic [ref=f45e314]:
+                    - generic [ref=f45e315]:
+                      - link [ref=f45e316] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e317]
+                      - link "commits by gramnaters" [ref=f45e318] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e319]: committed
+                - listitem "More information available below." [ref=f45e320]:
+                  - heading [level=4] [ref=f45e322]:
+                    - 'link "feat: rate limit 3/day/IP on config save" [ref=f45e323] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/37a85eaaceb47a3e11fba6e84396c9b4ace783c1
+                  - generic [ref=f45e328]:
+                    - generic [ref=f45e329]:
+                      - link [ref=f45e330] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e331]
+                      - link "commits by gramnaters" [ref=f45e332] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e333]: committed
+                - listitem "More information available below." [ref=f45e334]:
+                  - heading [level=4] [ref=f45e336]:
+                    - 'link "Fix specificity: sort gauge hover combines zoom + 72deg rotate" [ref=f45e337] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/8155cf3b84181ba5cde548f7672c0499b4b0cd29
+                  - generic [ref=f45e342]:
+                    - generic [ref=f45e343]:
+                      - link [ref=f45e344] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e345]
+                      - link "commits by gramnaters" [ref=f45e346] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e347]: committed
+                - listitem "More information available below." [ref=f45e348]:
+                  - heading [level=4] [ref=f45e350]:
+                    - 'link "Quality sort icon: Sparkles (hover bounce+fill, star blink); sort gauge hover-only; stat gauge stays always-on" [ref=f45e351] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/4deddf046a7f1085848c4a1431403a6a260b2b39
+                  - generic [ref=f45e356]:
+                    - generic [ref=f45e357]:
+                      - link [ref=f45e358] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e359]
+                      - link "commits by gramnaters" [ref=f45e360] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e361]: committed
+                - listitem "More information available below." [ref=f45e362]:
+                  - heading [level=4] [ref=f45e364]:
+                    - link "Sort stat card updates on mode change; Speed sort card uses animated gauge; Quality uses shooting-stars lottie; drop dead pickSort handlers" [ref=f45e365] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/6191203360378ff5a2d8fc1e38039663376fb3fb
+                  - generic [ref=f45e370]:
+                    - generic [ref=f45e371]:
+                      - link [ref=f45e372] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e373]
+                      - link "commits by gramnaters" [ref=f45e374] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e375]: committed
+                - listitem "More information available below." [ref=f45e376]:
+                  - heading [level=4] [ref=f45e378]:
+                    - 'link "Scrapers + Filters stat icons: Lottie puzzle-pinch & filter-hover (ink-recolor, looped), CSS fallbacks on fail/reduced-motion" [ref=f45e379] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/be653c20c52bdfc5baf75ae8b507aded183f0359
+                  - generic [ref=f45e384]:
+                    - generic [ref=f45e385]:
+                      - link [ref=f45e386] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e387]
+                      - link "commits by gramnaters" [ref=f45e388] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e389]: committed
+                - listitem "More information available below." [ref=f45e390]:
+                  - heading [level=4] [ref=f45e392]:
+                    - 'link "Stat icons: always-on ambient loops (gauge ticks, tail wags, knobs wander, block nudges) with desynced timing" [ref=f45e393] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/6b838d8f4478fe9bf8ce8551910a56977a0d289e
+                  - generic [ref=f45e398]:
+                    - generic [ref=f45e399]:
+                      - link [ref=f45e400] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e401]
+                      - link "commits by gramnaters" [ref=f45e402] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e403]: committed
+                - listitem "More information available below." [ref=f45e404]:
+                  - heading [level=4] [ref=f45e406]:
+                    - 'link "Stat cards: animated stroke icons (gauge/github/blocks/sliders) with CSS hover animations, scoped under .stat-anim for single-commit revert" [ref=f45e407] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/29e3b79635831fa1f41a2979bdc890102b475f0c
+                  - generic [ref=f45e412]:
+                    - generic [ref=f45e413]:
+                      - link [ref=f45e414] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e415]
+                      - link "commits by gramnaters" [ref=f45e416] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e417]: committed
+                - listitem "More information available below." [ref=f45e418]:
+                  - heading [level=4] [ref=f45e420]:
+                    - 'link "Tighten nav-hero gap, revert bg to neutral black + white radial glow (TypeUI: luminance not hue), remove bg animations" [ref=f45e421] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/9716744438c20d32cc7fad05345999e122c164ad
+                  - generic [ref=f45e426]:
+                    - generic [ref=f45e427]:
+                      - link [ref=f45e428] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e429]
+                      - link "commits by gramnaters" [ref=f45e430] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e431]: committed
+                - listitem "More information available below." [ref=f45e432]:
+                  - heading [level=4] [ref=f45e434]:
+                    - 'link "Ambient bg: aurora duotone (violet+teal) glow, scale-up entrance like Gemini, slow breathe loop, reduced-motion safe" [ref=f45e435] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/6538a87ae7ab40b48d6863f9b73bf4f2139245fb
+                  - generic [ref=f45e440]:
+                    - generic [ref=f45e441]:
+                      - link [ref=f45e442] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e443]
+                      - link "commits by gramnaters" [ref=f45e444] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e445]: committed
+                - listitem "More information available below." [ref=f45e446]:
+                  - heading [level=4] [ref=f45e448]:
+                    - link "Hero CTA to Get Plugins (plugin library), ambient blue-glow bg with vignette, animated gradient sheen on stat cards" [ref=f45e449] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/6fd5f0291e52e12d199ccd44e68a9e015b28c782
+                  - generic [ref=f45e454]:
+                    - generic [ref=f45e455]:
+                      - link [ref=f45e456] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e457]
+                      - link "commits by gramnaters" [ref=f45e458] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e459]: committed
+                - listitem "More information available below." [ref=f45e460]:
+                  - heading [level=4] [ref=f45e462]:
+                    - link "Remove boot loading animation completely (markup, CSS, JS gating, trace, asset)" [ref=f45e463] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/a99d18b633da00a909b78b60c8f5434265fe1336
+                  - generic [ref=f45e468]:
+                    - generic [ref=f45e469]:
+                      - link [ref=f45e470] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e471]
+                      - link "commits by gramnaters" [ref=f45e472] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e473]: committed
+            - generic [ref=f45e479]:
+              - heading "Commits on Aug 21, 2026" [level=3] [ref=f45e480]
+              - list "Commits on Aug 21, 2026" [ref=f45e483]:
+                - listitem "More information available below." [ref=f45e484]:
+                  - heading [level=4] [ref=f45e486]:
+                    - 'link "Boot loader: pure-CSS pixel cascade (instant render, no CDN race), remove lottie-web dep + 16KB inline JSON, min display 900ms" [ref=f45e487] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/d276d773892c706bd6a6c4f00cd797a7ad0df88b
+                  - generic [ref=f45e492]:
+                    - generic [ref=f45e493]:
+                      - link [ref=f45e494] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e495]
+                      - link "commits by gramnaters" [ref=f45e496] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e497]: committed
+                - listitem "More information available below." [ref=f45e498]:
+                  - heading [level=4] [ref=f45e500]:
+                    - link "no-store Cache-Control on all config-page HTML routes" [ref=f45e501] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/2b9493d2e89011eb38f79baa2b8e21a24e178734
+                  - generic [ref=f45e506]:
+                    - generic [ref=f45e507]:
+                      - link [ref=f45e508] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e509]
+                      - link "commits by gramnaters" [ref=f45e510] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e511]: committed
+                - listitem "More information available below." [ref=f45e512]:
+                  - heading [level=4] [ref=f45e514]:
+                    - link "Add boot trace diagnostics (hideBoot callers, branches, unhandled rejections)" [ref=f45e515] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/fff28450d90abb0a63cbd028a3d8e3a4d79b9a8e
+                  - generic [ref=f45e520]:
+                    - generic [ref=f45e521]:
+                      - link [ref=f45e522] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e523]
+                      - link "commits by gramnaters" [ref=f45e524] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e525]: committed
+                - listitem "More information available below." [ref=f45e526]:
+                  - heading [level=4] [ref=f45e528]:
+                    - 'link "Boot anim: start lottie only after deferred CDN script is ready, skip when overlay already removed" [ref=f45e529] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/341d4f7ab4d728bb24fde9e79d21dd64dda744f1
+                  - generic [ref=f45e534]:
+                    - generic [ref=f45e535]:
+                      - link [ref=f45e536] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e537]
+                      - link "commits by gramnaters" [ref=f45e538] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e539]: committed
+                - listitem "More information available below." [ref=f45e540]:
+                  - heading [level=4] [ref=f45e542]:
+                    - 'link "Boot loader: Lottie pixel-cascade on black, shown only for cloud-synced configs until repos finish syncing; instant reveal for fresh/unsaved; parallel repo fetches" [ref=f45e543] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/0f264b414c7b69244e951b2e10c7342ebda2e131
+                  - generic [ref=f45e548]:
+                    - generic [ref=f45e549]:
+                      - link [ref=f45e550] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e551]
+                      - link "commits by gramnaters" [ref=f45e552] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e553]: committed
+                - listitem "More information available below." [ref=f45e554]:
+                  - heading [level=4] [ref=f45e556]:
+                    - 'link "Fix mobile horizontal overflow: min-width:0 flex chains for repo URLs and provider names, overflow-x clip safety" [ref=f45e557] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/8eca4d2f6a72851a54487d7827b9ca83ccb1f1e8
+                  - generic [ref=f45e562]:
+                    - generic [ref=f45e563]:
+                      - link [ref=f45e564] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e565]
+                      - link "commits by gramnaters" [ref=f45e566] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e567]: committed
+                - listitem "More information available below." [ref=f45e568]:
+                  - heading [level=4] [ref=f45e570]:
+                    - 'link "TypeUI fix: real provider logos from manifests + monochrome SVG fallback, strip emoji from names; add All/Enabled/Disabled filter" [ref=f45e571] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/b855e0ad9f52febf68536637a3e24177e7f40175
+                  - generic [ref=f45e576]:
+                    - generic [ref=f45e577]:
+                      - link [ref=f45e578] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e579]
+                      - link "commits by gramnaters" [ref=f45e580] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e581]: committed
+                - listitem "More information available below." [ref=f45e582]:
+                  - heading [level=4] [ref=f45e584]:
+                    - link "Install uses live host deep-link; Add Repo normalizes URLs + real error messages + full copyable repo URLs" [ref=f45e585] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/d1a0209ffe49ec63688fbadd8f666d82c52a8354
+                  - generic [ref=f45e590]:
+                    - generic [ref=f45e591]:
+                      - link [ref=f45e592] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e593]
+                      - link "commits by gramnaters" [ref=f45e594] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e595]: committed
+                - listitem "More information available below." [ref=f45e596]:
+                  - heading [level=4] [ref=f45e598]:
+                    - 'link "Install Addon deep-link uses manifest.desitvhub.eu.org/c/{id}/manifest.json" [ref=f45e599] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/ba13d730a9fa070b408fc4c83d9085693c6a5731
+                  - generic [ref=f45e604]:
+                    - generic [ref=f45e605]:
+                      - link [ref=f45e606] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e607]
+                      - link "commits by gramnaters" [ref=f45e608] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e609]: committed
+                - listitem "More information available below." [ref=f45e610]:
+                  - heading [level=4] [ref=f45e612]:
+                    - link "Point GitHub button to original author repo SA7ANI/chole-bhature" [ref=f45e613] [cursor=pointer]:
+                      - /url: /gramnaters/chole-bhature/commit/d7810fe651a705f220f1d71f62ca4d40a3e61390
+                  - generic [ref=f45e618]:
+                    - generic [ref=f45e619]:
+                      - link [ref=f45e620] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e621]
+                      - link "commits by gramnaters" [ref=f45e622] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e623]: committed
+                - listitem "More information available below." [ref=f45e624]:
+                  - heading [level=4] [ref=f45e626]:
+                    - 'link "Robust repo name resolution: parse owner/repo from any raw URL variant, align lookup table to refs/heads paths" [ref=f45e627] [cursor=pointer]':
+                      - /url: /gramnaters/chole-bhature/commit/cb679eee25da697813191b418bbccba6a4a1c721
+                  - generic [ref=f45e632]:
+                    - generic [ref=f45e633]:
+                      - link [ref=f45e634] [cursor=pointer]:
+                        - /url: /gramnaters
+                        - img "gramnaters" [ref=f45e635]
+                      - link "commits by gramnaters" [ref=f45e636] [cursor=pointer]:
+                        - /url: /gramnaters/chole-bhature/commits?author=gramnaters
+                        - text: gramnaters
+                    - generic [ref=f45e637]: committed
+        - navigation "Pagination" [ref=f45e638]:
+          - generic [ref=f45e639]:
+            - generic [ref=f45e640]: Previous
+            - link "Next Page" [ref=f45e643] [cursor=pointer]:
+              - /url: /gramnaters/chole-bhature/commits/main?after=5acd73c511bd3977e6984b5042c223b7ca40421e+34
+              - text: Next
+  - contentinfo [ref=f45e646]:
+    - heading "Footer" [level=2] [ref=f45e647]
+    - generic [ref=f45e648]:
+      - generic [ref=f45e649]:
+        - link "GitHub Homepage" [ref=f45e650] [cursor=pointer]:
+          - /url: https://github.com
+        - generic [ref=f45e653]: © 2026 GitHub, Inc.
+      - navigation "Footer" [ref=f45e654]:
+        - heading "Footer navigation" [level=3] [ref=f45e655]
+        - list "Footer navigation" [ref=f45e656]:
+          - listitem [ref=f45e657]:
+            - link "Terms" [ref=f45e658] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/github-terms/github-terms-of-service
+          - listitem [ref=f45e659]:
+            - link "Privacy" [ref=f45e660] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement
+          - listitem [ref=f45e661]:
+            - link "Security" [ref=f45e662] [cursor=pointer]:
+              - /url: https://github.com/security
+          - listitem [ref=f45e663]:
+            - link "Status" [ref=f45e664] [cursor=pointer]:
+              - /url: https://www.githubstatus.com/
+          - listitem [ref=f45e665]:
+            - link "Community" [ref=f45e666] [cursor=pointer]:
+              - /url: https://github.community/
+          - listitem [ref=f45e667]:
+            - link "Docs" [ref=f45e668] [cursor=pointer]:
+              - /url: https://docs.github.com/
+          - listitem [ref=f45e669]:
+            - link "Contact" [ref=f45e670] [cursor=pointer]:
+              - /url: https://support.github.com?tags=dotcom-footer
+          - listitem [ref=f45e671]:
+            - button "Manage cookies" [ref=f45e673] [cursor=pointer]
+          - listitem [ref=f45e674]:
+            - button "Do not share my personal information" [ref=f45e676] [cursor=pointer]

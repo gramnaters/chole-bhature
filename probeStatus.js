@@ -23,9 +23,9 @@ const REFERENCE_TITLES = [
   { tmdbId: '900667', title: 'One Piece Film: Red', type: 'anime' },
 ];
 
-const PER_PROVIDER_TIMEOUT_MS = 8000;
+const PER_PROVIDER_TIMEOUT_MS = 5000;
 const GLOBAL_TIMEOUT_MS = 50000;
-const CONCURRENCY = 16;
+const CONCURRENCY = 48;
 
 function timeoutPromise(ms, label) {
   let timerId;
@@ -75,9 +75,13 @@ async function probeProvider(provider) {
   );
 
   for (const r of titleResults) {
-    if (r.status === 'fulfilled' && r.value && r.value.count > 0) {
-      streamsFound += r.value.count;
-      titles.push(r.value.title);
+    if (r.status === 'fulfilled' && r.value) {
+      if (r.value.count > 0) {
+        streamsFound += r.value.count;
+        titles.push(r.value.title);
+      } else {
+        titles.push(r.value.title + ' (0)');
+      }
     }
   }
 
@@ -141,7 +145,7 @@ async function probeAllProviders(opts = {}) {
           // Per-provider wall timeout 14s (spec global constraints) — wrap probeProvider
           // Inner per-title timeout is 8s via Promise.race above.
           const start = Date.now();
-          const t = timeoutPromise(14000, 'Provider Timeout');
+          const t = timeoutPromise(8000, 'Provider Timeout');
           try {
             const res = await Promise.race([probeProvider(provider), t]);
             return { provider, res };

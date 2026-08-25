@@ -1,0 +1,6 @@
+[    2502ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://chole-bhature.vercel.app/:0
+[    2502ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ https://chole-bhature.vercel.app/:0
+[    3279ms] TypeError: Cannot read properties of null (reading 'appendChild')
+    at https://chole-bhature.vercel.app/:1365:16
+    at Array.forEach (<anonymous>)
+    at loadRepoManifests (https://chole-bhature.vercel.app/:1347:13)

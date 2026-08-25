@@ -1,0 +1,163 @@
+- generic [ref=f56e1]:
+  - link:
+    - /url: "#geist-skip-nav"
+    - text: Skip to content
+  - main [ref=f56e3]:
+    - generic [ref=f56e4]:
+      - generic [ref=f56e6]:
+        - generic [ref=f56e7]:
+          - link [ref=f56e297] [cursor=pointer]:
+            - /url: /devonwhite1020-1830s-projects/chole-bhature/deployments
+          - navigation [ref=f56e298]:
+            - generic [ref=f56e13]: BCNsJe7Zd
+          - button [ref=f56e299] [cursor=pointer]
+        - generic [ref=f56e32]:
+          - generic [ref=f56e34]:
+            - link [ref=f56e300] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/BCNsJe7ZdeEeuCQfZ8vSnPgTDjkm
+              - text: Deployment
+            - link [ref=f56e301] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/BCNsJe7ZdeEeuCQfZ8vSnPgTDjkm/logs
+              - text: Logs
+            - link [ref=f56e302] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/BCNsJe7ZdeEeuCQfZ8vSnPgTDjkm/resources
+              - text: Resources
+            - link [ref=f56e303] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/BCNsJe7ZdeEeuCQfZ8vSnPgTDjkm/source
+              - text: Source
+            - link [ref=f56e304] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/BCNsJe7ZdeEeuCQfZ8vSnPgTDjkm/og
+              - text: Open Graph
+          - generic [ref=f56e40]:
+            - generic [ref=f56e42]:
+              - generic [ref=f56e43]:
+                - generic [ref=f56e44]:
+                  - link [ref=f56e305] [cursor=pointer]:
+                    - /url: https://chole-bhature-lg0uon7au-devonwhite1020-1830s-projects.vercel.app
+                  - generic [ref=f56e52]:
+                    - generic [ref=f56e53]:
+                      - button [ref=f56e306] [cursor=pointer]:
+                        - generic [ref=f56e265]: Share
+                      - link [ref=f56e307] [cursor=pointer]:
+                        - /url: /devonwhite1020-1830s-projects/chole-bhature/logs?deploymentIds=dpl_BCNsJe7ZdeEeuCQfZ8vSnPgTDjkm
+                        - generic [ref=f56e270]: Logs
+                      - generic [ref=f56e271]:
+                        - link [ref=f56e308] [cursor=pointer]:
+                          - /url: https://chole-bhature-lg0uon7au-devonwhite1020-1830s-projects.vercel.app
+                          - generic [ref=f56e273]: Visit
+                        - button [ref=f56e309] [cursor=pointer]
+                    - button [expanded] [ref=f56e310] [cursor=pointer]
+                - generic [ref=f56e62]:
+                  - generic [ref=f56e63]:
+                    - generic [ref=f56e64]:
+                      - generic [ref=f56e65]: Created
+                      - generic [ref=f56e66]:
+                        - generic [ref=f56e68] [cursor=pointer]
+                        - generic [ref=f56e72]: devonwhite1020-1830
+                        - generic [ref=f56e73]: 21m ago
+                    - generic [ref=f56e75]:
+                      - generic [ref=f56e76]: Status
+                      - generic [ref=f56e313]:
+                        - generic [ref=f56e80]: Ready
+                        - link [ref=f56e314] [cursor=pointer]:
+                          - /url: /devonwhite1020-1830s-projects/chole-bhature/deployments?filterBranch=main
+                          - text: Latest
+                    - generic [ref=f56e83]:
+                      - generic [ref=f56e84]: Duration
+                      - generic [ref=f56e315]:
+                        - text: 16s
+                        - generic [ref=f56e88]: 20m ago
+                    - generic [ref=f56e90]:
+                      - generic [ref=f56e91]: Environment
+                      - generic [ref=f56e92]:
+                        - link [ref=f56e316] [cursor=pointer]:
+                          - /url: /devonwhite1020-1830s-projects/chole-bhature/settings/environments/production
+                          - text: Production
+                        - generic [ref=f56e96]: Current
+                  - generic [ref=f56e99]:
+                    - generic [ref=f56e100]: Domains
+                    - generic [ref=f56e101]:
+                      - generic [ref=f56e102]:
+                        - link [ref=f56e317] [cursor=pointer]:
+                          - /url: https://chole-bhature.vercel.app
+                          - generic [ref=f56e106]: chole-bhature.vercel.app
+                        - generic [ref=f56e108] [cursor=pointer]: "+1"
+                      - link [ref=f56e318] [cursor=pointer]:
+                        - /url: https://chole-bhature-git-main-devonwhite1020-1830s-projects.vercel.app
+                        - generic [ref=f56e319]:
+                          - generic [ref=f56e117]: chole-bhature-git-main-devonwhite1020-1830s-projects.vercel.app
+                          - generic [ref=f56e118]: chole-bhature-git-main-devonw…020-1830s-projects.vercel.app
+                      - link [ref=f56e320] [cursor=pointer]:
+                        - /url: https://chole-bhature-lg0uon7au-devonwhite1020-1830s-projects.vercel.app
+                        - generic [ref=f56e321]:
+                          - generic [ref=f56e125]: chole-bhature-lg0uon7au-devonwhite1020-1830s-projects.vercel.app
+                          - generic [ref=f56e126]: chole-bhature-lg0uon7au-devon…020-1830s-projects.vercel.app
+                  - generic [ref=f56e127]:
+                    - generic [ref=f56e128]: Source
+                    - link [ref=f56e322] [cursor=pointer]:
+                      - /url: https://github.com/gramnaters/chole-bhature/tree/main
+                      - text: main
+                    - link [ref=f56e323] [cursor=pointer]:
+                      - /url: https://github.com/gramnaters/chole-bhature/commit/b76d4129a584862ad00cfc070c4836750481e61b
+                      - generic [ref=f56e138]: b76d412
+                      - generic [ref=f56e324]: "analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes…"
+              - button [ref=f56e325] [cursor=pointer]:
+                - generic [ref=f56e144]: Deployment Settings
+            - generic [ref=f56e149]:
+              - generic [ref=f56e150]:
+                - heading [level=2] [ref=f56e326]:
+                  - generic [ref=f56e153] [cursor=pointer]: Provisioning Integrations
+                - heading [level=2] [ref=f56e327]:
+                  - generic [ref=f56e287] [cursor=pointer]:
+                    - generic [ref=f56e290]: Build Logs
+                    - generic [ref=f56e293]: 16s
+                - heading [level=2] [ref=f56e328]:
+                  - generic [ref=f56e183] [cursor=pointer]: Summary
+                - heading [level=2] [ref=f56e329]:
+                  - generic [ref=f56e193] [cursor=pointer]: Checks
+                - heading [level=2] [ref=f56e330]:
+                  - generic [ref=f56e203] [cursor=pointer]: Assigning Custom Domains
+              - generic [ref=f56e211]:
+                - link [ref=f56e331] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/logs
+                  - generic [ref=f56e216]:
+                    - paragraph [ref=f56e218]: Runtime Logs
+                    - paragraph [ref=f56e219]: View and debug runtime logs & errors
+                - link [ref=f56e332] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/observability/serverless-functions
+                  - generic [ref=f56e224]:
+                    - paragraph [ref=f56e226]: Observability
+                    - paragraph [ref=f56e227]: Monitor app health & performance
+                - link [ref=f56e333] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/speed-insights
+                  - generic [ref=f56e232]:
+                    - generic [ref=f56e233]:
+                      - paragraph [ref=f56e234]: Speed Insights
+                      - generic [ref=f56e235]: No Data
+                    - paragraph [ref=f56e237]: Performance metrics from real users
+                - link [ref=f56e334] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/analytics
+                  - generic [ref=f56e242]:
+                    - generic [ref=f56e243]:
+                      - paragraph [ref=f56e244]: Web Analytics
+                      - generic [ref=f56e245]: No Data
+                    - paragraph [ref=f56e247]: Analyze visitors & traffic in real-time
+      - generic [ref=f56e250]:
+        - button [ref=f56e335] [cursor=pointer]:
+          - generic [ref=f56e255]: Find
+        - separator
+        - button [ref=f56e256] [cursor=pointer]
+  - alert [ref=f56e260]
+  - dialog [ref=f56e337]:
+    - heading "Menu" [level=2] [ref=f56e338]
+    - menu "Deployment Actions" [active] [ref=f56e339]:
+      - generic [ref=f56e340]:
+        - menuitem "Instant Rollback" [disabled]
+      - menuitem "Promote" [disabled]
+      - menuitem "Redeploy" [ref=f56e341] [cursor=pointer]
+      - menuitem "Copy URL" [ref=f56e343] [cursor=pointer]
+      - menuitem "View All Branch Deployments" [ref=f56e345] [cursor=pointer]
+      - menuitem "Skew Protection Threshold" [disabled]
+      - menuitem "Delete" [ref=f56e347] [cursor=pointer]
+  - generic:
+    - tooltip "This Deployment is already in Production"

@@ -1,0 +1,40 @@
+- generic [active] [ref=f78e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - generic [ref=f78e3]:
+    - generic [ref=f78e4]:
+      - button [ref=f78e9] [cursor=pointer]:
+        - img "Avatar for devonwhite1020-1830" [ref=f78e10]:
+          - img "Avatar for devonwhite1020-1830" [ref=f78e11]
+      - generic [ref=f78e13]:
+        - img "Avatar for devonwhite1020-1830" [ref=f78e18]:
+          - img "Avatar for devonwhite1020-1830" [ref=f78e19]
+        - heading "Authorize Device" [level=1] [ref=f78e20]
+        - paragraph [ref=f78e21]: Enter the code from your device to grant Vercel CLI access to your account.
+        - generic:
+          - generic: J
+          - generic: T
+          - generic: H
+          - generic: Q
+          - generic: —
+          - generic: K
+          - generic: G
+          - generic: G
+          - generic: M
+          - textbox "User Code" [disabled] [ref=f78e25]: jthqkggm
+        - generic [ref=f78e27]:
+          - generic [ref=f78e30]: DESKTOP-3519AHG @ vercel 59.3.0 node-v25.2.1 win32 (x64)
+          - text: Faridabad, India
+          - generic [ref=f78e35]: August 23, 2026 at 7:34 PM
+          - text: 103.70.147.206
+        - button "Allow" [disabled] [ref=f78e39]
+        - paragraph [ref=f78e44]:
+          - text: Do not click “Allow” unless you initiated this login attempt from
+          - generic [ref=f78e45]: Vercel CLI
+    - contentinfo [ref=f78e51]:
+      - generic [ref=f78e53]:
+        - link "Terms" [ref=f78e54] [cursor=pointer]:
+          - /url: /legal/terms
+        - link "Privacy Policy" [ref=f78e55] [cursor=pointer]:
+          - /url: /legal/privacy-policy
+  - alert [ref=f78e56]

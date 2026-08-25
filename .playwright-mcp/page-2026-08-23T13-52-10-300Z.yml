@@ -1,0 +1,122 @@
+- generic [active] [ref=f35e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f35e3]:
+    - generic [ref=f35e4]:
+      - generic [ref=f35e6]:
+        - generic [ref=f35e1194]:
+          - link "Back to Deployments" [ref=f35e1196] [cursor=pointer]:
+            - /url: /devonwhite1020-1830s-projects/chole-bhature/deployments
+          - navigation "Breadcrumb" [ref=f35e1199]:
+            - generic [ref=f35e1200]: 8g5NNKmV2
+          - button "Vercel Agent is available on Pro" [ref=f35e1205] [cursor=pointer]
+        - generic [ref=f35e1219]:
+          - generic [ref=f35e1221]:
+            - link "Deployment" [ref=f35e1222] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/8g5NNKmV2uj6rZSpLDz6gaTnwzPs
+            - link "Logs" [ref=f35e1223] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/8g5NNKmV2uj6rZSpLDz6gaTnwzPs/logs
+            - link "Resources" [ref=f35e1224] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/8g5NNKmV2uj6rZSpLDz6gaTnwzPs/resources
+            - link "Source" [ref=f35e1225] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/8g5NNKmV2uj6rZSpLDz6gaTnwzPs/source
+            - link "Open Graph" [ref=f35e1226] [cursor=pointer]:
+              - /url: /devonwhite1020-1830s-projects/chole-bhature/8g5NNKmV2uj6rZSpLDz6gaTnwzPs/og
+          - generic [ref=f35e1227]:
+            - generic [ref=f35e1229]:
+              - generic [ref=f35e1230]:
+                - generic [ref=f35e1231]:
+                  - link "Visit Deployment" [ref=f35e1234] [cursor=pointer]:
+                    - /url: https://chole-bhature-ozii5kwt4-devonwhite1020-1830s-projects.vercel.app
+                  - generic [ref=f35e1239]:
+                    - generic [ref=f35e1240]:
+                      - button "Share" [ref=f35e1241] [cursor=pointer]
+                      - link "Logs" [ref=f35e1246] [cursor=pointer]:
+                        - /url: /devonwhite1020-1830s-projects/chole-bhature/logs?deploymentIds=dpl_8g5NNKmV2uj6rZSpLDz6gaTnwzPs
+                      - generic [ref=f35e1251]:
+                        - link "Visit" [ref=f35e1252] [cursor=pointer]:
+                          - /url: https://chole-bhature-ozii5kwt4-devonwhite1020-1830s-projects.vercel.app
+                        - button "Visit with" [ref=f35e1254] [cursor=pointer]
+                    - button "Deployment Actions" [ref=f35e1259] [cursor=pointer]
+                - generic [ref=f35e1264]:
+                  - generic [ref=f35e1265]:
+                    - generic [ref=f35e1266]:
+                      - generic [ref=f35e1267]: Created
+                      - generic [ref=f35e1268]:
+                        - img "devonwhite1020-1830 Avatar" [ref=f35e1272] [cursor=pointer]:
+                          - img "devonwhite1020-1830 Avatar" [ref=f35e1273]
+                        - generic [ref=f35e1274]: devonwhite1020-1830
+                        - generic [ref=f35e1275]: 1d ago
+                    - generic [ref=f35e1277]:
+                      - generic [ref=f35e1278]: Status
+                      - generic "This deployment is ready." [ref=f35e1279]:
+                        - generic [ref=f35e1282]: Ready
+                        - link "Stale" [ref=f35e1284] [cursor=pointer]:
+                          - /url: /devonwhite1020-1830s-projects/chole-bhature/deployments?filterBranch=main
+                    - generic [ref=f35e1285]:
+                      - generic [ref=f35e1286]: Duration
+                      - generic "Aug 22, 2026, 11:26:36 AM GMT+5:30" [ref=f35e1287]:
+                        - text: 15s
+                        - generic [ref=f35e1290]: 1d ago
+                    - generic [ref=f35e1292]:
+                      - generic [ref=f35e1293]: Environment
+                      - link "Production" [ref=f35e1297] [cursor=pointer]:
+                        - /url: /devonwhite1020-1830s-projects/chole-bhature/settings/environments/production
+                  - generic [ref=f35e1298]:
+                    - generic [ref=f35e1299]: Domains
+                    - generic [ref=f35e1300]:
+                      - link "chole-bhature-git-main-devonwhite1020-1830s-projects.vercel.app" [ref=f35e1305] [cursor=pointer]:
+                        - /url: https://chole-bhature-git-main-devonwhite1020-1830s-projects.vercel.app
+                        - generic "chole-bhature-git-main-devonwhite1020-1830s-projects.vercel.app" [ref=f35e1306]: chole-bhature-git-main-devonw…020-1830s-projects.vercel.app
+                      - link "chole-bhature-ozii5kwt4-devonwhite1020-1830s-projects.vercel.app" [ref=f35e1313] [cursor=pointer]:
+                        - /url: https://chole-bhature-ozii5kwt4-devonwhite1020-1830s-projects.vercel.app
+                        - generic "chole-bhature-ozii5kwt4-devonwhite1020-1830s-projects.vercel.app" [ref=f35e1314]: chole-bhature-ozii5kwt4-devon…020-1830s-projects.vercel.app
+                  - generic [ref=f35e1317]:
+                    - generic [ref=f35e1318]: Source
+                    - link "main" [ref=f35e1322] [cursor=pointer]:
+                      - /url: https://github.com/gramnaters/chole-bhature/tree/main
+                    - 'link "b76d412 analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes…" [ref=f35e1327] [cursor=pointer]':
+                      - /url: https://github.com/gramnaters/chole-bhature/commit/b76d4129a584862ad00cfc070c4836750481e61b
+                      - generic [ref=f35e1328]: b76d412
+                      - 'generic "analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes /analytics with popstate" [ref=f35e1329]': "analytics: remove System Health card, restore 3-card original (Cache Hit Rate), Analytics tab pushes…"
+              - button "Deployment Settings" [ref=f35e1333] [cursor=pointer]
+            - generic [ref=f35e1345]:
+              - generic [ref=f35e1346]:
+                - heading "Provisioning Integrations" [level=2] [ref=f35e1348]
+                - heading "Build Logs 15s" [level=2] [ref=f35e1357]:
+                  - generic [ref=f35e1358] [cursor=pointer]:
+                    - generic [ref=f35e1361]: Build Logs
+                    - generic [ref=f35e1364]: 15s
+                - heading "Summary" [level=2] [ref=f35e1369]
+                - heading "Checks" [level=2] [ref=f35e1379]
+                - heading "Assigning Custom Domains" [level=2] [ref=f35e1389]
+              - generic [ref=f35e1398]:
+                - link [ref=f35e1399] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/logs
+                  - generic [ref=f35e1403]:
+                    - paragraph [ref=f35e1405]: Runtime Logs
+                    - paragraph [ref=f35e1406]: View and debug runtime logs & errors
+                - link [ref=f35e1407] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/observability/serverless-functions
+                  - generic [ref=f35e1411]:
+                    - paragraph [ref=f35e1413]: Observability
+                    - paragraph [ref=f35e1414]: Monitor app health & performance
+                - link "Speed Insights No Data Performance metrics from real users" [ref=f35e1415] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/speed-insights
+                  - generic [ref=f35e1419]:
+                    - generic [ref=f35e1420]:
+                      - paragraph [ref=f35e1421]: Speed Insights
+                      - generic [ref=f35e1422]: No Data
+                    - paragraph [ref=f35e1424]: Performance metrics from real users
+                - link "Web Analytics No Data Analyze visitors & traffic in real-time" [ref=f35e1425] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/analytics
+                  - generic [ref=f35e1429]:
+                    - generic [ref=f35e1430]:
+                      - paragraph [ref=f35e1431]: Web Analytics
+                      - generic [ref=f35e1432]: No Data
+                    - paragraph [ref=f35e1434]: Analyze visitors & traffic in real-time
+      - generic [ref=f35e382]:
+        - button "Find" [ref=f35e383] [cursor=pointer]
+        - separator
+        - button [ref=f35e388] [cursor=pointer]
+  - alert [ref=f35e392]

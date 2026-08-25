@@ -1,0 +1,157 @@
+- generic [active] [ref=f15e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f15e3]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e6]:
+        - generic [ref=f15e7]:
+          - link "Back to Project Settings" [ref=f15e446] [cursor=pointer]:
+            - /url: /devonwhite1020-1830s-projects/chole-bhature/settings
+          - navigation "Breadcrumb" [ref=f15e447]:
+            - generic [ref=f15e13]: Git
+          - button "Vercel Agent is available on Pro" [ref=f15e448] [cursor=pointer]
+        - generic [ref=f15e39]:
+          - generic [ref=f15e41]:
+            - generic [ref=f15e42]:
+              - heading [level=4] [ref=f15e449]:
+                - link "Connected Git Repository" [ref=f15e450] [cursor=pointer]:
+                  - /url: "#connected-git-repository"
+              - paragraph [ref=f15e51]: Seamlessly create Deployments for any commits pushed to your Git repository.
+              - generic [ref=f15e625]:
+                - generic [ref=f15e626]:
+                  - img "github" [ref=f15e628]
+                  - generic [ref=f15e630]:
+                    - link "gramnaters/chole-bhature" [ref=f15e632] [cursor=pointer]:
+                      - /url: https://github.com/gramnaters/chole-bhature
+                    - generic [ref=f15e637]: Connected just now
+                - button "Disconnect" [ref=f15e640] [cursor=pointer]
+              - generic [ref=f15e63]:
+                - group [ref=f15e64]:
+                  - generic [ref=f15e65]:
+                    - generic [ref=f15e66]:
+                      - generic [ref=f15e67]: Toggle Pull Request Comments
+                      - generic [ref=f15e68]: Pull Request Comments
+                    - generic [ref=f15e74]:
+                      - button "Manage projects" [ref=f15e642] [cursor=pointer]
+                      - generic "Toggle Pull Request Comments" [ref=f15e496]:
+                        - checkbox "Toggle Pull Request Comments" [checked] [ref=f15e497]
+                        - generic [ref=f15e78] [cursor=pointer]
+                - group [ref=f15e80]:
+                  - generic [ref=f15e81]:
+                    - generic [ref=f15e82]:
+                      - generic [ref=f15e83]: Toggle Commit Comments
+                      - generic [ref=f15e84]: Commit Comments
+                    - generic [ref=f15e90]:
+                      - button "Manage projects" [ref=f15e645] [cursor=pointer]
+                      - generic "Toggle Commit Comments" [ref=f15e498]:
+                        - checkbox "Toggle Commit Comments" [ref=f15e499]
+                        - generic [ref=f15e94] [cursor=pointer]
+                - group [ref=f15e648]:
+                  - generic [ref=f15e649]:
+                    - generic [ref=f15e650]:
+                      - generic [ref=f15e651]:
+                        - text: Toggle
+                        - generic [ref=f15e652]: deployment_status Events
+                      - generic [ref=f15e653]: deployment_status Events
+                    - generic [ref=f15e660]:
+                      - button "Manage projects" [ref=f15e661] [cursor=pointer]
+                      - generic "Toggle [object Object]" [ref=f15e665]:
+                        - checkbox "Toggle [object Object]" [checked] [ref=f15e666]
+                        - generic [ref=f15e667] [cursor=pointer]
+                - group [ref=f15e669]:
+                  - generic [ref=f15e670]:
+                    - generic [ref=f15e671]:
+                      - generic [ref=f15e672]:
+                        - text: Toggle
+                        - generic [ref=f15e673]: repository_dispatch Events
+                      - generic [ref=f15e674]: repository_dispatch Events
+                    - generic [ref=f15e681]:
+                      - button "Manage projects" [ref=f15e682] [cursor=pointer]
+                      - generic "Toggle [object Object]" [ref=f15e686]:
+                        - checkbox "Toggle [object Object]" [checked] [ref=f15e687]
+                        - generic [ref=f15e688] [cursor=pointer]
+            - paragraph [ref=f15e268]:
+              - text: Learn more about
+              - link "Vercel for Git" [ref=f15e500] [cursor=pointer]:
+                - /url: /docs/git
+          - generic [ref=f15e691]:
+            - generic [ref=f15e692]:
+              - heading [level=4] [ref=f15e693]:
+                - link "Git Commits" [ref=f15e695] [cursor=pointer]:
+                  - /url: "#git-commits"
+              - paragraph [ref=f15e700]: Control how Vercel handles commits in your connected Git repository.
+              - generic [ref=f15e701]:
+                - group [ref=f15e702]:
+                  - generic [ref=f15e703]:
+                    - generic [ref=f15e704]:
+                      - generic [ref=f15e705]: Toggle Commit Status
+                      - generic [ref=f15e706]: Commit Status
+                    - generic [ref=f15e712]:
+                      - button "Manage projects" [ref=f15e713] [cursor=pointer]
+                      - generic "Toggle Commit Status" [ref=f15e717]:
+                        - checkbox "Toggle Commit Status" [checked] [ref=f15e718]
+                        - generic [ref=f15e719] [cursor=pointer]
+                - group [ref=f15e721]:
+                  - generic [ref=f15e722]:
+                    - generic [ref=f15e723]:
+                      - generic [ref=f15e724]: Consolidated Commit Status
+                      - generic [ref=f15e725]: Consolidated Commit Status
+                    - generic "Consolidated Commit Status" [ref=f15e731]:
+                      - checkbox "Consolidated Commit Status" [ref=f15e732]
+                      - generic [ref=f15e733] [cursor=pointer]
+                  - generic [ref=f15e735]:
+                    - button "Manage projects" [ref=f15e736] [cursor=pointer]
+                    - generic [ref=f15e740]:
+                      - checkbox "With Soft Failures" [disabled] [ref=f15e742]
+                      - generic [ref=f15e745]: With Soft Failures
+                - group [ref=f15e751]:
+                  - generic [ref=f15e752]:
+                    - generic [ref=f15e753]:
+                      - generic [ref=f15e754]: Require Verified Commits
+                      - generic [ref=f15e755]: Require Verified Commits
+                    - button "Require Verified Commits" [ref=f15e761] [cursor=pointer]:
+                      - generic [ref=f15e762]: Inherit from Team (Disabled)
+                  - button "Manage projects" [ref=f15e769] [cursor=pointer]
+            - paragraph [ref=f15e774]:
+              - text: Learn more about
+              - link "Vercel for Git" [ref=f15e775] [cursor=pointer]:
+                - /url: /docs/git
+          - generic [ref=f15e137]:
+            - generic [ref=f15e138]:
+              - heading [level=4] [ref=f15e501]:
+                - link "Git Large File Storage (LFS)" [ref=f15e502] [cursor=pointer]:
+                  - /url: "#git-large-file-storage-(lfs)"
+              - paragraph [ref=f15e146]: Git LFS replaces large files such as audio samples, videos, datasets, and graphics with text pointers inside Git, while storing the file contents on a remote server like GitHub.com or GitHub Enterprise.
+              - generic [ref=f15e149]:
+                - generic [ref=f15e150]: Disabled
+                - checkbox "Disabled" [ref=f15e503]
+            - generic [ref=f15e155]:
+              - paragraph [ref=f15e157]:
+                - text: Learn more about
+                - link "Git LFS" [ref=f15e504] [cursor=pointer]:
+                  - /url: /docs/projects/overview#git-large-file-storage-lfs
+              - button "Save" [disabled] [ref=f15e505]
+          - generic [ref=f15e167]:
+            - generic [ref=f15e168]:
+              - heading [level=4] [ref=f15e506]:
+                - link "Deploy Hooks" [ref=f15e507] [cursor=pointer]:
+                  - /url: "#deploy-hooks"
+              - paragraph [ref=f15e176]: Deploy hooks are unique URLs that allow you to trigger a deployment of a given branch.
+              - paragraph [ref=f15e508]: This project does not have any deploy hooks.
+              - generic [ref=f15e782]:
+                - generic [ref=f15e783]:
+                  - generic [ref=f15e784]: Name
+                  - textbox "My Example Hook" [ref=f15e787]
+                - generic [ref=f15e788]:
+                  - generic [ref=f15e789]: Branch
+                  - textbox "main" [ref=f15e792]
+                - button "Create Hook" [ref=f15e793] [cursor=pointer]
+            - paragraph [ref=f15e220]:
+              - text: Learn more about
+              - link "Deploy Hooks" [ref=f15e509] [cursor=pointer]:
+                - /url: /docs/deploy-hooks
+      - generic [ref=f15e227]:
+        - button "Find" [ref=f15e510] [cursor=pointer]
+        - separator
+        - button [ref=f15e233] [cursor=pointer]
+  - alert [ref=f15e237]

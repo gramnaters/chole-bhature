@@ -1,0 +1,71 @@
+- generic [active] [ref=f62e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f62e3]:
+    - generic [ref=f62e4]:
+      - generic [ref=f62e6]:
+        - generic [ref=f62e7]:
+          - link "Back to previous page" [ref=f62e9] [cursor=pointer]:
+            - /url: /devonwhite1020-1830s-projects
+          - navigation "Breadcrumb" [ref=f62e13]:
+            - button "chole-bhature" [ref=f62e18] [cursor=pointer]
+          - button "Vercel Agent is available on Pro" [ref=f62e28] [cursor=pointer]
+        - generic [ref=f62e43]:
+          - generic [ref=f62e47]:
+            - heading "Production Deployment" [level=3] [ref=f62e49]
+            - generic [ref=f62e62]:
+              - paragraph [ref=f62e65]: Deployment
+              - generic [ref=f62e68]: Domains
+              - generic [ref=f62e73]:
+                - paragraph [ref=f62e75]: Status
+                - paragraph [ref=f62e78]: Created
+              - paragraph [ref=f62e81]: Source
+            - button [disabled] [ref=f62e87] [cursor=pointer]
+          - generic [ref=f62e98]:
+            - generic [ref=f62e101]:
+              - generic [ref=f62e102]:
+                - generic [ref=f62e103]:
+                  - paragraph [ref=f62e104]:
+                    - strong [ref=f62e105]: Firewall
+                  - time [ref=f62e106]: 24h
+                - link "Go to page" [ref=f62e107] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/firewall?range=1d
+                - link [ref=f62e111] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/firewall?range=1d
+              - generic [ref=f62e112]:
+                - paragraph [ref=f62e114]: Active · All systems normal
+                - paragraph [ref=f62e123]: No recent events
+            - generic [ref=f62e124]:
+              - generic [ref=f62e125]:
+                - generic [ref=f62e126]:
+                  - paragraph [ref=f62e127]:
+                    - strong [ref=f62e128]: Observability
+                  - time [ref=f62e129]: 6h
+                - link "Go to page" [ref=f62e130] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/observability?period=6h
+                - link [ref=f62e134] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/observability?period=6h
+              - generic [ref=f62e136]:
+                - generic [ref=f62e137]: Edge Requests
+                - generic [ref=f62e146]: Function Invocations
+                - generic [ref=f62e155]: Error Rate
+            - generic [ref=f62e164]:
+              - generic [ref=f62e165]:
+                - generic [ref=f62e166]:
+                  - paragraph [ref=f62e167]:
+                    - strong [ref=f62e168]: Analytics
+                  - time [ref=f62e169]: 1w
+                - link "Go to page" [ref=f62e170] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/analytics
+                - link [ref=f62e174] [cursor=pointer]:
+                  - /url: /devonwhite1020-1830s-projects/chole-bhature/analytics
+              - generic [ref=f62e176]:
+                - paragraph [ref=f62e178]: No data
+                - generic [ref=f62e183]:
+                  - generic [ref=f62e184]: "0"
+                  - text: online
+      - generic [ref=f62e234]:
+        - button "Find" [ref=f62e235] [cursor=pointer]
+        - separator
+        - button [ref=f62e240] [cursor=pointer]
+  - alert [ref=f62e244]

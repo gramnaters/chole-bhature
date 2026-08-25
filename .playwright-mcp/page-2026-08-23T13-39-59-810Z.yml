@@ -1,0 +1,35 @@
+- generic [active] [ref=f36e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f36e3]:
+    - generic [ref=f36e4]:
+      - generic [ref=f36e6]:
+        - generic [ref=f36e7]:
+          - link "Back to previous page" [ref=f36e9] [cursor=pointer]:
+            - /url: /devonwhite1020-1830s-projects/chole-bhature
+          - navigation "Breadcrumb" [ref=f36e13]:
+            - generic [ref=f36e14]: Deployments
+          - button "Vercel Agent is available on Pro" [ref=f36e19] [cursor=pointer]
+        - generic [ref=f36e38]:
+          - combobox [ref=f36e40]:
+            - generic [ref=f36e41]:
+              - button "All Branches" [ref=f36e42]
+              - button "Open menu" [ref=f36e43] [cursor=pointer]
+          - combobox [ref=f36e47]:
+            - generic [ref=f36e48]:
+              - button "All Authors" [ref=f36e49]
+              - button "Open menu" [ref=f36e50] [cursor=pointer]
+          - button "Menu" [ref=f36e55] [cursor=pointer]:
+            - generic [ref=f36e56]: All Environments
+          - button "Select Date Range" [ref=f36e66] [cursor=pointer]
+          - generic [ref=f36e71]:
+            - button "Filter by deployment status. 6 of 7 statuses selected" [ref=f36e75] [cursor=pointer]:
+              - generic [ref=f36e76]:
+                - generic [ref=f36e82]: Status
+                - generic "6 of 7 statuses selected" [ref=f36e83]: 6/7
+            - button "Deployments actions" [ref=f36e90] [cursor=pointer]
+      - generic [ref=f36e382]:
+        - button "Find" [ref=f36e383] [cursor=pointer]
+        - separator
+        - button [ref=f36e388] [cursor=pointer]
+  - alert [ref=f36e392]

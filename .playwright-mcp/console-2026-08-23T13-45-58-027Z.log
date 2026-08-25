@@ -1,0 +1,38 @@
+[     216ms] [LOG] %c
+▲
+
+    ________   _ __ _          ____           __
+   /  _/ __/  (_) /( )_____   / __/___ ______/ /_
+   / // /_   / / __/// ___/  / /_/ __ `/ ___/ __/
+ _/ // __/  / / /_  (__  )  / __/ /_/ (__  ) /_
+/___/_/    /_/\__/ /____/  /_/  \__,_/____/\__/
+    _ __ _                         _    __                    __
+   (_) /( )_____   ____  ____     | |  / /__  _____________  / /
+  / / __/// ___/  / __ \/ __ \    | | / / _ \/ ___/ ___/ _ \/ /
+ / / /_  (__  )  / /_/ / / / /    | |/ /  __/ /  / /__/  __/ /
+/_/\__/ /____/   \____/_/ /_/     |___/\___/_/   \___/\___/_/
+  
+
+Hello!
+
+- Open Source https://vercel.com/oss
+- Careers https://vercel.com/careers
+- Status https://vercel-status.com
+
+ font-family: "Geist Mono", monospace; white-space: pre; line-height: 1; @ https://vercel.com/_next/static/immutable/chunks/0zc2w91an0f9c.js:78
+[    1526ms] [WARNING] Deprecated API for given entry type. @ https://vercel.com/_next/static/immutable/chunks/2pa6gt2dl4uw5.js:18
+[    5778ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[    5778ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[   14507ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[   14507ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[   52959ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[   52959ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[   67953ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://vercel.com/api/v3/projects/chole-bhature/link?teamId=team_vkwjtqn6Lvu7nHyO5kD8K4BN:0
+[   71464ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[   71464ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[  107861ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[  107861ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[  116428ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[  116428ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[  166393ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/2b2xbhkxq_cms.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0
+[  166393ms] [WARNING] The resource https://vercel.com/_next/static/immutable/chunks/3flhcz7cw314y.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://vercel.com/devonwhite1020-1830s-projects/chole-bhature/settings/git:0

@@ -1,0 +1,84 @@
+- generic [active] [ref=f5e1]:
+  - navigation [ref=f5e2]:
+    - link [ref=f5e3] [cursor=pointer]:
+      - /url: "#"
+      - img "CB" [ref=f5e4]
+      - text: Chole Bhature
+    - generic [ref=f5e5]:
+      - link "General" [ref=f5e6] [cursor=pointer]:
+        - /url: "#"
+      - link "Sources" [ref=f5e7] [cursor=pointer]:
+        - /url: "#"
+      - link "Analytics" [ref=f5e8] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=f5e11]:
+    - generic [ref=f5e13]:
+      - heading "Status" [level=2] [ref=f5e14]
+      - paragraph [ref=f5e15]: Live provider health from synthetic probes (daily cadence).
+    - generic [ref=f5e16]:
+      - heading "Admin — User Records" [level=3] [ref=f5e17]
+      - generic [ref=f5e18]:
+        - textbox "Admin token" [ref=f5e19]: 56lfiv5b
+        - button "Refresh" [ref=f5e20] [cursor=pointer]
+        - button "Lock" [ref=f5e21] [cursor=pointer]
+        - generic [ref=f5e22]: 3 user(s) found
+      - table [ref=f5e24]:
+        - rowgroup [ref=f5e25]:
+          - row [ref=f5e26]:
+            - columnheader "Config ID" [ref=f5e27]
+            - columnheader "Repos" [ref=f5e28]
+            - columnheader "Disabled" [ref=f5e29]
+            - columnheader "Sort" [ref=f5e30]
+            - columnheader "DoH" [ref=f5e31]
+            - columnheader [ref=f5e32]
+        - rowgroup [ref=f5e33]:
+          - row [ref=f5e34]:
+            - cell [ref=f5e35]:
+              - link "56lfiv5b" [ref=f5e36] [cursor=pointer]:
+                - /url: /c/56lfiv5b/configure
+            - cell "7" [ref=f5e37]
+            - cell "38" [ref=f5e38]
+            - cell "speed" [ref=f5e39]
+            - cell "cloudflare" [ref=f5e40]
+            - cell [ref=f5e41]:
+              - button "Delete" [ref=f5e42] [cursor=pointer]
+          - row [ref=f5e43]:
+            - cell [ref=f5e44]:
+              - link "db1026fd" [ref=f5e45] [cursor=pointer]:
+                - /url: /c/db1026fd/configure
+            - cell "1" [ref=f5e46]
+            - cell "0" [ref=f5e47]
+            - cell "speed" [ref=f5e48]
+            - cell "-" [ref=f5e49]
+            - cell [ref=f5e50]:
+              - button "Delete" [ref=f5e51] [cursor=pointer]
+          - row [ref=f5e52]:
+            - cell [ref=f5e53]:
+              - link "6ee585c6" [ref=f5e54] [cursor=pointer]:
+                - /url: /c/6ee585c6/configure
+            - cell "1" [ref=f5e55]
+            - cell "0" [ref=f5e56]
+            - cell "speed" [ref=f5e57]
+            - cell "-" [ref=f5e58]
+            - cell [ref=f5e59]:
+              - button "Delete" [ref=f5e60] [cursor=pointer]
+    - generic [ref=f5e61]:
+      - generic [ref=f5e62]:
+        - generic [ref=f5e63]:
+          - generic [ref=f5e64]:
+            - generic [ref=f5e65]: Scraper Uptime
+            - generic [ref=f5e66]: 100%
+          - generic [ref=f5e69]: v3.4.0 · up 0h 0m
+        - generic [ref=f5e70]:
+          - generic [ref=f5e71]:
+            - generic [ref=f5e72]: Avg Resolve Time
+            - generic [ref=f5e73]: —
+          - generic [ref=f5e74]: 0 streams · 0 cached
+        - generic [ref=f5e77]:
+          - generic [ref=f5e78]: Cache Hit Rate
+          - generic [ref=f5e79]: —
+          - generic [ref=f5e84]: Links served from cache
+      - button "↻ Refresh Health Metrics" [ref=f5e85] [cursor=pointer]
+  - generic [ref=f5e86]:
+    - generic [ref=f5e87]: "ID: 533enzby"
+    - button "Save & Sync" [ref=f5e89] [cursor=pointer]

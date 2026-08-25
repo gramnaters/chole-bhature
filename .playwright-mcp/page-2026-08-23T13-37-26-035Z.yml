@@ -1,0 +1,15 @@
+- generic [active] [ref=f26e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f26e3]:
+    - generic [ref=f26e6]:
+      - generic [ref=f26e7]: Not Found
+      - generic [ref=f26e15]:
+        - heading "404" [level=1] [ref=f26e23]
+        - generic [ref=f26e25]:
+          - paragraph [ref=f26e26]:
+            - text: You’re logged in as
+            - strong [ref=f26e27]: devonwhite1020@gmail.com
+            - text: .
+          - button "Log In as a Different User" [ref=f26e29] [cursor=pointer]
+  - alert [ref=f26e31]

@@ -1,0 +1,90 @@
+- generic [active] [ref=f72e1]:
+  - link "Skip to content":
+    - /url: "#geist-skip-nav"
+  - main [ref=f72e3]:
+    - generic [ref=f72e4]:
+      - generic [ref=f72e6]:
+        - generic [ref=f72e7]:
+          - link "Back to Settings" [ref=f72e9] [cursor=pointer]:
+            - /url: /account/settings
+          - navigation "Breadcrumb" [ref=f72e12]:
+            - generic [ref=f72e13]: Tokens
+        - generic [ref=f72e21]:
+          - generic [ref=f72e22]:
+            - heading "Tokens" [level=1] [ref=f72e23]
+            - paragraph [ref=f72e24]: These tokens allow other apps to control your whole account. Be careful!
+          - generic [ref=f72e25]:
+            - generic [ref=f72e26]: Create Token
+            - generic [ref=f72e30]:
+              - paragraph [ref=f72e31]: Enter a unique name for your token to differentiate it from other tokens.Then select the scope for the token.
+              - generic [ref=f72e32]:
+                - generic [ref=f72e34]:
+                  - generic [ref=f72e35]: TOKEN NAME
+                  - textbox "TOKEN NAME" [ref=f72e37]:
+                    - /placeholder: New Token
+                - generic [ref=f72e39]:
+                  - generic [ref=f72e40]: SCOPE
+                  - combobox [ref=f72e42]:
+                    - generic [ref=f72e43]:
+                      - generic:
+                        - status:
+                          - generic: Loading...
+                      - searchbox "Select scope" [ref=f72e44]
+                      - button "Open menu" [ref=f72e45] [cursor=pointer]
+                - generic [ref=f72e49]:
+                  - generic [ref=f72e50]: EXPIRATION
+                  - combobox "EXPIRATION" [ref=f72e54] [cursor=pointer]:
+                    - option "Select Date" [disabled] [selected]
+                    - option "1 Hour"
+                    - option "1 Day"
+                    - option "7 Days"
+                    - option "30 Days"
+                    - option "60 Days"
+                    - option "90 Days"
+                    - option "180 Days"
+                    - option "1 Year"
+                    - option "No Expiration"
+            - generic [ref=f72e55]:
+              - paragraph [ref=f72e57]:
+                - text: Learn more about
+                - link "Access Tokens" [ref=f72e58] [cursor=pointer]:
+                  - /url: /guides/how-do-i-use-a-vercel-api-access-token
+              - button "Create" [ref=f72e62] [cursor=pointer]
+          - generic [ref=f72e64]:
+            - generic [ref=f72e66]:
+              - generic [ref=f72e67]:
+                - radio "All" [checked] [disabled] [ref=f72e68]
+                - generic: All
+              - generic [ref=f72e69]:
+                - radio "Active" [disabled] [ref=f72e70]
+                - generic: Active
+              - generic [ref=f72e71]:
+                - radio "Expired" [disabled] [ref=f72e72]
+                - generic: Expired
+              - generic [ref=f72e73]:
+                - radio "Revoked" [disabled] [ref=f72e74]
+                - generic: Revoked
+            - table [ref=f72e77]:
+              - rowgroup [ref=f72e84]:
+                - row [ref=f72e85]:
+                  - columnheader [ref=f72e86]:
+                    - generic [ref=f72e87]:
+                      - checkbox "Select all" [disabled] [ref=f72e89]
+                      - generic [ref=f72e92]: Select all
+                  - columnheader "Last active" [ref=f72e93]
+                  - columnheader [ref=f72e94]:
+                    - button "Menu" [ref=f72e95] [cursor=pointer]
+              - rowgroup [ref=f72e102]:
+                - row "Menu" [ref=f72e103]:
+                  - cell [ref=f72e104]:
+                    - checkbox [disabled] [ref=f72e108]
+                  - cell [ref=f72e111]
+                  - cell [ref=f72e113]
+                  - cell [ref=f72e115]
+                  - cell [ref=f72e117]:
+                    - button "Menu" [ref=f72e118] [cursor=pointer]
+      - generic [ref=f72e125]:
+        - button "Find" [ref=f72e126] [cursor=pointer]
+        - separator
+        - button [ref=f72e131] [cursor=pointer]
+  - alert [ref=f72e135]
