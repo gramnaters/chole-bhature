@@ -195,6 +195,11 @@
   }
   .toggle input:checked ~ .toggle-knob { transform: translateX(1.125rem); }
 
+  /* Studio icons — mask technique, inherits currentColor for theme consistency */
+  .bi--stars{display:inline-block;width:1em;height:1em;--svg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='black' d='M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z'/%3E%3C/svg%3E");background-color:currentColor;-webkit-mask-image:var(--svg);mask-image:var(--svg);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%;}
+  .bi--box-seam-fill{display:inline-block;width:1em;height:1em;--svg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='black' fill-rule='evenodd' d='M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.01-.003l.268-.108a.75.75 0 0 1 .558 0l.269.108l.01.003zM10.404 2L4.25 4.461L1.846 3.5L1 3.839v.4l6.5 2.6v7.922l.5.2l.5-.2V6.84l6.5-2.6v-.4l-.846-.339L8 5.961L5.596 5l6.154-2.461z'/%3E%3C/svg%3E");background-color:currentColor;-webkit-mask-image:var(--svg);mask-image:var(--svg);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%;}
+  .akar-icons--people-group{display:inline-block;width:1em;height:1em;--svg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='black' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m16.719 19.752l-.64-5.124A3 3 0 0 0 13.101 12h-2.204a3 3 0 0 0-2.976 2.628l-.641 5.124A2 2 0 0 0 9.266 22h5.468a2 2 0 0 0 1.985-2.248'/%3E%3Ccircle cx='12' cy='5' r='3'/%3E%3Ccircle cx='4' cy='9' r='2'/%3E%3Ccircle cx='20' cy='9' r='2'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4 14h-.306a2 2 0 0 0-1.973 1.671l-.333 2A2 2 0 0 0 3.361 20H7m13-6h.306a2 2 0 0 1 1.973 1.671l.333 2A2 2 0 0 1 20.639 20H17'/%3E%3C/g%3E%3C/svg%3E");background-color:currentColor;-webkit-mask-image:var(--svg);mask-image:var(--svg);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%;}
+
   /* ─── Sort Grid ─── */
   .sort-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
   .sort-card {
@@ -672,8 +677,12 @@
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
         <a href="#" class="btn btn-primary" id="btn-install">Install Addon</a>
         <a href="https://github.com/SA7ANI/chole-bhature" target="_blank" class="btn btn-outline">GitHub</a>
-        <a href="#" class="btn btn-primary" onclick="event.preventDefault();document.querySelectorAll('.nav-link')[1].click();" style="margin-left:auto;">Next → Sources</a>
       </div>
+    </div>
+
+    <!-- Next (TypeUI: primary progression at bottom of flow, above sticky save bar) -->
+    <div data-section="general" style="display:flex;justify-content:center;margin:2rem 0 0.5rem;">
+      <a href="#" class="btn btn-primary" onclick="event.preventDefault();document.querySelectorAll('.nav-link')[1].click();" style="padding:0.9rem 2rem;min-width:10rem;">Next → Sources</a>
     </div>
 
     <!-- Status / Analytics (hidden by default) -->
@@ -703,30 +712,30 @@
     </section>
 
     <!-- Stream Card Presentation Studio (Settings tab) -->
-    <section class="section" data-section="settings">
+    <section class="section" data-section="settings" style="display:none">
       <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;flex-wrap:wrap;">
-        <h2 class="section-head" style="margin-bottom:0;">🎨 Stream Card Presentation Studio</h2>
-        <span class="badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">✨ AI Scene Parser</span>
+        <h2 class="section-head" style="margin-bottom:0;">Stream Card Presentation Studio</h2>
+        <span class="badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">AI Scene Parser</span>
       </div>
       <p class="section-sub">Converts messy scene filenames into high-contrast structured cards. Preview updates live.</p>
       <div class="card">
         <div class="row">
           <div class="row-label">
-            <div class="icon" style="background:rgba(139,92,246,0.12);"><span style="font-size:14px;">✨</span></div>
+            <div class="icon" style="background:rgba(139,92,246,0.12);"><span class="bi--stars" style="font-size:1.125rem;color:var(--ink);"></span></div>
             <div><h3>Ultra-Clean Formatted Cards <span class="badge" style="background:rgba(16,185,129,0.12);color:#34d399;">Stremio / Nuvio</span></h3><p>Structured cards with release quality, Dolby Vision, Atmos, and dub badges</p></div>
           </div>
           <label class="toggle"><input type="checkbox" checked data-studio="cleanTitles"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
-            <div class="icon"><span style="font-size:14px;">📦</span></div>
+            <div class="icon"><span class="bi--box-seam-fill" style="font-size:1.125rem;color:var(--ink);"></span></div>
             <div><h3>File Size</h3><p>Show file size on cards (e.g. 48.2 GB)</p></div>
           </div>
           <label class="toggle"><input type="checkbox" checked data-studio="showFileSize"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
         </div>
         <div class="row">
           <div class="row-label">
-            <div class="icon"><span style="font-size:14px;">🏷️</span></div>
+            <div class="icon"><span class="akar-icons--people-group" style="font-size:1.125rem;color:var(--ink);"></span></div>
             <div><h3>Release Group</h3><p>Show release group tag (e.g. FraMeSToR)</p></div>
           </div>
           <label class="toggle"><input type="checkbox" checked data-studio="showReleaseGroup"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
@@ -742,7 +751,7 @@
     </section>
 
     <!-- Sorting (Settings tab) -->
-    <section class="section" id="sorting" data-section="settings">
+    <section class="section" id="sorting" data-section="settings" style="display:none">
       <h2 class="section-head">Sort Mode</h2>
       <p class="section-sub">Choose how your streams are ranked.</p>
       <div class="sort-grid">
@@ -760,7 +769,7 @@
     </section>
 
     <!-- Filters (Settings tab) -->
-    <section class="section" data-section="settings">
+    <section class="section" data-section="settings" style="display:none">
       <h2 class="section-head">Auto-Hide Filters</h2>
       <p class="section-sub">Strip broken or unwanted streams from results.</p>
       <div class="card">
@@ -817,7 +826,7 @@
     </section>
 
     <!-- Languages (Settings tab) -->
-    <section class="section" data-section="settings">
+    <section class="section" data-section="settings" style="display:none">
       <h2 class="section-head">Preferred Languages</h2>
       <p class="section-sub">Streams with these languages float to the top.</p>
       <div class="lang-grid">
@@ -835,7 +844,7 @@
     </section>
 
     <!-- Premium (Settings tab) -->
-    <section class="section" data-section="settings">
+    <section class="section" data-section="settings" style="display:none">
       <h2 class="section-head">💎 Premium Services (Debrid Integration)</h2>
       <p class="section-sub">Zero-buffering high-speed direct streaming via your Debrid account.</p>
       <div class="card" style="padding:1.25rem;">
@@ -868,7 +877,7 @@
     </section>
 
     <!-- Sources -->
-    <section class="section" id="sources" data-section="sources">
+    <section class="section" id="sources" data-section="sources" style="display:none">
       <h2 class="section-head">Installed Repositories</h2>
       <p class="section-sub">Manage your scraper sources.</p>
 
@@ -1233,24 +1242,24 @@
         });
         if (tab === 'sources') {
           document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
-          document.querySelectorAll('[data-section="settings"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="settings" style="display:none"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = 'none';
           if(isStatusPath()) history.pushState(null,'','/');
         } else if (tab === 'settings') {
           document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
-          document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="sources" style="display:none"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = 'none';
           if(isStatusPath()) history.pushState(null,'','/');
         } else if (tab === 'analytics') {
           document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
-          document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
-          document.querySelectorAll('[data-section="settings"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="sources" style="display:none"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="settings" style="display:none"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = '';
           if(location.pathname!=='/analytics' && location.pathname!=='/status') history.pushState(null,'','/analytics');
           loadAnalytics();
         } else {
-          document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
-          document.querySelectorAll('[data-section="settings"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="sources" style="display:none"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="settings" style="display:none"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = 'none';
           if(isStatusPath()) history.pushState(null,'','/');
         }
@@ -1266,19 +1275,19 @@
       document.querySelectorAll('[data-section]').forEach(s=> s.style.display='');
       if(isAnalytics){
         document.querySelectorAll('[data-section="general"]').forEach(s=> s.style.display='none');
-        document.querySelectorAll('[data-section="sources"]').forEach(s=> s.style.display='none');
-        document.querySelectorAll('[data-section="settings"]').forEach(s=> s.style.display='none');
+        document.querySelectorAll('[data-section="sources" style="display:none"]').forEach(s=> s.style.display='none');
+        document.querySelectorAll('[data-section="settings" style="display:none"]').forEach(s=> s.style.display='none');
         document.getElementById('section-analytics').style.display='';
         loadAnalytics();
       } else {
-        document.querySelectorAll('[data-section="settings"]').forEach(s=> s.style.display='none');
-        document.querySelectorAll('[data-section="sources"]').forEach(s=> s.style.display='none');
+        document.querySelectorAll('[data-section="settings" style="display:none"]').forEach(s=> s.style.display='none');
+        document.querySelectorAll('[data-section="sources" style="display:none"]').forEach(s=> s.style.display='none');
         document.getElementById('section-analytics').style.display='none';
       }
     });
     // Initial: hide non-General tabs on first load
     if(!isStatusPath()){
-      document.querySelectorAll('[data-section="settings"], [data-section="sources"]').forEach(s=> s.style.display='none');
+      document.querySelectorAll('[data-section="settings" style="display:none"], [data-section="sources" style="display:none"]').forEach(s=> s.style.display='none');
       const aSec=document.getElementById('section-analytics'); if(aSec) aSec.style.display='none';
     }
   }

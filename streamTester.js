@@ -1247,5 +1247,6 @@ module.exports = {
     deduplicateAndMergeStreams,
     getStreamFingerprint,
     normalizeTorrentHash,
-    cleanProviderName
+    cleanProviderName,
+    extractCleanTitleAndDetails
 };
