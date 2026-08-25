@@ -576,8 +576,8 @@
     border-radius: 50%; animation: spin 0.8s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .btn-icon { display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border:1px solid var(--border);border-radius:0.625rem;background:var(--surface);color:var(--ink-muted);cursor:pointer;transition:all 0.2s;}
-  .btn-icon:hover { border-color:var(--border-hover);color:var(--ink);background:var(--surface-2); }
+  .btn-icon { display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;border:none;border-radius:0.625rem;background:transparent;color:#fff;cursor:pointer;transition:all 0.2s;opacity:0.85; }
+  .btn-icon:hover { background:rgba(255,255,255,0.1);color:#fff;opacity:1; }
   .btn-icon:focus-visible { outline:2px solid var(--blue);outline-offset:2px; }
 
   @media (max-width: 67.5rem) {
@@ -1305,7 +1305,6 @@
        html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;min-height:7.25rem;"><div><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Avg Resolve Time</div><div style="font-size:1.375rem;font-weight:700;letter-spacing:-0.02em;margin-top:0.5rem;">${resolveHtml}</div></div><div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;"><div style="width:${total>0?Math.min(100,15+slow/total*40):0}%;height:100%;background:var(--blue);border-radius:999px;"></div></div><div style="font-size:0.6875rem;color:var(--ink-muted);margin-top:0.5rem;">${health?`${health.totalStreamsServed} streams · ${health.streamCacheEntries} cached`:'—'}</div></div></div>`;
        html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:7.25rem;"><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;align-self:flex-start;width:100%;">Cache Hit Rate</div><div style="position:relative;width:3.75rem;height:3.75rem;margin:0.25rem 0;"><svg viewBox="0 0 36 36" style="width:100%;height:100%;transform:rotate(-90deg);"><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--blue)" stroke-width="3" stroke-dasharray="${cacheHitRate}, 100"/></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.875rem;font-weight:700;">${cacheHitText}</div></div><div style="font-size:0.6875rem;color:var(--ink-muted);text-align:center;">Links served from cache</div></div>`;
        html += '</div>';
-       html += '<button class="btn btn-outline btn-sm" onclick="loadAnalytics()" style="width:100%;margin-bottom:1rem;">↻ Refresh Health Metrics</button>';
        if(keys.length===0){
          html += '<p style="color:var(--ink-muted);font-size:0.8125rem;">No provider analytics yet — stream a title first.</p>';
        } else {
