@@ -905,7 +905,7 @@
   // ─── Card Lottie icons (Scrapers puzzle, Filters filter) ───
   function initCardLotties() {
     if (!window.lottie) return;
-    document.querySelectorAll('.ltz[data-src]:not(.ready)').forEach(el => {
+    document.querySelectorAll('.ltz[data-src]:not(.ready):not(.ltz-refresh)').forEach(el => {
       el.classList.add('ready');
       try {
         const a = lottie.loadAnimation({ container: el, renderer: 'svg', loop: true, autoplay: true, path: el.dataset.src });
