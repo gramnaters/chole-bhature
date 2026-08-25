@@ -367,9 +367,11 @@ async function ensureProviderAnalyticsTable(){
 function isPollutedProviderName(n){
   if(!n || n==='null' || n==='undefined') return true;
   const s=String(n);
-  if(s.length>36) return true;
-  if(/1080p|720p|BluRay|x264|HEVC|workers\.dev|D3adlyRocket|phisher|HINDI.*1080|DD5.*English/i.test(s)) return true;
   if(s.includes('/') || s.includes('http')) return true;
+  if(s.length>50) return true;
+  // Movie-title-like: long + year + resolution/codec + workers.dev is a giveaway
+  if(s.length>36 && /(19|20)\d{2}/.test(s) && /1080p|720p|BluRay|x264|HEVC/i.test(s)) return true;
+  if(/workers\.dev/i.test(s) && s.length>30) return true;
   return false;
 }
 async function saveProviderAnalytics(provider, data){
