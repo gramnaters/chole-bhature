@@ -269,6 +269,7 @@ async function loadUserConfigs() {
 
 loadUserConfigs();
 loadProviderStatus().catch(()=>{});
+loadProviderAnalytics().catch(()=>{});
 
 // Provider Status Store — synthetic probe results (Turso + in-memory cache)
 const providerStatusCache = new Map();
@@ -305,6 +306,39 @@ function getProviderStatus(name){
 }
 function getAllProviderStatus(){
   return Object.fromEntries(providerStatusCache);
+}
+
+// Provider Analytics Store — fast/slow/dead counts (Turso + in-memory cache)
+async function ensureProviderAnalyticsTable(){
+  if(!turso) return;
+  await turso.execute(`CREATE TABLE IF NOT EXISTS provider_analytics (provider TEXT PRIMARY KEY, fast INTEGER, slow INTEGER, dead INTEGER, updatedAt INTEGER)`);
+}
+async function saveProviderAnalytics(provider, data){
+  providerAnalytics.set(provider, data);
+  if(turso) {
+    await ensureProviderAnalyticsTable();
+    await turso.execute({
+      sql:'INSERT OR REPLACE INTO provider_analytics(provider,fast,slow,dead,updatedAt) VALUES(?,?,?,?,?)',
+      args:[provider, data.fast||0, data.slow||0, data.dead||0, Date.now()]
+    });
+  }
+}
+async function loadProviderAnalytics(){
+  if(!turso) return;
+  await ensureProviderAnalyticsTable();
+  try {
+    const result = await turso.execute('SELECT provider, fast, slow, dead FROM provider_analytics');
+    for (const row of result.rows) {
+      providerAnalytics.set(row.provider, {
+        fast: row.fast || 0,
+        slow: row.slow || 0,
+        dead: row.dead || 0
+      });
+    }
+    console.log(`[ProviderAnalytics] Loaded ${result.rows.length} providers from Turso`);
+  } catch (e) {
+    console.error('[ProviderAnalytics] Failed to load from Turso:', e.message);
+  }
 }
 
 // PWA Core Endpoints with explicit headers & CORS for WebAPK minting
@@ -920,8 +954,14 @@ function createAddon(config) {
             }
         }
 
-        const frStream = getForceRefreshStream();
-        return { streams: frStream ? [frStream, ...sortedAndTaggedStreams] : sortedAndTaggedStreams };
+         const frStream = getForceRefreshStream();
+         // Save provider analytics to Turso after stream testing
+         if (turso) {
+           for (const [provider, data] of providerAnalytics.entries()) {
+             saveProviderAnalytics(provider, data).catch(() => {});
+           }
+         }
+         return { streams: frStream ? [frStream, ...sortedAndTaggedStreams] : sortedAndTaggedStreams };
     });
 
     // No catalogs defined
