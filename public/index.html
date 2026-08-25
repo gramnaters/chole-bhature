@@ -1283,19 +1283,24 @@
        let fast=0, slow=0, dead=0;
        keys.forEach(k=>{ const d=data[k]; fast+=(d.fast||0); slow+=(d.slow||0); dead+=(d.dead||0); });
        const total = fast+slow+dead;
-       let uptimeText='—', resolveHtml='—';
-       if(total>0){
-         uptimeText = (100 - (dead/total)*100).toFixed(1)+'%';
-         const resolveNum = Math.floor(100 + (slow/total)*150);
-         resolveHtml = resolveNum+'<span style="font-size:0.8125rem;color:var(--ink-muted);">ms</span>';
-       } else if(health){
-         uptimeText = health.status==='ok' ? '100%' : '—';
-         resolveHtml = health.totalStreamsServed>0 ? '—' : '—';
-       }
+        let uptimeText='—', resolveHtml='—', cacheHitRate='—', cacheHitText='—';
+        if(total>0){
+          uptimeText = (100 - (dead/total)*100).toFixed(1)+'%';
+          const resolveNum = Math.floor(100 + (slow/total)*150);
+          resolveHtml = resolveNum+'<span style="font-size:0.8125rem;color:var(--ink-muted);">ms</span>';
+        } else if(health){
+          uptimeText = health.status==='ok' ? '100%' : '—';
+          resolveHtml = health.totalStreamsServed>0 ? '—' : '—';
+        }
+        if(health && health.totalStreamsServed > 0) {
+          const hitRate = Math.round((health.streamCacheEntries / health.totalStreamsServed) * 100);
+          cacheHitRate = hitRate;
+          cacheHitText = hitRate + '%';
+        }
        let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;margin-bottom:1rem;align-items:stretch;">';
        html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;min-height:7.25rem;"><div><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Scraper Uptime</div><div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;"><span style="font-size:1.375rem;font-weight:700;letter-spacing:-0.02em;">${uptimeText}</span><span style="width:0.5rem;height:0.5rem;border-radius:50%;background:${total>0||health?'#30d158':'#6b7280'};box-shadow:0 0 8px rgba(48,209,88,0.6);display:inline-block;flex-shrink:0;"></span></div></div><div style="font-size:0.75rem;color:${total>0?'#30d158':'var(--ink-muted)'};margin-top:0.5rem;">${health?`v${health.version} · up ${health.uptimeHuman}`:(total>0?'All systems operational':'No data yet')}</div></div>`;
        html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;min-height:7.25rem;"><div><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Avg Resolve Time</div><div style="font-size:1.375rem;font-weight:700;letter-spacing:-0.02em;margin-top:0.5rem;">${resolveHtml}</div></div><div><div style="width:100%;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;"><div style="width:${total>0?Math.min(100,15+slow/total*40):0}%;height:100%;background:var(--blue);border-radius:999px;"></div></div><div style="font-size:0.6875rem;color:var(--ink-muted);margin-top:0.5rem;">${health?`${health.totalStreamsServed} streams · ${health.streamCacheEntries} cached`:'—'}</div></div></div>`;
-       html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:7.25rem;"><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;align-self:flex-start;width:100%;">Cache Hit Rate</div><div style="position:relative;width:3.75rem;height:3.75rem;margin:0.25rem 0;"><svg viewBox="0 0 36 36" style="width:100%;height:100%;transform:rotate(-90deg);"><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--blue)" stroke-width="3" stroke-dasharray="0, 100"/></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.875rem;font-weight:700;">—</div></div><div style="font-size:0.6875rem;color:var(--ink-muted);text-align:center;">Links served from cache</div></div>`;
+       html += `<div class="stat-card" style="text-align:left;padding:1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:7.25rem;"><div style="font-size:0.6875rem;color:var(--ink-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;align-self:flex-start;width:100%;">Cache Hit Rate</div><div style="position:relative;width:3.75rem;height:3.75rem;margin:0.25rem 0;"><svg viewBox="0 0 36 36" style="width:100%;height:100%;transform:rotate(-90deg);"><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/><path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--blue)" stroke-width="3" stroke-dasharray="${cacheHitRate}, 100"/></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.875rem;font-weight:700;">${cacheHitText}</div></div><div style="font-size:0.6875rem;color:var(--ink-muted);text-align:center;">Links served from cache</div></div>`;
        html += '</div>';
        html += '<button class="btn btn-outline btn-sm" onclick="loadAnalytics()" style="width:100%;margin-bottom:1rem;">↻ Refresh Health Metrics</button>';
        if(keys.length===0){
