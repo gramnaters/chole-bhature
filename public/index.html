@@ -705,6 +705,45 @@
       </div>
     </section>
 
+    <!-- Stream Card Presentation Studio (Settings tab) -->
+    <section class="section" data-section="settings">
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;flex-wrap:wrap;">
+        <h2 class="section-head" style="margin-bottom:0;">🎨 Stream Card Presentation Studio</h2>
+        <span class="badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">✨ AI Scene Parser</span>
+      </div>
+      <p class="section-sub">Converts messy scene filenames into high-contrast structured cards. Preview updates live.</p>
+      <div class="card">
+        <div class="row">
+          <div class="row-label">
+            <div class="icon" style="background:rgba(139,92,246,0.12);"><span style="font-size:14px;">✨</span></div>
+            <div><h3>Ultra-Clean Formatted Cards <span class="badge" style="background:rgba(16,185,129,0.12);color:#34d399;">Stremio / Nuvio</span></h3><p>Structured cards with release quality, Dolby Vision, Atmos, and dub badges</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked data-studio="cleanTitles"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><span style="font-size:14px;">📦</span></div>
+            <div><h3>File Size</h3><p>Show file size on cards (e.g. 48.2 GB)</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked data-studio="showFileSize"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="row-label">
+            <div class="icon"><span style="font-size:14px;">🏷️</span></div>
+            <div><h3>Release Group</h3><p>Show release group tag (e.g. FraMeSToR)</p></div>
+          </div>
+          <label class="toggle"><input type="checkbox" checked data-studio="showReleaseGroup"><span class="toggle-track"></span><span class="toggle-knob"></span></label>
+        </div>
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
+            <span style="font-size:0.6875rem;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">Live Card Preview</span>
+            <span style="font-size:0.6875rem;color:#a78bfa;background:rgba(139,92,246,0.12);padding:2px 8px;border-radius:9999px;border:1px solid rgba(139,92,246,0.25);">Real-Time Render</span>
+          </div>
+          <div id="live-card-preview" style="background:rgba(15,23,42,0.55);border:1px solid rgba(139,92,246,0.28);border-radius:0.875rem;padding:1rem;display:flex;flex-direction:column;gap:0.5rem;font-size:0.8125rem;line-height:1.5;"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Sorting (Settings tab) -->
     <section class="section" id="sorting" data-section="settings">
       <h2 class="section-head">Sort Mode</h2>
@@ -800,34 +839,34 @@
 
     <!-- Premium (Settings tab) -->
     <section class="section" data-section="settings">
-      <h2 class="section-head">Premium Features</h2>
-      <p class="section-sub">Optional integrations for enhanced streaming.</p>
-      <div class="glass-grid">
-        <div class="glass-card">
-          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1.125rem" height="1.125rem" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/><path d="M12 6l-1.5 3.5L7 11l3.5 1.5L12 16l1.5-3.5L17 11l-3.5-1.5L12 6z" fill="rgba(255,255,255,0.9)"/></svg></div>
-          <h4>Real-Debrid</h4>
-          <p>Instant cached CDN links</p>
-          <div style="margin-top:1rem;"><input type="password" class="input" placeholder="API Key" data-premium="realDebridKey"></div>
-        </div>
-        <div class="glass-card">
-          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1.125rem" height="1.125rem" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2z"/></svg></div>
-          <h4>Mini-Debrid</h4>
-          <p>Torrent-to-HTTP streaming</p>
-          <div style="margin-top:1rem;"><input type="text" class="input" placeholder="Access Token" data-premium="miniDebridToken"></div>
-        </div>
-        <div class="glass-card">
-          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1.125rem" height="1.125rem" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/><path d="m10 17-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="rgba(255,255,255,0.9)"/></svg></div>
-          <h4>DNS-over-HTTPS</h4>
-          <p>Bypass ISP censorship</p>
-          <div style="margin-top:1rem;">
-            <select class="input" data-premium="dohProvider">
-              <option value="cloudflare">Cloudflare (1.1.1.1)</option>
-              <option value="google">Google DNS (8.8.8.8)</option>
-              <option value="adguard">AdGuard DNS</option>
-              <option value="quad9">Quad9 (9.9.9.9)</option>
-            </select>
+      <h2 class="section-head">💎 Premium Services (Debrid Integration)</h2>
+      <p class="section-sub">Zero-buffering high-speed direct streaming via your Debrid account.</p>
+      <div class="card" style="padding:1.25rem;">
+        <div style="display:flex;align-items:flex-start;gap:0.75rem;margin-bottom:1rem;">
+          <div style="width:2rem;height:2rem;border-radius:0.5rem;background:rgba(251,191,36,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">⚡</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;"><h3 style="font-size:0.9375rem;font-weight:700;">Real-Debrid / AllDebrid</h3><span class="badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);">10Gbps Direct Stream</span></div>
+            <p style="font-size:0.8125rem;color:var(--ink-muted);margin-top:0.25rem;line-height:1.5;">Unlock zero-buffering high-speed direct streaming by automatically unrestricting torrents through your Debrid account.</p>
           </div>
         </div>
+        <select class="input" data-premium="debridProvider" id="debrid-provider-select">
+          <option value="none">❌ None (Free Links Only)</option>
+          <option value="realdebrid">⚡ Real-Debrid</option>
+          <option value="alldebrid">🔷 AllDebrid</option>
+        </select>
+        <div id="debrid-key-row" style="display:none;margin-top:0.75rem;"><input type="password" class="input" placeholder="Paste Debrid API Key" data-premium="debridApiKey" id="debrid-api-key"></div>
+      </div>
+      <div class="card" style="margin-top:0.75rem;padding:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <div style="width:2rem;height:2rem;border-radius:0.5rem;background:rgba(139,92,246,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">🔒</div>
+          <div><h3 style="font-size:0.9375rem;font-weight:700;">DNS-over-HTTPS</h3><p style="font-size:0.8125rem;color:var(--ink-muted);">Bypass ISP censorship</p></div>
+        </div>
+        <select class="input" data-premium="dohProvider" style="max-width:14rem;">
+          <option value="cloudflare">Cloudflare (1.1.1.1)</option>
+          <option value="google">Google DNS (8.8.8.8)</option>
+          <option value="adguard">AdGuard DNS</option>
+          <option value="quad9">Quad9 (9.9.9.9)</option>
+        </select>
       </div>
     </section>
 
@@ -868,6 +907,9 @@
   </div>
 </div>
 
+<!-- Toast -->
+<div id="toast" style="position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);background:rgba(30,30,35,0.95);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);color:var(--ink);padding:0.625rem 1rem;border-radius:9999px;font-size:0.8125rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:none;z-index:9999;pointer-events:none;"></div>
+
 <!-- Save Bar -->
 <div class="save-bar">
   <span class="id"><span class="pulse-dot"></span>ID: Loading…</span>
@@ -896,8 +938,20 @@
     repos: [],
     disabled: [],
     realDebridKey: '',
-    miniDebridToken: ''
+    miniDebridToken: '',
+    cleanTitles: true,
+    showFileSize: true,
+    showReleaseGroup: true,
+    debridProvider: 'none',
+    debridApiKey: ''
   };
+
+  function showToast(html){
+    const t=document.getElementById('toast');
+    if(!t) return;
+    t.innerHTML=html; t.style.display='block';
+    clearTimeout(t._hide); t._hide=setTimeout(()=>t.style.display='none',2600);
+  }
 
   // ─── Card Lottie icons (Scrapers puzzle, Filters filter) ───
   function initCardLotties() {
@@ -1044,6 +1098,7 @@
     document.querySelectorAll('[data-premium]').forEach(el => {
       const key = el.dataset.premium;
       if (key === 'dohProvider') el.value = config[key] || 'cloudflare';
+      else if (key === 'debridProvider') el.value = config[key] || 'none';
       else if (config[key]) el.value = config[key];
     });
 
@@ -1051,6 +1106,54 @@
     if (!config.enableDoh) {
       document.querySelector('[data-premium="dohProvider"]').disabled = true;
     }
+
+    // Studio toggles
+    document.querySelectorAll('[data-studio]').forEach(el => {
+      const key = el.dataset.studio;
+      if (key in config) el.checked = !!config[key];
+    });
+    const debridSel = document.getElementById('debrid-provider-select');
+    const debridRow = document.getElementById('debrid-key-row');
+    if (debridSel && debridRow) {
+      debridSel.value = config.debridProvider || 'none';
+      debridRow.style.display = debridSel.value === 'none' ? 'none' : '';
+      const dk = document.getElementById('debrid-api-key');
+      if (dk) dk.value = config.debridApiKey || config.realDebridKey || '';
+    }
+    updateLivePreview();
+  }
+
+  // ─── Studio Live Preview ───
+  function updateLivePreview(){
+    const el = document.getElementById('live-card-preview');
+    if(!el) return;
+    const clean = document.querySelector('[data-studio="cleanTitles"]')?.checked ?? config.cleanTitles !== false;
+    const showSize = document.querySelector('[data-studio="showFileSize"]')?.checked ?? config.showFileSize !== false;
+    const showGroup = document.querySelector('[data-studio="showReleaseGroup"]')?.checked ?? config.showReleaseGroup !== false;
+    if(!clean){
+      el.innerHTML = '<div style="color:var(--ink-muted);font-size:0.8125rem;">Oppenheimer.2023.1080p.BluRay.x264.Hindi.DD5.1-English.5.1.ESub.x264-HDHub4u.mkv</div><div style="color:var(--ink-muted);font-size:0.75rem;margin-top:0.5rem;">Raw filename — no parsing</div>';
+      return;
+    }
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+        <span style="width:10px;height:10px;border-radius:50%;background:#30d158;box-shadow:0 0 6px rgba(48,209,88,0.6);display:inline-block;flex-shrink:0;"></span>
+        <span style="font-weight:700;color:#30d158;font-size:0.8125rem;">FAST (142ms)</span>
+        <span style="color:var(--ink-muted);">•</span><span style="font-weight:600;">Torrentio</span>
+        <span style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);border-radius:9999px;padding:1px 6px;font-size:0.6875rem;font-weight:700;">4K UHD</span>
+        <span style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);border-radius:9999px;padding:1px 6px;font-size:0.6875rem;font-weight:700;">DV</span>
+        <span style="background:rgba(16,185,129,0.12);color:#34d399;border-radius:9999px;padding:1px 6px;font-size:0.6875rem;">Atmos</span>
+      </div>
+      <div style="font-weight:700;color:var(--ink);">🎬 Oppenheimer (2023) <span style="color:var(--ink-muted);font-weight:600;">[4K UHD • REMUX • HEVC • 10-bit]</span></div>
+      <div style="color:#60a5fa;font-size:0.8125rem;">💎 Dolby Vision Profile 8 + HDR10+ • Dolby Atmos TrueHD 7.1</div>
+      <div style="color:var(--ink-muted);font-size:0.8125rem;">🌐 🇮🇳 Hindi Dub • 🇬🇧 English • 🌐 Multi-Audio</div>
+      <div style="color:var(--ink-muted);font-size:0.8125rem;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+        ${showSize ? '<span>📦 48.2 GB</span><span>•</span>' : ''}
+        <span style="color:#34d399;">🟢 145 Seeders</span><span>•</span>
+        ${showGroup ? '<span>🏷️ FraMeSToR</span><span>•</span>' : ''}
+        <span>🔗 Torrentio</span>
+      </div>
+      <div style="text-align:right;"><span style="font-size:0.6875rem;color:#a78bfa;background:rgba(139,92,246,0.12);padding:2px 8px;border-radius:9999px;border:1px solid rgba(139,92,246,0.25);">Stream Header</span></div>
+    `;
   }
 
   // ─── Sort Mode ───
@@ -1095,6 +1198,29 @@
       config[this.dataset.premium] = this.value;
     });
   });
+
+  // ─── Studio Controls ───
+  document.querySelectorAll('[data-studio]').forEach(input => {
+    input.addEventListener('change', function() {
+      config[this.dataset.studio] = this.checked;
+      updateLivePreview();
+    });
+  });
+  const _debridSel = document.getElementById('debrid-provider-select');
+  if (_debridSel) {
+    _debridSel.addEventListener('change', function() {
+      config.debridProvider = this.value;
+      if (this.value === 'realdebrid') config.realDebridKey = config.debridApiKey || config.realDebridKey || '';
+      const row = document.getElementById('debrid-key-row');
+      if (row) row.style.display = this.value === 'none' ? 'none' : '';
+      updateLivePreview();
+    });
+  }
+  const _debridKey = document.getElementById('debrid-api-key');
+  if (_debridKey) {
+    _debridKey.addEventListener('input', function(){ config.debridApiKey = this.value; config.realDebridKey = this.value; });
+    _debridKey.addEventListener('change', function(){ config.debridApiKey = this.value; config.realDebridKey = this.value; });
+  }
 
   // ─── Nav Tabs ───
   function isStatusPath(){ return location.pathname==='/analytics' || location.pathname==='/status'; }
@@ -1384,7 +1510,7 @@
         refreshBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
         refreshBtn.onclick = async () => {
           refreshBtn.classList.add('spinning');
-          try { await loadAnalytics(); } finally { refreshBtn.classList.remove('spinning'); }
+          try { await loadAnalytics(); showToast('✨ <b>Health metrics synced!</b>'); } finally { refreshBtn.classList.remove('spinning'); }
         };
         headerDiv.appendChild(refreshBtn);
       }

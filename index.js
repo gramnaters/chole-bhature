@@ -1041,7 +1041,12 @@ function createAddon(config) {
             preferredLanguages: buildPreferredLanguages(config),
             showSeeders: config.showSeeders !== false,
             deduplicateStreams: config.deduplicateStreams !== false,
-            realDebridKey: config.realDebridKey || getRealDebridKey()
+            realDebridKey: config.realDebridKey || config.debridApiKey || getRealDebridKey(),
+            cleanTitles: config.cleanTitles !== false,
+            showFileSize: config.showFileSize !== false,
+            showReleaseGroup: config.showReleaseGroup !== false,
+            debridProvider: config.debridProvider || 'none',
+            debridApiKey: config.debridApiKey || config.realDebridKey || ''
         }, providerAnalytics);
 
         // Only cache non-empty results (an empty array usually means provider hiccup —
