@@ -1,24 +1,25 @@
 {
   "version": 2,
-  "builds": [
+  "functions": {
+    "index.js": {
+      "maxDuration": 10,
+      "memory": 1024
+    }
+  },
+  "headers": [
     {
-      "src": "index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "public/**"
-      }
+      "source": "/(icon-.*|logo.png|favicon.*|sw.js)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/(.*)/manifest.json",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/(.*)/stream/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=600, s-maxage=3600, stale-while-revalidate=86400" }]
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "index.js"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/provider-status",
-      "schedule": "0 0 * * *"
-    }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.js" }],
+  "crons": [{ "path": "/api/cron/provider-status", "schedule": "0 0 * * *" }]
 }

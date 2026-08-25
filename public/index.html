@@ -581,6 +581,9 @@
   .btn-icon:focus-visible { outline:2px solid var(--blue);outline-offset:2px; }
   .btn-icon.spinning svg { animation: spin 0.8s linear infinite; }
 
+  /* Settings & Sources hidden by default — shown via tab JS */
+  [data-section="settings"], [data-section="sources"] { display: none; }
+
   @media (max-width: 67.5rem) {
     .nav-center { display: none; }
     .nav-center.open {
@@ -615,6 +618,7 @@
     <div class="nav-center">
       <a href="#" class="nav-link active">General</a>
       <a href="#" class="nav-link">Sources</a>
+      <a href="#" class="nav-link">Settings</a>
       <a href="#" class="nav-link">Analytics</a>
     </div>
       <div class="nav-right">
@@ -664,13 +668,6 @@
       </div>
     </div>
 
-    <!-- How to Use -->
-    <div class="steps" data-section="general">
-      <div class="step"><div class="step-num">1</div><h4>Configure Your Setup</h4><p>Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.</p></div>
-      <div class="step"><div class="step-num">2</div><h4>Add Repositories</h4><p>Visit the Sources tab to load community scrapers or add your own custom repository URL.</p></div>
-      <div class="step"><div class="step-num">3</div><h4>Install Addon</h4><p>Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.</p></div>
-    </div>
-
     <!-- About -->
     <div class="about-card" id="about-card" data-section="general">
       <h3><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:0.375rem;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> About the Addon</h3>
@@ -678,6 +675,7 @@
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
         <a href="#" class="btn btn-primary" id="btn-install">Install Addon</a>
         <a href="https://github.com/SA7ANI/chole-bhature" target="_blank" class="btn btn-outline">GitHub</a>
+        <a href="#" class="btn btn-primary" onclick="event.preventDefault();document.querySelectorAll('.nav-link')[2].click();" style="margin-left:auto;">Next → Sources</a>
       </div>
     </div>
 
@@ -707,8 +705,8 @@
       </div>
     </section>
 
-    <!-- Sorting -->
-    <section class="section" id="sorting" data-section="general">
+    <!-- Sorting (Settings tab) -->
+    <section class="section" id="sorting" data-section="settings">
       <h2 class="section-head">Sort Mode</h2>
       <p class="section-sub">Choose how your streams are ranked.</p>
       <div class="sort-grid">
@@ -725,8 +723,8 @@
       </div>
     </section>
 
-    <!-- Filters -->
-    <section class="section" data-section="general">
+    <!-- Filters (Settings tab) -->
+    <section class="section" data-section="settings">
       <h2 class="section-head">Auto-Hide Filters</h2>
       <p class="section-sub">Strip broken or unwanted streams from results.</p>
       <div class="card">
@@ -782,8 +780,8 @@
       </div>
     </section>
 
-    <!-- Languages -->
-    <section class="section" data-section="general">
+    <!-- Languages (Settings tab) -->
+    <section class="section" data-section="settings">
       <h2 class="section-head">Preferred Languages</h2>
       <p class="section-sub">Streams with these languages float to the top.</p>
       <div class="lang-grid">
@@ -800,8 +798,8 @@
       </div>
     </section>
 
-    <!-- Premium -->
-    <section class="section" data-section="general">
+    <!-- Premium (Settings tab) -->
+    <section class="section" data-section="settings">
       <h2 class="section-head">Premium Features</h2>
       <p class="section-sub">Optional integrations for enhanced streaming.</p>
       <div class="glass-grid">
@@ -1112,15 +1110,24 @@
         });
         if (tab === 'sources') {
           document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="settings"]').forEach(s => s.style.display = 'none');
+          document.getElementById('section-analytics').style.display = 'none';
+          if(isStatusPath()) history.pushState(null,'','/');
+        } else if (tab === 'settings') {
+          document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = 'none';
           if(isStatusPath()) history.pushState(null,'','/');
         } else if (tab === 'analytics') {
           document.querySelectorAll('[data-section="general"]').forEach(s => s.style.display = 'none');
           document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="settings"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = '';
           if(location.pathname!=='/analytics' && location.pathname!=='/status') history.pushState(null,'','/analytics');
           loadAnalytics();
         } else {
+          document.querySelectorAll('[data-section="sources"]').forEach(s => s.style.display = 'none');
+          document.querySelectorAll('[data-section="settings"]').forEach(s => s.style.display = 'none');
           document.getElementById('section-analytics').style.display = 'none';
           if(isStatusPath()) history.pushState(null,'','/');
         }
@@ -1137,9 +1144,12 @@
       if(isAnalytics){
         document.querySelectorAll('[data-section="general"]').forEach(s=> s.style.display='none');
         document.querySelectorAll('[data-section="sources"]').forEach(s=> s.style.display='none');
+        document.querySelectorAll('[data-section="settings"]').forEach(s=> s.style.display='none');
         document.getElementById('section-analytics').style.display='';
         loadAnalytics();
       } else {
+        document.querySelectorAll('[data-section="settings"]').forEach(s=> s.style.display='none');
+        document.querySelectorAll('[data-section="sources"]').forEach(s=> s.style.display='none');
         document.getElementById('section-analytics').style.display='none';
       }
     });
