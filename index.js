@@ -159,6 +159,57 @@ try {
     console.warn('[Config] Upstash Redis unavailable (RD cache disabled):', e.message);
 }
 
+// Optional: TCP Redis (Redis Cloud) — durable L2 for the streamCache so cached
+// link lists survive serverless cold starts. Best-effort: every call is guarded
+// and the in-memory Map remains the source of truth within a warm instance.
+let streamRedis = null;
+try {
+    if (process.env.REDIS_URL) {
+        const Redis = require('ioredis');
+        streamRedis = new Redis(process.env.REDIS_URL, {
+            connectTimeout: 3000,
+            maxRetriesPerRequest: 1,
+            enableOfflineQueue: false,
+            lazyConnect: false
+        });
+        streamRedis.on('error', () => {});
+        console.log('[Cache] Redis stream-cache L2 ENABLED.');
+    }
+} catch (e) {
+    console.warn('[Cache] Redis unavailable (stream L2 disabled):', e.message);
+}
+const STREAM_REDIS_PREFIX = 'cb:stream:';
+async function streamCacheRedisGet(cacheKey) {
+    if (!streamRedis || streamRedis.status !== 'ready') return null;
+    try {
+        const raw = await streamRedis.get(STREAM_REDIS_PREFIX + cacheKey);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.streams)) return null;
+        if (Date.now() - parsed.timestamp >= (parsed.ttl || STREAM_CACHE_TTL_MS)) return null;
+        return parsed;
+    } catch (e) { return null; }
+}
+async function streamCacheRedisSet(cacheKey, entry) {
+    if (!streamRedis || streamRedis.status !== 'ready') return;
+    try {
+        const ttlSec = Math.max(60, Math.floor((entry.ttl || STREAM_CACHE_TTL_MS) / 1000));
+        await streamRedis.set(STREAM_REDIS_PREFIX + cacheKey, JSON.stringify(entry), 'EX', ttlSec);
+    } catch (e) {}
+}
+async function incrCacheStat(stat) {
+    if (!streamRedis || streamRedis.status !== 'ready') return;
+    try { await streamRedis.incr(`cb:stats:${stat}`); } catch (e) {}
+}
+async function getCacheStats() {
+    if (!streamRedis || streamRedis.status !== 'ready') return null;
+    try {
+        const hits = parseInt(await streamRedis.get('cb:stats:hits')) || 0;
+        const misses = parseInt(await streamRedis.get('cb:stats:misses')) || 0;
+        return { hits, misses };
+    } catch (e) { return null; }
+}
+
 function loadUserConfigsFromFile() {
     try {
         if (fs.existsSync(CONFIGS_FILE)) {
@@ -500,6 +551,7 @@ app.get('/api/health', async (req, res) => {
     const mem = process.memoryUsage();
     let totalStreamsServed = 0;
     for (const v of providerAnalytics.values()) totalStreamsServed += (v.fast||0)+(v.slow||0)+(v.dead||0);
+    const cacheStats = await getCacheStats();
     res.json({
         status: 'ok',
         version: pkg.version,
@@ -507,7 +559,10 @@ app.get('/api/health', async (req, res) => {
         uptimeHuman: `${Math.floor(process.uptime()/3600)}h ${Math.floor((process.uptime()%3600)/60)}m`,
         memory: { heapUsed: Math.round(mem.heapUsed/1024/1024)+'MB', rss: Math.round(mem.rss/1024/1024)+'MB' },
         tursoConnected: tursoOk,
+        redisConnected: !!(streamRedis && streamRedis.status === 'ready'),
         streamCacheEntries: streamCache.size,
+        cacheHits: cacheStats ? cacheStats.hits : null,
+        cacheMisses: cacheStats ? cacheStats.misses : null,
         providersTracked: providerAnalytics.size,
         totalStreamsServed,
         timestamp: new Date().toISOString()
@@ -608,6 +663,24 @@ function clearStreamCacheForConfig(configId) {
         const hashAt = k.lastIndexOf('_cfg:');
         const prefix = hashAt === -1 ? k : k.slice(0, hashAt);
         if (prefix.endsWith(`_${configId}`)) streamCache.delete(k);
+    }
+    // Mirror the purge into Redis (SCAN is fine at this keyspace scale)
+    if (streamRedis && streamRedis.status === 'ready') {
+        (async () => {
+            try {
+                let cursor = '0';
+                do {
+                    const [next, keys] = await streamRedis.scan(cursor, 'MATCH', STREAM_REDIS_PREFIX + '*', 'COUNT', 200);
+                    cursor = next;
+                    for (const rk of keys) {
+                        const local = rk.slice(STREAM_REDIS_PREFIX.length);
+                        const hashAt = local.lastIndexOf('_cfg:');
+                        const prefix = hashAt === -1 ? local : local.slice(0, hashAt);
+                        if (prefix.endsWith(`_${configId}`)) await streamRedis.del(rk);
+                    }
+                } while (cursor !== '0');
+            } catch (e) {}
+        })();
     }
 }
 
@@ -831,10 +904,21 @@ function createAddon(config) {
         const cacheKey = `${type}_${id}_${getConfigCacheKey(config)}`;
         const cached = streamCache.get(cacheKey);
         if (cached && (Date.now() - cached.timestamp < (cached.ttl || STREAM_CACHE_TTL_MS))) {
-            console.log(`[Stremio] Serving ${cached.streams.length} streams from cache for ${cacheKey}`);
+            console.log(`[Stremio] Serving ${cached.streams.length} streams from memory cache for ${cacheKey}`);
+            incrCacheStat('hits');
             const frStream = getForceRefreshStream();
             return { streams: frStream ? [frStream, ...cached.streams] : cached.streams };
         }
+        // L2: Redis — survives serverless cold starts
+        const redisCached = await streamCacheRedisGet(cacheKey);
+        if (redisCached) {
+            console.log(`[Stremio] Serving ${redisCached.streams.length} streams from Redis cache for ${cacheKey}`);
+            streamCache.set(cacheKey, redisCached);
+            incrCacheStat('hits');
+            const frStream = getForceRefreshStream();
+            return { streams: frStream ? [frStream, ...redisCached.streams] : redisCached.streams };
+        }
+        incrCacheStat('misses');
 
         let manifestUrls = [];
         if (config.repoUrl) {
@@ -947,11 +1031,13 @@ function createAddon(config) {
             const ttl = sortedAndTaggedStreams.length >= STREAM_CACHE_THIN_COUNT
                 ? STREAM_CACHE_TTL_MS
                 : STREAM_CACHE_THIN_TTL_MS;
-            streamCache.set(cacheKey, { timestamp: Date.now(), ttl, streams: sortedAndTaggedStreams });
+            const entry = { timestamp: Date.now(), ttl, streams: sortedAndTaggedStreams };
+            streamCache.set(cacheKey, entry);
             if (streamCache.size > STREAM_CACHE_MAX_ENTRIES) {
                 const oldest = streamCache.keys().next().value;
                 streamCache.delete(oldest);
             }
+            streamCacheRedisSet(cacheKey, entry);
         }
 
          const frStream = getForceRefreshStream();
@@ -1036,6 +1122,9 @@ app.get('/:configJSON/clear-cache/:type/:id', async (req, res) => {
 
         const cacheKey = `${type}_${id}_${getConfigCacheKey(config)}`;
         streamCache.delete(cacheKey);
+        if (streamRedis && streamRedis.status === 'ready') {
+            streamRedis.del(STREAM_REDIS_PREFIX + cacheKey).catch(() => {});
+        }
         console.log(`[Cache] Cleared via browser link for ${type} ${id}`);
         res.status(200).send(`<!DOCTYPE html>
         <html lang="en">
@@ -1075,9 +1164,25 @@ app.get('/c/:configId/clear-cache/:type/:id', async (req, res) => {
         const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
         config.addonProtocol = protocol.split(',')[0].trim();
 
-        streamCache.delete(`${type}_${id}_${getConfigCacheKey(config)}`);
+        const exactKey = `${type}_${id}_${getConfigCacheKey(config)}`;
+        streamCache.delete(exactKey);
         for (const k of streamCache.keys()) {
             if (k.includes(configId)) streamCache.delete(k);
+        }
+        if (streamRedis && streamRedis.status === 'ready') {
+            streamRedis.del(STREAM_REDIS_PREFIX + exactKey).catch(() => {});
+            (async () => {
+                try {
+                    let cursor = '0';
+                    do {
+                        const [next, keys] = await streamRedis.scan(cursor, 'MATCH', STREAM_REDIS_PREFIX + '*', 'COUNT', 200);
+                        cursor = next;
+                        for (const rk of keys) {
+                            if (rk.slice(STREAM_REDIS_PREFIX.length).includes(configId)) await streamRedis.del(rk);
+                        }
+                    } while (cursor !== '0');
+                } catch (e) {}
+            })();
         }
         console.log(`[Cache] Cleared via browser link for ${type} ${id} (configId: ${configId})`);
         res.status(200).send(`<!DOCTYPE html>
