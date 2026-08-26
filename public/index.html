@@ -191,15 +191,16 @@
   .btn-outline:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
   .btn-sm { padding: var(--sp-1) var(--sp-2); font-size: var(--text-xs); border-radius: var(--r-sm); }
 
-  /* ─── Save-bar buttons: consistent height across all tabs ─── */
-  .save-bar .btn {
-    min-height: 2.125rem; padding: var(--sp-2) var(--sp-5);
+  /* ─── Save-bar buttons: all tabs identical height/size ─── */
+  .save-bar .btn,
+  .save-bar .btn-nav {
+    min-height: 2.25rem; padding: var(--sp-2) var(--sp-6);
     font-size: var(--text-sm); font-weight: 600;
     white-space: nowrap; flex-shrink: 0;
   }
   .btn-nav {
     display: inline-flex; align-items: center; justify-content: center;
-    min-height: 2.125rem; padding: var(--sp-2) var(--sp-5);
+    min-height: 2.25rem; padding: var(--sp-2) var(--sp-6);
     font-size: var(--text-sm); font-weight: 600; border-radius: var(--r-full);
     background: var(--accent); color: var(--accent-fg); border: 1px solid var(--accent);
     cursor: pointer; text-decoration: none; white-space: nowrap; flex-shrink: 0;
@@ -465,7 +466,7 @@
     min-height: 3.25rem;
   }
   .save-bar .id { font-size: var(--text-sm); color: var(--ink-muted); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; flex-shrink: 0; }
-  #save-bar-actions { display: flex; align-items: center; gap: var(--sp-2); min-height: 2.125rem; }
+  #save-bar-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--sp-2); min-height: 2.25rem; }
   .pulse-dot {
     position: relative; display: inline-block;
     width: 0.4375rem; height: 0.4375rem; border-radius: 50%;
