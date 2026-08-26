@@ -568,7 +568,6 @@
     .glass-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 1.75rem; }
     .hero { padding: 1.25rem 0 2rem; }
-    [data-section="general"][style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
   }
   /* ─── Status tab ─── */
   .legacy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 0.75rem; }
@@ -1250,7 +1249,7 @@
     } else if (tab === 'settings') {
       actions.innerHTML = '<button class="btn btn-primary btn-save">Save</button> <a href="javascript:void(0)" class="btn btn-outline" id="btn-install-bar" onclick="document.getElementById(\'btn-install\').click();">Install Addon</a>';
     } else if (tab === 'analytics') {
-      actions.innerHTML = '<button class="btn btn-primary btn-save">Save</button>';
+      actions.innerHTML = '';
     }
   }
 
