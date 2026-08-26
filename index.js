@@ -528,6 +528,145 @@ app.get('/api/version', (req, res) => {
     res.json({ version: pkg.version });
 });
 
+// ─── Telemetry Endpoints (parity with SA7ANI v4.0.0) ───
+const DIAGNOSTICS_TOKEN = process.env.ADMIN_SECRET_KEY || process.env.DIAGNOSTICS_TOKEN || null;
+
+function checkDiagnosticsAuth(req) {
+    if (!DIAGNOSTICS_TOKEN) return true;
+    const auth = req.headers.authorization || '';
+    const token = auth.replace('Bearer ', '') || req.query.token || '';
+    return token === DIAGNOSTICS_TOKEN;
+}
+
+app.post('/api/telemetry/verify', (req, res) => {
+    const { key, token } = req.body || {};
+    const candidate = key || token;
+    if (DIAGNOSTICS_TOKEN) {
+        if (candidate && candidate === DIAGNOSTICS_TOKEN) {
+            return res.json({ success: true, mode: 'server_env' });
+        }
+        return res.status(401).json({ success: false, error: 'Invalid Token' });
+    }
+    if (candidate && candidate.length >= 3) {
+        return res.json({ success: true, mode: 'client_managed' });
+    }
+    return res.status(400).json({ success: false, error: 'Token must be at least 3 characters' });
+});
+app.post('/api/admin/verify', (req, res) => {
+    const { key, token } = req.body || {};
+    const candidate = key || token;
+    if (DIAGNOSTICS_TOKEN) {
+        if (candidate && candidate === DIAGNOSTICS_TOKEN) {
+            return res.json({ success: true, mode: 'server_env' });
+        }
+        return res.status(401).json({ success: false, error: 'Invalid Token' });
+    }
+    if (candidate && candidate.length >= 3) {
+        return res.json({ success: true, mode: 'client_managed' });
+    }
+    return res.status(400).json({ success: false, error: 'Token must be at least 3 characters' });
+});
+
+app.get('/api/telemetry/stats', (req, res) => {
+    if (!checkDiagnosticsAuth(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    const uptimeSec = Math.floor(process.uptime());
+    const memUsage = process.memoryUsage();
+    const quarantinedProviders = [];
+    for (const [name, rec] of quarantineRegistry.entries()) {
+        if (rec.quarantineUntil > Date.now()) {
+            quarantinedProviders.push({
+                name,
+                strikes: rec.strikes,
+                remainingMin: Math.ceil((rec.quarantineUntil - Date.now()) / 60000)
+            });
+        }
+    }
+    res.json({
+        status: 'online',
+        version: pkg.version,
+        uptime: uptimeSec,
+        totalConfigs: userConfigs.size,
+        cacheSize: streamCache.size,
+        quarantinedProviders,
+        analyticsCount: providerAnalytics.size,
+        redisConnected: streamRedis && streamRedis.status === 'ready',
+        memoryMB: Math.round((memUsage.heapUsed / 1024 / 1024) * 100) / 100
+    });
+});
+app.get('/api/admin/stats', (req, res) => {
+    if (!checkDiagnosticsAuth(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    const uptimeSec = Math.floor(process.uptime());
+    const memUsage = process.memoryUsage();
+    const quarantinedProviders = [];
+    for (const [name, rec] of quarantineRegistry.entries()) {
+        if (rec.quarantineUntil > Date.now()) {
+            quarantinedProviders.push({
+                name,
+                strikes: rec.strikes,
+                remainingMin: Math.ceil((rec.quarantineUntil - Date.now()) / 60000)
+            });
+        }
+    }
+    res.json({
+        status: 'online',
+        version: pkg.version,
+        uptime: uptimeSec,
+        totalConfigs: userConfigs.size,
+        cacheSize: streamCache.size,
+        quarantinedProviders,
+        analyticsCount: providerAnalytics.size,
+        redisConnected: streamRedis && streamRedis.status === 'ready',
+        memoryMB: Math.round((memUsage.heapUsed / 1024 / 1024) * 100) / 100
+    });
+});
+
+app.post('/api/telemetry/clear-cache', (req, res) => {
+    if (!checkDiagnosticsAuth(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    const size = streamCache.size;
+    streamCache.clear();
+    console.log(`[Telemetry] Purged ${size} stream cache entries.`);
+    res.json({ success: true, cleared: size });
+});
+app.post('/api/admin/clear-cache', (req, res) => {
+    if (!checkDiagnosticsAuth(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    const size = streamCache.size;
+    streamCache.clear();
+    console.log(`[Telemetry] Purged ${size} stream cache entries.`);
+    res.json({ success: true, cleared: size });
+});
+
+app.post('/api/telemetry/reset-quarantine', (req, res) => {
+    if (!checkDiagnosticsAuth(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    const size = quarantineRegistry.size;
+    quarantineRegistry.clear();
+    console.log(`[Telemetry] Reset quarantine records for ${size} providers.`);
+    res.json({ success: true, reset: size });
+});
+app.post('/api/admin/reset-quarantine', (req, res) => {
+    if (!checkDiagnosticsAuth(req)) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+    }
+    const size = quarantineRegistry.size;
+    quarantineRegistry.clear();
+    console.log(`[Telemetry] Reset quarantine records for ${size} providers.`);
+    res.json({ success: true, reset: size });
+});
+
+// DoH Resolver Status
+app.get('/api/doh/status', (req, res) => {
+    res.json(getDohConfig());
+});
+
 // Analytics tracker + Provider Quarantine Registry
 const providerAnalytics = new Map();
 const quarantineRegistry = new Map();
@@ -853,6 +992,89 @@ function isProviderDisabled(provider, disabledList) {
     return false;
 }
 
+// Background re-fetch for stale-while-revalidate cache pattern.
+// Runs asynchronously so the UI isn't blocked while fresh results are prepared.
+async function backgroundFetchStreams(cacheKey, config, type, id, tmdbId, imdbId, season, episode, addonName) {
+    console.log(`[Background] Starting background re-fetch for ${type} ${id}`);
+    let manifestUrls = [];
+    if (config.repoUrl) manifestUrls = [config.repoUrl];
+    else if (config.urls && Array.isArray(config.urls)) manifestUrls = config.urls;
+    else if (config.repos && Array.isArray(config.repos)) manifestUrls = config.repos;
+    else if (config.url) manifestUrls = [config.url];
+    if (manifestUrls.length === 0) return;
+
+    let allProviders = [];
+    for (const url of manifestUrls) {
+        try {
+            const providers = await providerLoader.loadProviders(url);
+            allProviders = allProviders.concat(providers);
+        } catch (e) {
+            console.error(`[Background] ProviderLoader failed for ${url}:`, e.message);
+        }
+    }
+
+    if (config.provider) {
+        allProviders = allProviders.filter(p => p.name === config.provider);
+    } else if (config.disabled) {
+        allProviders = allProviders.filter(p => !isProviderDisabled(p, config.disabled));
+    }
+
+    let allStreams = [];
+    const PROVIDER_TIMEOUT_MS = 14000;
+
+    await Promise.all(allProviders.map(async (provider) => {
+        try {
+            if (config.enableQuarantine !== false) {
+                const qRecord = quarantineRegistry.get(provider.name);
+                if (qRecord && qRecord.quarantineUntil > Date.now()) return;
+            }
+            let nuvioType = type;
+            if (type === 'series' || type === 'tv') nuvioType = 'tv';
+            else if (type === 'movie') nuvioType = 'movie';
+            else if (type === 'anime') nuvioType = (season && episode) ? 'tv' : 'movie';
+            const scrapePromise = provider.getStreams(tmdbId, nuvioType, season, episode, config);
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Scrape Timeout')), PROVIDER_TIMEOUT_MS));
+            const streams = await Promise.race([scrapePromise, timeoutPromise]);
+            if (config.enableQuarantine !== false) quarantineRegistry.delete(provider.name);
+            if (Array.isArray(streams)) {
+                streams.forEach(s => s.name = s.name || provider.name);
+                allStreams = allStreams.concat(streams);
+            }
+        } catch (err) {
+            if (config.enableQuarantine !== false) {
+                const qRecord = quarantineRegistry.get(provider.name) || { strikes: 0, quarantineUntil: 0 };
+                qRecord.strikes++;
+                if (qRecord.strikes >= 3) qRecord.quarantineUntil = Date.now() + (30 * 60 * 1000);
+                quarantineRegistry.set(provider.name, qRecord);
+            }
+            console.error(`[Background] ${provider.name} failed:`, err.message);
+        }
+    }));
+
+    const sortedAndTaggedStreams = await sortAndTagStreams(allStreams, {
+        hideDead: config.hideDead, hideSlow: config.hideSlow, hideCam: config.hideCam || config.blockCam,
+        sortBy: config.sortBy || (config.prioritizeQuality ? 'quality' : 'speed'), sortMode: config.sortMode || config.sortBy,
+        prioritizeQuality: config.sortBy === 'quality' || config.prioritizeQuality, prioritizeHindi: config.prioritizeHindi,
+        preferredLanguages: buildPreferredLanguages(config), showSeeders: config.showSeeders !== false,
+        deduplicateStreams: config.deduplicateStreams !== false, realDebridKey: config.realDebridKey || config.debridApiKey || getRealDebridKey(),
+        cleanTitles: config.cleanTitles !== false, showFileSize: config.showFileSize !== false, showReleaseGroup: config.showReleaseGroup !== false,
+        debridProvider: config.debridProvider || 'none', debridApiKey: config.debridApiKey || config.realDebridKey || ''
+    }, providerAnalytics);
+
+    if (sortedAndTaggedStreams.length > 0) {
+        const ttl = sortedAndTaggedStreams.length >= STREAM_CACHE_THIN_COUNT ? STREAM_CACHE_TTL_MS : STREAM_CACHE_THIN_TTL_MS;
+        const entry = { timestamp: Date.now(), ttl, streams: sortedAndTaggedStreams };
+        streamCache.set(cacheKey, entry);
+        streamCacheRedisSet(cacheKey, entry);
+        console.log(`[Background] Cache updated for ${type} ${id} (${sortedAndTaggedStreams.length} streams)`);
+    }
+    if (turso) {
+        for (const [provider, data] of providerAnalytics.entries()) {
+            saveProviderAnalytics(provider, data).catch(() => {});
+        }
+    }
+}
+
 // Addon builder factory
 function createAddon(config) {
     if (config && config.enableDoh !== undefined) setDohEnabled(config.enableDoh !== false);
@@ -923,10 +1145,17 @@ function createAddon(config) {
         };
 
         const cacheKey = `${type}_${id}_${getConfigCacheKey(config)}`;
+        const FRESH_TTL_MS = 15 * 60 * 1000; // 15 minutes
+        const STALE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
         const cached = streamCache.get(cacheKey);
         if (cached && (Date.now() - cached.timestamp < (cached.ttl || STREAM_CACHE_TTL_MS))) {
             console.log(`[Stremio] Serving ${cached.streams.length} streams from memory cache for ${cacheKey}`);
             incrCacheStat('hits');
+            // Stale-While-Revalidate: if cache is stale (>15 min), revalidate in background
+            if (Date.now() - cached.timestamp > FRESH_TTL_MS && Date.now() - cached.timestamp < STALE_TTL_MS) {
+                console.log(`[Stremio] Cache is stale, revalidating in background for ${type} ${id}`);
+                backgroundFetchStreams(cacheKey, config, type, id, tmdbId, imdbId, season, episode, addonName).catch(e => console.error('[Background Fetch Error]', e));
+            }
             const frStream = getForceRefreshStream();
             return { streams: frStream ? [frStream, ...cached.streams] : cached.streams };
         }
@@ -936,6 +1165,11 @@ function createAddon(config) {
             console.log(`[Stremio] Serving ${redisCached.streams.length} streams from Redis cache for ${cacheKey}`);
             streamCache.set(cacheKey, redisCached);
             incrCacheStat('hits');
+            // Stale-While-Revalidate for Redis cache too
+            if (Date.now() - redisCached.timestamp > FRESH_TTL_MS && Date.now() - redisCached.timestamp < STALE_TTL_MS) {
+                console.log(`[Stremio] Redis cache is stale, revalidating in background for ${type} ${id}`);
+                backgroundFetchStreams(cacheKey, config, type, id, tmdbId, imdbId, season, episode, addonName).catch(e => console.error('[Background Fetch Error]', e));
+            }
             const frStream = getForceRefreshStream();
             return { streams: frStream ? [frStream, ...redisCached.streams] : redisCached.streams };
         }
