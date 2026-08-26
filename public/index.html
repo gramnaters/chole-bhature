@@ -560,10 +560,15 @@
   .about-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
   .about-card p { font-size: 0.875rem; color: var(--ink-muted); line-height: 1.6; }
   .about-card .btn { margin-top: 1rem; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+  .steps-grid .step-item { background: var(--surface); border: 1px solid var(--border); border-radius: 0.875rem; padding: 1.25rem; }
+  .steps-grid .step-num { width: 2rem; height: 2rem; border-radius: 50%; background: rgba(41,151,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: 700; color: #2997ff; margin-bottom: 0.75rem; }
+  .steps-grid h4 { font-size: 0.875rem; font-weight: 700; margin-bottom: 0.375rem; }
+  .steps-grid p { font-size: 0.8125rem; color: var(--ink-muted); line-height: 1.5; }
 
   @media (max-width: 48rem) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .steps { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
     .sort-grid, .lang-grid, .prov-grid { grid-template-columns: 1fr; }
     .glass-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 1.75rem; }
@@ -636,7 +641,7 @@
 
     <!-- Hero -->
     <section class="hero" data-section="general">
-      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;font-weight:600;color:var(--ink-muted);letter-spacing:0.02em;" id="addon-version">v3.4.0</p>
+      <p style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;font-size:0.875rem;font-weight:600;color:var(--ink-muted);letter-spacing:0.02em;" id="addon-version"></p>
       <div class="hero-eyebrow">High-Performance Stream Meta-Sorter &amp; Priority Engine</div>
       <h1>Configure your stream engine</h1>
       <p>Tune sorting, filters, language priority, and provider sources. Changes sync live to your player.</p>
@@ -671,21 +676,21 @@
     </div>
 
     <!-- 3-Step Cards -->
-    <div data-section="general" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem;">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:0.875rem;padding:1.25rem;">
-        <div style="width:2rem;height:2rem;border-radius:50%;background:rgba(41,151,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8125rem;font-weight:700;color:#2997ff;margin-bottom:0.75rem;">1</div>
-        <h4 style="font-size:0.875rem;font-weight:700;margin-bottom:0.375rem;">Configure Your Setup</h4>
-        <p style="font-size:0.8125rem;color:var(--ink-muted);line-height:1.5;">Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.</p>
+    <div data-section="general" class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <h4>Configure Your Setup</h4>
+        <p>Head over to the Settings tab to prioritize speed or quality, and adjust your stream filters.</p>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:0.875rem;padding:1.25rem;">
-        <div style="width:2rem;height:2rem;border-radius:50%;background:rgba(41,151,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8125rem;font-weight:700;color:#2997ff;margin-bottom:0.75rem;">2</div>
-        <h4 style="font-size:0.875rem;font-weight:700;margin-bottom:0.375rem;">Add Repositories</h4>
-        <p style="font-size:0.8125rem;color:var(--ink-muted);line-height:1.5;">Visit the Sources tab to load community scrapers or add your own custom repository URL.</p>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <h4>Add Repositories</h4>
+        <p>Visit the Sources tab to load community scrapers or add your own custom repository URL.</p>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:0.875rem;padding:1.25rem;">
-        <div style="width:2rem;height:2rem;border-radius:50%;background:rgba(41,151,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8125rem;font-weight:700;color:#2997ff;margin-bottom:0.75rem;">3</div>
-        <h4 style="font-size:0.875rem;font-weight:700;margin-bottom:0.375rem;">Install Addon</h4>
-        <p style="font-size:0.8125rem;color:var(--ink-muted);line-height:1.5;">Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.</p>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <h4>Install Addon</h4>
+        <p>Click the 'Install Addon' button. If auto-install fails, use the manual manifest link.</p>
       </div>
     </div>
 
@@ -1241,11 +1246,11 @@
     const actions = document.getElementById('save-bar-actions');
     if (!actions) return;
     if (tab === 'general') {
-      actions.innerHTML = '<a href="javascript:void(0)" class="btn btn-primary btn-save" onclick="document.querySelectorAll(\'.nav-link\')[1].click();">Next</a>';
+      actions.innerHTML = '<a href="javascript:void(0)" class="btn btn-primary btn-nav" onclick="document.querySelectorAll(\'.nav-link\')[1].click();">Next</a>';
     } else if (tab === 'sources') {
-      actions.innerHTML = '<a href="javascript:void(0)" class="btn btn-primary btn-save" onclick="document.querySelectorAll(\'.nav-link\')[2].click();">Next</a>';
+      actions.innerHTML = '<a href="javascript:void(0)" class="btn btn-primary btn-nav" onclick="document.querySelectorAll(\'.nav-link\')[2].click();">Next</a>';
     } else if (tab === 'settings') {
-      actions.innerHTML = '<button class="btn btn-primary btn-save">Save</button> <a href="javascript:void(0)" class="btn btn-outline" id="btn-install-bar" onclick="document.getElementById(\'btn-install\').click();">Install Addon</a>';
+      actions.innerHTML = '<button class="btn btn-primary btn-save">Save</button> <a href="javascript:void(0)" class="btn btn-outline" id="btn-install-bar">Install Addon</a>';
     } else if (tab === 'analytics') {
       actions.innerHTML = '';
     }
@@ -1803,15 +1808,23 @@
   }
 
   // ─── Install Addon ───
+  function openInstall() {
+    if (!configId) {
+      alert('Save your config first to get an install link.');
+      return;
+    }
+    const manifestUrl = window.location.origin + '/c/' + configId + '/manifest.json';
+    const stremioUrl = 'stremio://' + window.location.host + '/c/' + configId + '/manifest.json';
+    const nuvioUrl = 'nuvio://install?url=' + encodeURIComponent(manifestUrl);
+    window.open(stremioUrl, '_blank');
+    navigator.clipboard?.writeText(manifestUrl).then(() => {
+      showToast('Manifest link copied! Paste in Nuvio if auto-install didn\'t work.');
+    }).catch(() => {});
+  }
   function setupInstallButton() {
-    document.getElementById('btn-install')?.addEventListener('click', (e) => {
+    document.getElementById('btn-install-bar')?.addEventListener('click', (e) => {
       e.preventDefault();
-      if (!configId) {
-        alert('Save your config first to get an install link.');
-        return;
-      }
-      const installUrl = 'stremio://' + window.location.host + '/c/' + configId + '/manifest.json';
-      window.open(installUrl, '_blank');
+      openInstall();
     });
   }
 
